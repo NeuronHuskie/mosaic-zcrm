@@ -1,0 +1,238 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                             message styles                             █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+.message-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.message-text {
+    line-height: 1.6;
+    font-size: 15px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+.message-icon {
+    font-size: 20px;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.message {
+    border-radius: var(--radius-cards);
+    border: 1px solid;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.message .message-content {
+    flex-direction: column;
+    padding: 16px;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+}
+
+.message .header-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.message .widget-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.message .message-text {
+    margin: 0;
+}
+
+.message .message-text p {
+    margin: 0;
+}
+
+/* ── accent color definitions for each message type ──────────────────── */
+.message.info { --message-accent: var(--color-info-accent); }
+.message.success { --message-accent: var(--color-success-accent); }
+.message.warning { --message-accent: var(--color-warning-accent); }
+.message.error { --message-accent: var(--color-error-accent); }
+.message.question { --message-accent: var(--color-question-accent); }
+
+.dark-mode .message.info { --message-accent: var(--color-dark-info-accent); }
+.dark-mode .message.success { --message-accent: var(--color-dark-success-accent); }
+.dark-mode .message.warning { --message-accent: var(--color-dark-warning-accent); }
+.dark-mode .message.error { --message-accent: var(--color-dark-error-accent); }
+.dark-mode .message.question { --message-accent: var(--color-dark-question-accent); }
+
+/* ── apply accent color to title and icon ────────────────────────────── */
+.message .widget-title,
+.message .message-icon {
+    color: var(--message-accent);
+}
+
+/* ── info styles ─────────────────────────────────────────────────────── */
+.message.info {
+    background-color: var(--color-info-bg);
+    border-color: var(--color-info-border);
+}
+
+.message.info .message-text {
+    color: var(--color-text-dark);
+}
+
+.dark-mode .message.info {
+    background-color: var(--color-dark-info-bg);
+    border-color: var(--color-dark-info-border);
+}
+
+.dark-mode .message.info .message-text {
+    color: var(--color-dark-message-text);
+}
+
+/* ── success styles ──────────────────────────────────────────────────── */
+.message.success {
+    background-color: var(--color-success-bg);
+    border-color: var(--color-success-border);
+}
+
+.message.success .message-text {
+    color: var(--color-text-dark);
+}
+
+.dark-mode .message.success {
+    background-color: var(--color-dark-success-bg);
+    border-color: var(--color-dark-success-border);
+}
+
+.dark-mode .message.success .message-text {
+    color: var(--color-dark-message-text);
+}
+
+/* ── warning styles ──────────────────────────────────────────────────── */
+.message.warning {
+    background-color: var(--color-warning-bg);
+    border-color: var(--color-warning-border);
+}
+
+.message.warning .message-text {
+    color: var(--color-text-dark);
+}
+
+.dark-mode .message.warning {
+    background-color: var(--color-dark-warning-bg);
+    border-color: var(--color-dark-warning-border);
+}
+
+.dark-mode .message.warning .message-text {
+    color: var(--color-dark-message-text);
+}
+
+/* ── error styles ────────────────────────────────────────────────────── */
+.message.error {
+    background-color: var(--color-error-bg);
+    border-color: var(--color-error-border);
+}
+
+.message.error .message-text {
+    color: var(--color-text-dark);
+}
+
+.dark-mode .message.error {
+    background-color: var(--color-dark-error-bg);
+    border-color: var(--color-dark-error-border);
+}
+
+.dark-mode .message.error .message-text {
+    color: var(--color-dark-message-text);
+}
+
+/* ── question styles ─────────────────────────────────────────────────── */
+.message.question {
+    background-color: var(--color-question-bg);
+    border-color: var(--color-question-border);
+}
+
+.message.question .message-text {
+    color: var(--color-text-dark);
+}
+
+.dark-mode .message.question {
+    background-color: var(--color-dark-question-bg);
+    border-color: var(--color-dark-question-border);
+}
+
+.dark-mode .message.question .message-text {
+    color: var(--color-dark-message-text);
+}
+
+/* ── message text typography ─────────────────────────────────────────── */
+.message-text h1,
+.message-text h3 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.message-text h1 {
+    font-size: 1.25rem;
+}
+
+.message-text h3 {
+    font-size: 1.1rem;
+}
+
+.message-text a {
+    color: var(--color-link);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.message-text a:hover {
+    text-decoration: underline;
+}
+
+.dark-mode .message-text a {
+    color: var(--color-dark-link);
+}
+
+.dark-mode .message-text a:hover {
+    color: var(--color-dark-link-hover);
+}
+
+.message-text code {
+    background-color: var(--color-code-bg);
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    border-radius: var(--radius-default);
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.dark-mode .message-text code {
+    background-color: var(--color-dark-surface);
+    color: var(--color-dark-text);
+}
+
+.message-text blockquote {
+    margin: 0 0 1em 0;
+    padding: 0.5em 1em;
+    color: var(--color-text-light);
+    border-left: 0.25em solid var(--color-border);
+}

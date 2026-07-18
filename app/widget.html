@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Mosaic - a modular Zoho CRM widget framework">
+        <title>Mosaic Widget</title>
+        <!-- ╭──────────────────────────────────────────────────╮ -->
+        <!-- │              external dependencies               │ -->
+        <!-- ╰──────────────────────────────────────────────────╯ -->
+        <script src="https://live.zwidgets.com/js-sdk/1.5/ZohoEmbededAppSDK.min.js"></script>
+        <!-- ╭──────────────────────────────────────────────────╮ -->
+        <!-- │                   stylesheets                    │ -->
+        <!-- ╰──────────────────────────────────────────────────╯ -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link href="./css/style.css" rel="stylesheet">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+              integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+              crossorigin="anonymous">
+    </head>
+
+    <body>
+        <div class="widget-wrapper">
+            <div class="container">
+                <!-- ╭──────────────────────────────────────────────────╮ -->
+                <!-- │            dynamic content container             │ -->
+                <!-- ╰──────────────────────────────────────────────────╯ -->
+                <div id="contentContainer">
+                    <!-- content will be generated dynamically -->
+                </div>
+                <!-- ╭──────────────────────────────────────────────────╮ -->
+                <!-- │                 button container                 │ -->
+                <!-- ╰──────────────────────────────────────────────────╯ -->
+                <div class="button-container" id="buttonContainer">
+                    <!-- buttons will be generated dynamically -->
+                </div>
+            </div>
+        </div>
+        <!-- ╭──────────────────────────────────────────────────╮ -->
+        <!-- │               custom alert message               │ -->
+        <!-- ╰──────────────────────────────────────────────────╯ -->
+        <div id="customAlert">
+            <div class="alert-box">
+                <p id="alertMessage">Alert message</p>
+                <button onclick="mosaic.ui.alert.close()" class="btn">OK</button>
+            </div>
+        </div>
+        <!-- ╭──────────────────────────────────────────────────╮ -->
+        <!-- │                widget js scripts                 │ -->
+        <!-- ╰──────────────────────────────────────────────────╯ -->
+        <!-- ── load mosaic-core.js first ─────────────────────────────────────── -->
+        <script src="./js/mosaic-core.js"></script>
+        <script src="./js/mosaic-flyout.js"></script>
+        <script src="./js/mosaic-relatedlist.js"></script>
+        <!-- ──────────────────────────────────────────────────────────────────── -->
+        <script src="./js/mosaic-storage.js"></script>  
+        <script src="./js/mosaic-theme.js"></script>
+        <script src="./js/mosaic-datepicker.js"></script>
+        <script src="./js/mosaic-util.js"></script>
+        <script src="./js/mosaic-ui.js"></script>
+        <script src="./js/mosaic-api.js"></script>
+        <script src="./js/mosaic-form.js"></script>
+        <script src="./js/mosaic-export.js"></script>
+        <script src="./js/mosaic-table.js"></script>
+        <script src="./js/mosaic-html.js"></script>
+        <script src="./js/mosaic-pdf.js"></script>
+        <script src="./js/mosaic-launcher.js"></script>
+        <script src="./js/mosaic-handlers.js"></script>
+        <script src="./js/mosaic-validators.js"></script>
+        <script src="./js/mosaic-conditions.js"></script>
+        <!-- ╭──────────────────────────────────────────────────╮ -->
+        <!-- │               initialize zoho sdk                │ -->
+        <!-- ╰──────────────────────────────────────────────────╯ -->
+        <script>
+            ZOHO.embeddedApp.on("PageLoad", (data) => mosaic.init(data));
+            ZOHO.embeddedApp.on("NotifyAndWait", (data) => mosaic.flyout.requests.setRequest(data));
+            ZOHO.embeddedApp.init();
+        </script>
+    </body>
+</html>

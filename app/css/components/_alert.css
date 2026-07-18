@@ -1,0 +1,172 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                              alert styles                              █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+#customAlert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(80, 80, 80, 0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.2s ease-out, visibility 0s 0.2s;
+}
+
+#customAlert.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.2s ease-out;
+}
+
+.alert-box {
+    background: var(--color-white);
+    padding: 25px;
+    max-width: 800px;
+    width: 90%;
+    margin: 0 auto;
+    border-radius: var(--radius-cards);
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: scale(0.95);
+    transition: transform 0.2s ease-out;
+    overflow-y: auto;
+    max-height: 75vh; /* fallback — JS sets dynamic value based on widget height */
+}
+
+#customAlert.show .alert-box {
+    transform: scale(1);
+}
+
+#alertMessage {
+    margin: 0 0 20px 0;
+    line-height: 1.6;
+    color: var(--color-text-default);
+}
+
+.alert-box .btn {
+    min-width: 120px;
+}
+
+.dark-mode #customAlert {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.dark-mode .alert-box {
+    background: var(--color-dark-surface);
+    border: 1px solid var(--color-dark-border);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+.dark-mode #alertMessage {
+    color: var(--color-dark-text);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │              validation error alert              │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+/* ── error-styled alert box ──────────────────────────────────────────── */
+.alert-box.alert-error {
+    background-color: var(--color-error-bg);
+    border: 1px solid var(--color-error-border);
+    text-align: left;
+}
+
+.dark-mode .alert-box.alert-error {
+    background-color: var(--color-dark-error-bg);
+    border-color: var(--color-dark-error-border);
+}
+
+/* ── alert header with icon ──────────────────────────────────────────── */
+.alert-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-error-border);
+}
+
+.dark-mode .alert-header {
+    border-bottom-color: var(--color-dark-error-border);
+}
+
+.alert-header-icon {
+    color: var(--color-error-accent);
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.dark-mode .alert-header-icon {
+    color: var(--color-dark-error-accent);
+}
+
+.alert-header-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--color-error-accent);
+    margin: 0;
+}
+
+.dark-mode .alert-header-title {
+    color: var(--color-dark-error-accent);
+}
+
+/* ── validation error list ───────────────────────────────────────────── */
+.alert-error-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    overflow-y: auto;
+}
+
+.alert-error-item {
+    margin-bottom: 12px;
+    padding-left: 4px;
+}
+
+.alert-error-item:last-child {
+    margin-bottom: 0;
+}
+
+.alert-error-field {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-error-text-dark);
+    display: block;
+    margin-bottom: 2px;
+}
+
+.dark-mode .alert-error-field {
+    color: var(--color-dark-error-accent);
+}
+
+.alert-error-message {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--color-error-text-darker);
+    display: block;
+    padding-left: 8px;
+}
+
+.dark-mode .alert-error-message {
+    color: var(--color-dark-error-text-light);
+}
+
+/* ── center the button in error alerts ───────────────────────────────── */
+.alert-box.alert-error .btn {
+    display: block;
+    margin: 0 auto;
+    --btn-bg: var(--color-error);
+    --btn-border: var(--color-error);
+    --btn-hover-bg: var(--color-error-dark);
+    --btn-hover-border: var(--color-error-dark);
+}

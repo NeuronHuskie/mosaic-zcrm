@@ -1,0 +1,67 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                               pdf styles                               █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+/* ── header bar (title + buttons) ─────────────────────────────────────── */
+.pdf-header {
+    padding: 15px 20px;
+    flex-shrink: 0;
+}
+
+.dark-mode .pdf-header {
+    background-color: var(--color-dark-bg);
+}
+
+.pdf-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* ── title ────────────────────────────────────────────────────────────── */
+.pdf-title {
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--color-text-dark);
+    margin: 0 0 10px 0;
+}
+
+.dark-mode .pdf-title {
+    color: var(--color-dark-text);
+}
+
+/* ── content area ────────────────────────────────────────────────────── */
+.pdf-content {
+    flex: 1;
+    overflow: hidden;
+    background-color: var(--color-white);
+    margin: 0 10px 10px;
+    border-radius: var(--radius-cards);
+    border: 1px solid var(--color-border-medium);
+    display: flex;
+    flex-direction: column;
+}
+
+.dark-mode .pdf-content {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+}
+
+/* ── iframe ──────────────────────────────────────────────────────────── */
+.pdf-iframe {
+    flex: 1;
+    width: 100%;
+    border: none;
+    border-radius: var(--radius-cards);
+}
+
+/* ── loading state ───────────────────────────────────────────────────── */
+.pdf-loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--color-text-light);
+    font-style: italic;
+}
+
+.dark-mode .pdf-loading {
+    color: var(--color-dark-text-muted);
+}

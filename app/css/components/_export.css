@@ -1,0 +1,129 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                             export styles                              █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+.export-container {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.export-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 8px;
+    font-size: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-default);
+    background: transparent;
+    color: var(--color-text-light);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.export-btn:hover {
+    background-color: var(--color-surface-light);
+}
+
+.dark-mode .export-btn {
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text-light);
+}
+
+.dark-mode .export-btn:hover {
+    background-color: var(--color-dark-surface-hover);
+}
+
+/* export dropdown */
+
+.export-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-dropdown);
+    z-index: 1000;
+    min-width: 150px;
+    overflow: hidden;
+}
+
+.export-dropdown.show {
+    display: block;
+}
+
+.dark-mode .export-dropdown {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    box-shadow: var(--shadow-dropdown-dark);
+}
+
+.export-option {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-family-base);
+    font-size: 13px;
+    color: var(--color-text-default);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.export-option:last-child {
+    border-bottom: none;
+}
+
+.export-option:hover {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.dark-mode .export-option {
+    border-bottom-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+}
+
+.dark-mode .export-option:hover {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.export-icon {
+    width: 16px;
+    font-size: 14px;
+    text-align: center;
+    opacity: 0.85;
+}
+
+.export-option:hover .export-icon {
+    opacity: 1;
+}
+
+/* file type icon colors */
+.export-option .fa-file-csv {
+    color: var(--color-icon-csv);
+}
+
+.export-option .fa-file-excel {
+    color: var(--color-icon-excel);
+}
+
+.export-option .fa-file-pdf {
+    color: var(--color-icon-pdf);
+}
+
+.export-option .fa-file-code {
+    color: var(--color-icon-code);
+}
+
+.export-option:hover .fa-file-csv,
+.export-option:hover .fa-file-excel,
+.export-option:hover .fa-file-pdf,
+.export-option:hover .fa-file-code {
+    color: white;
+}

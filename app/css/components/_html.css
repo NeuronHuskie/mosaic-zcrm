@@ -1,0 +1,71 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                              html styles                               █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+/* ── header bar (title + buttons) ─────────────────────────────────────── */
+.html-header {
+    padding: 15px 20px;
+    flex-shrink: 0;
+}
+
+.dark-mode .html-header {
+    background-color: var(--color-dark-bg);
+}
+
+.html-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* ── title ────────────────────────────────────────────────────────────── */
+.html-title {
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--color-text-dark);
+    margin: 0 0 10px 0;
+}
+
+.dark-mode .html-title {
+    color: var(--color-dark-text);
+}
+
+/* ── content area ────────────────────────────────────────────────────── */
+.html-content {
+    flex: 1;
+    padding: 20px;
+    overflow: auto;
+    background-color: var(--color-white);
+    margin: 10px;
+    border-radius: var(--radius-cards);
+    border: 1px solid var(--color-border-medium);
+}
+
+.dark-mode .html-content {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+}
+
+/* ── loading state ───────────────────────────────────────────────────── */
+.html-loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--color-text-light);
+    font-style: italic;
+}
+
+.dark-mode .html-loading {
+    color: var(--color-dark-text-muted);
+}
+
+/* ── error state (shared — see _global.css .mosaic-body-error) ──────── */
+
+/* ── full screen loader (shared — see _global.css .mosaic-body-*) ──── */
+
+/* ── raw mode: isolate content area from widget theme ───────────────── */
+.html-content--raw,
+.dark-mode .html-content--raw {
+    background-color: #ffffff;
+    color: #000000;
+    border-color: var(--color-border-medium);
+}

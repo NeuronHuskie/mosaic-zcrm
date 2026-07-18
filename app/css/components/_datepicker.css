@@ -1,0 +1,457 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                           datepicker styles                            █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                 wrapper layout                   │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.date-input-wrapper {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                  popup shell                     │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.mosaic-calendar-popup {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    z-index: 9999;
+    width: 272px;
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.08);
+    padding: 12px;
+    box-sizing: border-box;
+    font-family: var(--font-family-base);
+    font-size: 12px;
+    line-height: 1.2;
+    color: var(--color-text-default);
+    user-select: none;
+}
+
+.mosaic-calendar-popup.is-hidden,
+.mosaic-calendar-popup .mcp-pane.is-hidden {
+    display: none;
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                  header row                      │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.mcp-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.mcp-month-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-default);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-family: inherit;
+    transition: background 0.12s ease;
+}
+
+.mcp-month-label:hover {
+    background: var(--color-nav-hover);
+}
+
+.mcp-nav {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 9px;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--color-text-light);
+    transition: background 0.12s ease, color 0.12s ease;
+}
+
+.mcp-nav:hover {
+    background: var(--color-nav-hover);
+    color: var(--color-text-default);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                weekday headers                   │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.mcp-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    margin-bottom: 3px;
+}
+
+.mcp-weekdays div {
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--color-text-light);
+    padding: 4px 0;
+    letter-spacing: 0.03em;
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                  days grid                       │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.mcp-days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+}
+
+/* months / years view: 3 columns of wider pill cells */
+.mcp-days-grid.mcp-grid--wide {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                  day cells                       │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.mcp-day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    --mcp-day-color: var(--color-text-default);
+    --mcp-day-hover-bg: var(--color-day-hover-bg);
+    --mcp-day-hover-color: var(--color-primary);
+    color: var(--mcp-day-color);
+    transition: background 0.12s ease, color 0.12s ease;
+}
+
+.mcp-day:hover:not(.mcp-day--disabled):not(.mcp-day--empty):not(.mcp-day--selected) {
+    background: var(--mcp-day-hover-bg);
+    color: var(--mcp-day-hover-color);
+}
+
+.mcp-day--empty {
+    cursor: default;
+}
+
+.mcp-day--today {
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1.5px var(--color-primary);
+}
+
+.mcp-day--selected {
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-weight: 600;
+}
+
+.mcp-day--selected:hover {
+    background: var(--color-primary-dark);
+    color: var(--color-white);
+}
+
+.mcp-day--today.mcp-day--selected {
+    box-shadow: none;
+}
+
+.mcp-day--disabled {
+    color: var(--color-day-disabled);
+    cursor: not-allowed;
+}
+
+/* month / year pill cells (wider than a day cell) */
+.mcp-day--cell {
+    width: 100%;
+    min-height: 38px;
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │      datetime mode: summary cards + apply        │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.mcp-pane--cards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.mcp-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--color-text-default);
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: border-color 0.12s ease;
+}
+
+.mcp-card:hover {
+    border-color: var(--color-primary);
+}
+
+.mcp-card:hover .mcp-card-chev {
+    color: var(--color-primary);
+}
+
+.mcp-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.mcp-card-lbl {
+    font-size: 11px;
+    color: var(--color-text-light);
+}
+
+.mcp-card-val {
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mcp-card-val--empty {
+    color: var(--color-text-light);
+    font-weight: 400;
+}
+
+.mcp-card-chev {
+    color: var(--color-text-light);
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.mcp-apply {
+    padding: 8px 0;
+    border: none;
+    border-radius: 6px;
+    background: var(--color-primary);
+    color: var(--color-white);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.mcp-apply:hover:not(:disabled) {
+    background: var(--color-primary-dark);
+}
+
+.mcp-apply:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │          datetime mode: time list pane           │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.mcp-pane--time {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.mcp-time-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.mcp-time-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--color-text-default);
+}
+
+.mcp-time-title--empty {
+    color: var(--color-text-light);
+    font-weight: 400;
+}
+
+.mcp-time-x {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 7px;
+    border: none;
+    border-radius: 50%;
+    background: var(--color-nav-hover);
+    color: var(--color-text-light);
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.mcp-time-x:hover {
+    color: var(--color-text-default);
+}
+
+.mcp-time-list {
+    min-height: 176px;
+    max-height: 234px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    scrollbar-width: thin;
+}
+
+.mcp-time-row {
+    flex-shrink: 0;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-text-default);
+    font-family: inherit;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.mcp-time-row:hover:not(.mcp-time-row--selected) {
+    background: var(--color-nav-hover);
+}
+
+.mcp-time-row--selected {
+    background: var(--color-day-hover-bg);
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                   dark mode                      │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.dark-mode .mosaic-calendar-popup {
+    background: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3);
+}
+
+.dark-mode .mcp-month-label {
+    color: var(--color-dark-text);
+}
+
+.dark-mode .mcp-month-label:hover {
+    background: var(--color-dark-surface-light);
+}
+
+.dark-mode .mcp-nav {
+    color: var(--color-dark-text-light);
+}
+
+.dark-mode .mcp-nav:hover {
+    background: var(--color-dark-surface-light);
+    color: var(--color-dark-text);
+}
+
+.dark-mode .mcp-weekdays div {
+    color: var(--color-dark-text-light);
+}
+
+.dark-mode .mcp-day {
+    --mcp-day-color: var(--color-dark-text);
+    --mcp-day-hover-bg: var(--color-dark-day-hover-bg);
+    --mcp-day-hover-color: var(--color-dark-day-hover-text);
+}
+
+.dark-mode .mcp-day--today {
+    box-shadow: inset 0 0 0 1.5px var(--color-dark-day-today-border);
+}
+
+.dark-mode .mcp-day--selected {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+.dark-mode .mcp-day--selected:hover {
+    background: var(--color-primary-dark);
+    color: var(--color-white);
+}
+
+.dark-mode .mcp-day--today.mcp-day--selected {
+    box-shadow: none;
+}
+
+.dark-mode .mcp-day--disabled {
+    color: var(--color-dark-border);
+}
+
+.dark-mode .mcp-card {
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+}
+
+.dark-mode .mcp-card-lbl,
+.dark-mode .mcp-card-val--empty,
+.dark-mode .mcp-card-chev {
+    color: var(--color-dark-text-light);
+}
+
+.dark-mode .mcp-time-head {
+    border-bottom-color: var(--color-dark-border);
+}
+
+.dark-mode .mcp-time-title {
+    color: var(--color-dark-text);
+}
+
+.dark-mode .mcp-time-title--empty {
+    color: var(--color-dark-text-light);
+}
+
+.dark-mode .mcp-time-x {
+    background: var(--color-dark-surface-light);
+    color: var(--color-dark-text-light);
+}
+
+.dark-mode .mcp-time-x:hover {
+    color: var(--color-dark-text);
+}
+
+.dark-mode .mcp-time-row {
+    color: var(--color-dark-text);
+}
+
+.dark-mode .mcp-time-row:hover:not(.mcp-time-row--selected) {
+    background: var(--color-dark-surface-light);
+}
+
+.dark-mode .mcp-time-row--selected {
+    background: var(--color-dark-day-hover-bg);
+    color: var(--color-dark-day-hover-text);
+}

@@ -1,0 +1,275 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                            launcher styles                             █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                    wrapper                       │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.launcher-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                     title                        │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.launcher-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--color-text-default);
+    padding: 0 0 12px 0;
+}
+
+.dark-mode .launcher-title {
+    color: var(--color-dark-text);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                  search input                    │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.launcher-search-wrapper {
+    position: relative;
+    flex-shrink: 0;
+    margin-bottom: 8px;
+}
+
+.launcher-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    color: var(--color-text-light);
+    pointer-events: none;
+}
+
+.dark-mode .launcher-search-icon {
+    color: var(--color-dark-text-muted);
+}
+
+.launcher-search {
+    width: 100%;
+    padding: 10px 14px 10px 38px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-cards);
+    font-size: 15px;
+    font-family: var(--font-family-base);
+    background-color: var(--color-white);
+    color: var(--color-text-default);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+}
+
+.launcher-search::placeholder {
+    color: var(--color-placeholder);
+}
+
+.launcher-search:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-focus-ring);
+}
+
+.dark-mode .launcher-search {
+    background-color: var(--color-dark-input-bg);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+}
+
+.dark-mode .launcher-search::placeholder {
+    color: var(--color-placeholder-dark);
+}
+
+.dark-mode .launcher-search:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-dark-focus-ring);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                  items container                  │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.launcher-items {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                   item row                       │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.launcher-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-radius: var(--radius-default);
+    transition: background-color 0.1s ease;
+    user-select: none;
+}
+
+.launcher-item:hover {
+    background-color: var(--color-surface-light);
+}
+
+.dark-mode .launcher-item:hover {
+    background-color: var(--color-dark-hover-overlay);
+}
+
+/* ── selected state ──────────────────────────────────────────────────── */
+.launcher-item-selected,
+.launcher-item-selected:hover {
+    background-color: var(--color-focus-ring);
+}
+
+.dark-mode .launcher-item-selected,
+.dark-mode .launcher-item-selected:hover {
+    background-color: var(--color-dark-selected-overlay);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                   item icon                      │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.launcher-item-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-default);
+    background-color: var(--color-surface-light);
+    color: var(--color-text-light);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.dark-mode .launcher-item-icon {
+    background-color: var(--color-dark-surface-light);
+    color: var(--color-dark-text-light);
+}
+
+.launcher-item-selected .launcher-item-icon {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.dark-mode .launcher-item-selected .launcher-item-icon {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                 item content                     │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.launcher-item-content {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.launcher-item-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-text-default);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dark-mode .launcher-item-label {
+    color: var(--color-dark-text);
+}
+
+.launcher-item-description {
+    font-size: 12px;
+    color: var(--color-text-light);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dark-mode .launcher-item-description {
+    color: var(--color-dark-text-muted);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │              match highlight                     │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.launcher-highlight {
+    background-color: transparent;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.dark-mode .launcher-highlight {
+    color: var(--color-dark-link);
+}
+
+/* strong = contiguous run or word-boundary match */
+.launcher-highlight--strong {
+    color: var(--color-primary);
+    font-weight: 700;
+    opacity: 1;
+}
+
+.dark-mode .launcher-highlight--strong {
+    color: var(--color-dark-link);
+}
+
+/* weak = scattered single-char match */
+.launcher-highlight--weak {
+    font-weight: 500;
+    opacity: 0.5;
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                 empty state                      │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.launcher-empty {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--color-text-light);
+    font-style: italic;
+    font-size: 14px;
+}
+
+.dark-mode .launcher-empty {
+    color: var(--color-dark-text-muted);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                  status dot                      │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.launcher-dot {
+    --dot-bg: transparent;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--dot-bg);
+}
+
+.launcher-dot--info     { --dot-bg: var(--color-info-accent); }
+.launcher-dot--success  { --dot-bg: var(--color-success-accent); }
+.launcher-dot--warning  { --dot-bg: var(--color-warning-accent); }
+.launcher-dot--error    { --dot-bg: var(--color-error-accent); }
+.launcher-dot--question { --dot-bg: var(--color-question-accent); }
+
+.dark-mode .launcher-dot--info     { --dot-bg: var(--color-dark-info-accent); }
+.dark-mode .launcher-dot--success  { --dot-bg: var(--color-dark-success-accent); }
+.dark-mode .launcher-dot--warning  { --dot-bg: var(--color-dark-warning-accent); }
+.dark-mode .launcher-dot--error    { --dot-bg: var(--color-dark-error-accent); }
+.dark-mode .launcher-dot--question { --dot-bg: var(--color-dark-question-accent); }

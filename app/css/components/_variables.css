@@ -1,0 +1,203 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                               variables                                █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+:root {
+
+    /* ── typography ───────────────────────────────────────────────────── */
+    --font-family-base: 'Inter', sans-serif;
+
+    /* ── semantic colors ──────────────────────────────────────────────── */
+    --color-primary: #4e63e0;
+    --color-primary-dark: #203297;
+    --color-negative: #fff2f3;
+    --color-negative-dark: #f03b4c;
+    --color-info: #1565c0;
+    --color-success: #4caf78;
+    --color-success-dark: #388e3c;
+    --color-success-text: #2e7d32;
+    --color-question: #9c27b0;
+    --color-question-dark: #560664;
+    --color-warning: #ff9800;
+    --color-warning-dark: #f57c00;
+    --color-warning-text: #ef6c00;
+    --color-error: #f44336;
+    --color-error-dark: #660303;
+    --color-error-text: #c62828;
+    --color-error-text-dark: #b91c1c;
+    --color-error-text-darker: #7f1d1d;
+
+    /* ── text ─────────────────────────────────────────────────────────── */
+    --color-text-dark: #000000;
+    --color-text-default: #333;
+    --color-text-light: #666;
+    --color-text-muted: #5a6c7d;
+    --text-secondary: #888;
+    --text-secondary-dark: #999;
+    --color-placeholder: #9ca3af;
+    --color-placeholder-dark: #6b7280;
+    --color-icon-muted: #555;
+
+    /* ── surfaces & borders ───────────────────────────────────────────── */
+    --color-white: #ffffff;
+    --color-background: #f9f9f9;
+    --color-background-hover: #dddddd;
+    --color-surface-light: #f3f4f6;
+    --color-surface-subtle: #f9fafb;
+    --color-surface-cool: #f5f7fa;
+    --color-surface-input-tint: #f4f7fb;
+    --color-border: #ddd;
+    --color-border-soft: #e5e7eb;
+    --color-border-medium: #e0e0e0;
+    --color-border-input-tint: #d0d4df;
+    --color-border-input-tint-hover: #b0b5c3;
+    --color-surface-input-tint-hover: #e8ecf1;
+    --color-disabled: #b0bec5;
+
+    /* ── table-specific surfaces ──────────────────────────────────────── */
+    --color-table-header: #f1f3f5;
+    --color-table-row-alt: #fdfdfd;
+    --color-table-row-hover: #e9ecef;
+    --color-table-row-selected: #e3f2fd;
+    --color-pagination-disabled-text: #adb5bd;
+    --color-pagination-border-hover: #ced4da;
+
+    /* ── file type icon colors ────────────────────────────────────────── */
+    --color-icon-csv: #28a745;
+    --color-icon-excel: #217346;
+    --color-icon-pdf: #dc3545;
+    --color-icon-code: #6c757d;
+
+    /* ── focus ring ───────────────────────────────────────────────────── */
+    --color-focus-ring: rgba(33, 150, 243, 0.1);
+
+    /* ── message backgrounds & borders (light mode) ───────────────────── */
+    --color-info-bg: #f0f4ff;
+    --color-info-border: #b3d4fc;
+    --color-info-bg-subtle: #e3f2fd;
+    --color-success-bg: #f0fff4;
+    --color-success-border: #9ae6b4;
+    --color-success-bg-subtle: #e8f5e8;
+    --color-warning-bg: #fffbeb;
+    --color-warning-border: #fbbf24;
+    --color-warning-bg-subtle: #fff3cd;
+    --color-error-bg: #fef2f2;
+    --color-error-border: #fca5a5;
+    --color-error-bg-subtle: #ffebee;
+    --color-error-bg-faint: #fff8f8;
+    --color-question-bg: #faf5ff;
+    --color-question-border: #c084fc;
+
+    /* ── message accent colors (light mode) ───────────────────────────── */
+    --color-info-accent: #1565c0;
+    --color-success-accent: #2e7d32;
+    --color-warning-accent: #d97706;
+    --color-error-accent: #dc2626;
+    --color-question-accent: #7c3aed;
+
+    /* ── multiselect chip ─────────────────────────────────────────────── */
+    --color-chip-bg: #fbbf24;
+    --color-chip-text: #000;
+
+    /* ── inline content (light mode) ──────────────────────────────────── */
+    --color-code-bg: #e9ecef;
+    --color-link: var(--color-primary);
+
+    /* ── datepicker (light mode) ──────────────────────────────────────── */
+    --color-nav-hover: #f0f0f0;
+    --color-day-hover-bg: #f0f4ff;
+    --color-day-disabled: #d0d0d0;
+
+    /* ── dark mode ────────────────────────────────────────────────────── */
+    --color-dark-bg: #1a1a1a;
+    --color-dark-surface: #2d2d2d;
+    --color-dark-surface-light: #3a3a3a;
+    --color-dark-surface-hover: #404040;
+    --color-dark-text: #e0e0e0;
+    --color-dark-text-light: #b0b0b0;
+    --color-dark-text-muted: #999;
+    --color-dark-border: #404040;
+    --color-dark-border-muted: #555;
+    --color-dark-input-bg: #2d2d2d;
+
+    /* ── dark mode semantic colors (general) ─────────────────────────── */
+    --color-dark-success: #66bb6a;
+    --color-dark-question: #ce93d8;
+    --color-dark-warning: #ffb74d;
+    --color-dark-error: #ef5350;
+    --color-dark-info: #64b5f6;
+    --color-dark-disabled: #616161;
+
+    /* ── dark mode button colors ─────────────────────────────────────── */
+    --color-dark-btn-success: #2e7d32;
+    --color-dark-btn-success-hover: #1b5e20;
+    --color-dark-btn-question: #7b1fa2;
+    --color-dark-btn-question-hover: #4a148c;
+    --color-dark-btn-warning: #f57c00;
+    --color-dark-btn-warning-hover: #e65100;
+    --color-dark-btn-error: #d32f2f;
+    --color-dark-btn-error-hover: #b71c1c;
+    --color-dark-btn-disabled: #4a4a4a;
+
+    /* ── dark mode message backgrounds & borders ──────────────────────── */
+    --color-dark-info-bg: #1a2332;
+    --color-dark-info-border: #4a5568;
+    --color-dark-success-bg: #1a2e1a;
+    --color-dark-success-border: #48bb78;
+    --color-dark-warning-bg: #332a1a;
+    --color-dark-warning-border: #f59e0b;
+    --color-dark-error-bg: #331a1a;
+    --color-dark-error-border: #ef4444;
+    --color-dark-error-bg-faint: #2d1a1a;
+    --color-dark-question-bg: #2a1a32;
+    --color-dark-question-border: #a855f7;
+
+    /* ── dark mode message accent colors ──────────────────────────────── */
+    --color-dark-info-accent: #90cdf4;
+    --color-dark-success-accent: #9ae6b4;
+    --color-dark-warning-accent: #fbbf24;
+    --color-dark-error-accent: #fca5a5;
+    --color-dark-error-text-light: #fecaca;
+    --color-dark-question-accent: #c084fc;
+
+    /* ── dark mode inline content ─────────────────────────────────────── */
+    --color-dark-link: #6bb6ff;
+    --color-dark-link-hover: #8cc8ff;
+    --color-dark-message-text: #e2e8f0;
+
+    /* ── dark mode table-specific ─────────────────────────────────────── */
+    --color-dark-table-header: #2c3034;
+    --color-dark-table-row-selected: #2d4a66;
+    --color-dark-pagination-disabled-text: #555;
+    --color-dark-pagination-disabled-border: #343a40;
+
+    /* ── dark mode chip ──────────────────────────────────────────────── */
+    --color-dark-chip-bg: #f59e0b;
+    --color-dark-chip-text: #000;
+
+    /* ── dark mode datepicker ─────────────────────────────────────────── */
+    --color-dark-day-hover-bg: rgba(78, 99, 224, 0.2);
+    --color-dark-day-hover-text: #8899ff;
+    --color-dark-day-today-text: #8899ff;
+    --color-dark-day-today-border: #8899ff;
+
+    /* ── dark mode focus ring ─────────────────────────────────────────── */
+    --color-dark-focus-ring: rgba(78, 99, 224, 0.2);
+    --color-dark-hover-overlay: rgba(255, 255, 255, 0.05);
+    --color-dark-selected-overlay: rgba(78, 99, 224, 0.15);
+
+    /* ── shadows ─────────────────────────────────────────────────────── */
+    --shadow-dropdown: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-dropdown-dark: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+
+    /* ── spacing ──────────────────────────────────────────────────────── */
+    --padding-container: 15px;
+    --padding-form-wrapper: 20px;
+    --padding-field: 10px;
+    --gap-form: 15px;
+
+    /* ── radii ────────────────────────────────────────────────────────── */
+    --radius-default: 4px;
+    --radius-buttons: 20px;
+    --radius-cards: 8px;
+}

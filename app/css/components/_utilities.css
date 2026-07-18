@@ -1,0 +1,77 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                            utilities styles                            █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+.widget-state-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--color-text-light);
+    font-style: italic;
+    font-size: 15px;
+}
+
+/* ── required indicator ──────────────────────────────────────────────── */
+.required-indicator {
+    color: var(--color-error);
+    font-weight: bold;
+    padding-left: 2px;
+}
+
+.field-error,
+.invalid-group,
+.invalid-date,
+.invalid-field {
+    --field-invalid-color: var(--color-error);
+}
+
+/* ── field error state ───────────────────────────────────────────────── */
+.field-error {
+    border-color: var(--field-invalid-color) !important;
+}
+
+/* ── invalid group state ─────────────────────────────────────────────── */
+.invalid-group {
+    position: relative;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+.invalid-group::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: var(--field-invalid-color);
+}
+
+/* scope to direct child labels only — prevents checkbox/radio option labels from turning red */
+.invalid-group > label,
+.invalid-group > .field-label {
+    color: var(--field-invalid-color);
+}
+
+.invalid-group input,
+.invalid-group textarea,
+.invalid-group select,
+.invalid-group .multiselect-display {
+    border-color: var(--field-invalid-color);
+    background-color: var(--field-invalid-bg, inherit);
+}
+
+.dark-mode .invalid-group {
+    --field-invalid-bg: var(--color-dark-input-bg);
+}
+
+/* ── invalid date state ──────────────────────────────────────────────── */
+.invalid-date {
+    border-color: var(--field-invalid-color) !important;
+}
+
+.dark-mode .invalid-date {
+    color: var(--color-dark-text);
+}

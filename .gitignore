@@ -1,0 +1,12 @@
+# Archives
+# *.zip
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editor
+.vscode/
+
+

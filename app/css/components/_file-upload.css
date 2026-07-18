@@ -1,0 +1,186 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                     file upload components styles                      █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+.file-upload-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.file-upload-wrapper input[type="file"] {
+    display: none;
+}
+
+/* ── drag zone ──────────────────────────────────────────────────────────── */
+
+.drag-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 16px;
+    box-sizing: border-box;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-default);
+    background: var(--color-surface-subtle, #fafafa);
+    color: var(--color-text-muted);
+    font-size: 13px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    user-select: none;
+}
+
+.drag-zone .fa {
+    font-size: 24px;
+    opacity: 0.45;
+    color: var(--color-icon-muted);
+}
+
+.drag-zone .browse-link {
+    color: var(--color-primary);
+    font-weight: 500;
+}
+
+.drag-zone:hover {
+    border-color: var(--color-text-muted);
+    background: var(--color-surface-input-tint, #f0f3fd);
+}
+
+.drag-zone.drag-over {
+    border-color: var(--color-primary);
+    background: var(--color-focus-ring);
+}
+
+/* ── file list ──────────────────────────────────────────────────────────── */
+
+.file-list {
+    margin-top: 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.file-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 10px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    background: var(--color-success-bg-subtle);
+    border: 1px solid var(--color-success);
+    border-radius: var(--radius-default);
+    font-size: 13px;
+    color: var(--color-success-text);
+}
+
+.file-chip .fname {
+    flex: 1;
+    min-width: 0;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.file-chip .fsize {
+    font-size: 12px;
+    opacity: 0.75;
+    white-space: nowrap;
+}
+
+.file-remove {
+    appearance: none;
+    background: none;
+    border: none;
+    padding: 0 2px;
+    margin-left: 4px;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.55;
+    color: var(--color-success-text);
+    transition: opacity 0.15s;
+}
+
+.file-remove:hover {
+    opacity: 1;
+}
+
+/* ── dark mode ──────────────────────────────────────────────────────────── */
+
+.dark-mode .drag-zone {
+    background: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text-muted);
+}
+
+.dark-mode .drag-zone .fa {
+    color: var(--color-dark-text-muted);
+}
+
+.dark-mode .drag-zone .browse-link {
+    color: var(--color-primary);
+}
+
+.dark-mode .drag-zone:hover {
+    border-color: var(--color-dark-text-muted);
+    background: var(--color-dark-surface);
+}
+
+.dark-mode .drag-zone.drag-over {
+    border-color: var(--color-primary);
+    background: var(--color-dark-focus-ring, rgba(79,110,242,0.15));
+}
+
+#uploadStatusMessage {
+    --status-bg: transparent;
+    --status-border: transparent;
+    --status-color: inherit;
+    display: none;
+    text-align: center;
+    margin-top: var(--gap-form);
+    padding: var(--padding-field);
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--radius-default);
+    border: 1px solid var(--status-border);
+    background-color: var(--status-bg);
+    color: var(--status-color);
+}
+
+#uploadStatusMessage.status-success,
+#uploadStatusMessage.status-error,
+#uploadStatusMessage.status-info,
+#uploadStatusMessage.status-warning {
+    display: block;
+}
+
+#uploadStatusMessage.status-success {
+    --status-bg: var(--color-success-bg-subtle);
+    --status-border: var(--color-success);
+    --status-color: var(--color-success-text);
+}
+
+#uploadStatusMessage.status-error {
+    --status-bg: var(--color-error-bg-subtle);
+    --status-border: var(--color-error);
+    --status-color: var(--color-error-text);
+}
+
+#uploadStatusMessage.status-info {
+    --status-bg: var(--color-info-bg-subtle);
+    --status-border: var(--color-primary);
+    --status-color: var(--color-info);
+}
+
+#uploadStatusMessage.status-warning {
+    --status-bg: var(--color-warning-bg-subtle);
+    --status-border: var(--color-warning);
+    --status-color: var(--color-warning-text);
+}

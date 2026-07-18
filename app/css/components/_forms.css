@@ -1,0 +1,781 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                              form styles                               █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+#mosaicForm {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-form);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                  field group                     │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.field-group {
+    flex-grow: 0;
+    min-width: 0;
+    margin: 0;
+}
+
+.field-group label,
+.field-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--color-text-default);
+    font-size: 13px;
+}
+
+.dark-mode .field-group label,
+.dark-mode .field-label {
+    color: var(--color-dark-text);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │              text inputs & textarea              │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.field-group input,
+.field-group textarea,
+.file-name-display {
+    width: 100%;
+    padding: var(--padding-field);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-default);
+    font-size: 14px;
+    font-family: var(--font-family-base);
+    background-color: var(--color-white);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dark-mode .field-group input,
+.dark-mode .field-group textarea,
+.dark-mode .file-name-display {
+    background-color: var(--color-dark-input-bg);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+}
+
+.field-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* ── number input ─────────────────────────────────────────────────────── */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+input[type="number"] { -moz-appearance: textfield; }
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                  focus states                    │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.field-group input:focus,
+.field-group select:focus,
+.field-group textarea:focus,
+.picklist-display:focus,
+.picklist-display.open,
+.multiselect-display:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-focus-ring);
+}
+
+.dark-mode .field-group input:focus,
+.dark-mode .field-group select:focus,
+.dark-mode .field-group textarea:focus,
+.dark-mode .picklist-display:focus,
+.dark-mode .picklist-display.open,
+.dark-mode .multiselect-display:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-dark-focus-ring);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                  instructions                    │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.field-instructions {
+    margin-top: 4px;
+    margin-bottom: 16px;
+    padding: 8px 12px;
+    background-color: var(--color-surface-cool);
+    border-left: 2px solid var(--color-border);
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+}
+
+.dark-mode .field-instructions {
+    background-color: var(--color-dark-surface);
+    border-left-color: var(--color-dark-text-muted);
+    color: var(--color-dark-text-muted);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                   description                    │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.field-description {
+    margin: 20px 0;
+    padding: 16px;
+    background-color: var(--color-surface-subtle);
+    border: 1px solid var(--color-border-soft);
+    border-radius: var(--radius-cards);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-text-default);
+}
+
+.field-description p {
+    margin: 0;
+}
+
+.field-description p + p {
+    margin-top: 12px;
+}
+
+.dark-mode .field-description {
+    background-color: var(--color-dark-surface);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                picklist / select                 │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+/* ── native select — base styles ─────────────────────────────────────── */
+.field-group select {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-default);
+    font-size: 14px;
+    font-family: var(--font-family-base);
+    background-color: var(--color-white);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    padding: var(--padding-field);
+}
+
+.dark-mode .field-group select {
+    background-color: var(--color-dark-input-bg);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+}
+
+/* ── searchable picklist — wrapper ───────────────────────────────────── */
+.picklist-searchable-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* ── searchable picklist — display button ────────────────────────────── */
+.picklist-display {
+    width: 100%;
+    min-height: 38px;
+    padding: var(--padding-field);
+    padding-right: 32px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-default);
+    background-color: var(--color-white);
+    color: var(--color-text-default);
+    font-size: 14px;
+    font-family: var(--font-family-base);
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+.dark-mode .picklist-display {
+    background-color: var(--color-dark-input-bg);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+.picklist-display:hover {
+    border-color: var(--color-primary);
+}
+
+
+/* ── hide display when dropdown is open - dropdown slides up to replace it ─── */ 
+.picklist-searchable-wrapper:has(.picklist-dropdown.open) .picklist-display {
+    visibility: hidden;
+    height: 0;
+    min-height: 0;
+    padding: 0;
+    border: none;
+    margin: 0;
+    overflow: hidden;
+}
+
+.picklist-display-text {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.picklist-display-text.placeholder {
+    color: var(--color-placeholder);
+}
+
+.dark-mode .picklist-display-text.placeholder {
+    color: var(--color-placeholder-dark);
+}
+
+/* ── searchable picklist — dropdown panel ────────────────────────────── */
+.picklist-dropdown {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-dropdown);
+    overflow: hidden;
+    display: none;
+}
+
+.picklist-dropdown.open {
+    display: block;
+}
+
+.dark-mode .picklist-dropdown {
+    background-color: var(--color-dark-input-bg);
+    border-color: var(--color-dark-border);
+    box-shadow: var(--shadow-dropdown-dark);
+}
+
+/* ── searchable picklist — search input ──────────────────────────────── */
+.picklist-search-wrapper {
+    padding: 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.dark-mode .picklist-search-wrapper {
+    border-bottom-color: var(--color-dark-border);
+}
+
+/* ── borderless - matches display button appearance exactly ──────────── */
+.picklist-search-input {
+    width: 100%;
+    padding: var(--padding-field);
+    padding-right: 32px;
+    border: none;
+    border-radius: 0;
+    background-color: var(--color-white);
+    color: var(--color-text-default);
+    font-size: 14px;
+    font-family: var(--font-family-base);
+    box-sizing: border-box;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+}
+
+.dark-mode .picklist-search-input {
+    background-color: var(--color-dark-input-bg);
+    border-color: transparent;
+    color: var(--color-dark-text);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+.picklist-search-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* ── searchable picklist — options list ──────────────────────────────── */
+.picklist-options-list {
+    list-style: none;
+    margin: 0;
+    padding: 4px 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.picklist-option {
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: var(--font-family-base);
+    color: var(--color-text-default);
+    transition: background-color 0.15s ease;
+    user-select: none;
+}
+
+.dark-mode .picklist-option {
+    color: var(--color-dark-text);
+}
+
+.picklist-option:hover {
+    background-color: var(--color-surface-light);
+}
+
+.dark-mode .picklist-option:hover {
+    background-color: var(--color-dark-hover-overlay);
+}
+
+.picklist-option.keyboard-focus {
+    background-color: var(--color-surface-light);
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+}
+
+.dark-mode .picklist-option.keyboard-focus {
+    background-color: var(--color-dark-hover-overlay);
+    outline-color: var(--color-primary);
+}
+
+.picklist-option.selected {
+    background-color: var(--color-focus-ring);
+    font-weight: 500;
+}
+
+.dark-mode .picklist-option.selected {
+    background-color: var(--color-dark-selected-overlay);
+}
+
+/* ── searchable picklist — invalid state ─────────────────────────────── */
+.picklist-searchable-wrapper.invalid-picklist .picklist-display {
+    border-color: var(--field-invalid-color, var(--color-error));
+}
+
+.picklist-display.invalid-field {
+    border-color: var(--field-invalid-color, var(--color-error));
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                   multiselect                    │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+/* ── native multi select ─────────────────────────────────────────────── */
+select[multiple] {
+    min-height: 120px;
+    overflow: hidden;
+}
+
+select[multiple] option {
+    padding: 4px 8px;
+}
+
+select[multiple] option:checked {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+/* ── multiselect constraint label ────────────────────────────────────── */
+.field-constraint {
+    font-size: 0.85em;
+    color: var(--text-secondary);
+    font-weight: normal;
+    margin-left: 4px;
+}
+
+.dark-mode .field-constraint {
+    color: var(--text-secondary-dark);
+}
+
+/* ── custom multiselect — wrapper ────────────────────────────────────── */
+.multiselect-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* ── custom multiselect — display area ───────────────────────────────── */
+.multiselect-display {
+    width: 100%;
+    min-height: 38px;
+    padding: 6px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-default);
+    background-color: var(--color-white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dark-mode .multiselect-display {
+    background-color: var(--color-dark-input-bg);
+    border-color: var(--color-dark-border);
+}
+
+.multiselect-display:hover {
+    border-color: var(--color-primary);
+}
+
+
+/* ── custom multiselect — chips ──────────────────────────────────────── */
+.multiselect-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex: 1;
+}
+
+.multiselect-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background-color: var(--color-chip-bg);
+    color: var(--color-chip-text);
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.dark-mode .multiselect-chip {
+    background-color: var(--color-dark-chip-bg);
+    color: var(--color-dark-chip-text);
+}
+
+.multiselect-chip-remove {
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.multiselect-chip-remove:hover {
+    opacity: 1;
+}
+
+/* ── custom multiselect — placeholder ────────────────────────────────── */
+.multiselect-placeholder {
+    color: var(--color-placeholder);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.dark-mode .multiselect-placeholder {
+    color: var(--color-placeholder-dark);
+}
+
+.multiselect-chips:not(:empty) ~ .multiselect-placeholder {
+    display: none;
+}
+
+/* ── custom multiselect — dropdown ───────────────────────────────────── */
+.multiselect-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    max-height: 250px;
+    overflow-y: auto;
+    background-color: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-dropdown);
+    z-index: 1000;
+    display: none;
+}
+
+.dark-mode .multiselect-dropdown {
+    background-color: var(--color-dark-input-bg);
+    border-color: var(--color-dark-border);
+    box-shadow: var(--shadow-dropdown-dark);
+}
+
+.multiselect-wrapper.open .multiselect-dropdown {
+    display: block;
+}
+
+/* ── custom multiselect — options ────────────────────────────────────── */
+.multiselect-option {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    user-select: none;
+}
+
+.multiselect-option:hover {
+    background-color: var(--color-surface-light);
+}
+
+.dark-mode .multiselect-option:hover {
+    background-color: var(--color-dark-hover-overlay);
+}
+
+.multiselect-option:focus {
+    background-color: var(--color-surface-light);
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+}
+
+.dark-mode .multiselect-option:focus {
+    background-color: var(--color-dark-hover-overlay);
+    outline-color: var(--color-primary);
+}
+
+.multiselect-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.multiselect-option label {
+    flex: 1;
+    margin: 0;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--color-text-default);
+    padding: 4px 0;
+}
+
+.dark-mode .multiselect-option label {
+    color: var(--color-dark-text);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │               checkbox & radio                   │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.checkbox-group,
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 5px;
+}
+
+.checkbox-item,
+.radio-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.radio-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 4px 20px 4px 42px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-default);
+    background: var(--color-white);
+    color: var(--color-text-default);
+    cursor: pointer;
+    line-height: 1.35;
+    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.radio-item:hover {
+    border-color: var(--color-primary);
+    background: var(--color-surface-light);
+}
+
+.radio-item:has(input[type="radio"]:focus-visible) {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-focus-ring);
+}
+
+.radio-item:has(input[type="radio"]:checked) {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+.radio-item:has(input[type="radio"]:checked) .radio-label {
+    color: var(--color-white);
+}
+
+.checkbox-item input[type="checkbox"],
+.radio-item input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.checkbox-item input[type="checkbox"] {
+    accent-color: var(--color-primary);
+}
+
+/* ── radio - round with checkmark ──────────────────────────────────────── */
+
+.radio-item input[type="radio"] {
+    appearance: none;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--color-border-input-tint);
+    background: var(--color-white);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translateY(-50%) scale(0.8);
+    transition: border-color 0.15s, background 0.15s, transform 0.15s;
+}
+
+.radio-item input[type="radio"]:checked {
+    transform: translateY(-50%) scale(0.8);
+    background: var(--color-white);
+    border-color: var(--color-white);
+}
+
+.radio-item input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    transform: translate(-50%, -50%);
+}
+
+.dark-mode .radio-item {
+    background: var(--color-dark-input-bg);
+    border-color: var(--color-dark-border);
+    color: var(--color-dark-text);
+}
+
+.dark-mode .radio-item:hover {
+    border-color: var(--color-primary);
+    background: var(--color-dark-hover-overlay);
+}
+
+.dark-mode .radio-item:has(input[type="radio"]:focus-visible) {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-dark-focus-ring);
+}
+
+.dark-mode .radio-item:has(input[type="radio"]:checked) {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+}
+
+.dark-mode .radio-item input[type="radio"] {
+    background: var(--color-dark-surface);
+    border-color: var(--color-dark-border-muted);
+}
+
+.checkbox-label,
+.radio-label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.radio-label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 20px;
+    pointer-events: none;
+    position: relative;
+    top: 4px;
+}
+
+.dark-mode .checkbox-label,
+.dark-mode .radio-label {
+    color: var(--color-dark-text);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │          conditional field visibility            │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.field-group.condition-hidden,
+.field-group-container.condition-hidden,
+.field-divider.condition-hidden {
+    display: none;
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │               field group container              │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.field-group-container {
+    flex-basis: 100%;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-form);
+}
+
+.field-group-container.outlined {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-cards);
+    padding: var(--padding-form-wrapper);
+}
+
+.dark-mode .field-group-container.outlined {
+    border-color: var(--color-dark-border);
+}
+
+.field-group-container-label {
+    flex-basis: 100%;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-text-default);
+    margin-bottom: 4px;
+}
+
+.dark-mode .field-group-container-label {
+    color: var(--color-dark-text);
+}
+
+/* ╭──────────────────────────────────────────────────╮ */
+/* │                  field divider                   │ */
+/* ╰──────────────────────────────────────────────────╯ */
+
+.field-divider {
+    flex-basis: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+}
+
+.field-divider hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 0;
+}
+
+.dark-mode .field-divider hr {
+    border-top-color: var(--color-dark-border);
+}
+
+.field-divider-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-light);
+    white-space: nowrap;
+}
+
+.dark-mode .field-divider-label {
+    color: var(--color-dark-text-muted);
+}

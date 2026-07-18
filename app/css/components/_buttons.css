@@ -1,0 +1,133 @@
+/* █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█ */
+/* █                             button styles                              █ */
+/* █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█ */
+
+.btn {
+    --btn-bg: var(--color-primary);
+    --btn-border: var(--btn-bg);
+    --btn-color: var(--color-white);
+    --btn-hover-bg: var(--color-primary-dark);
+    --btn-hover-border: var(--btn-hover-bg);
+    --btn-hover-color: var(--btn-color);
+
+    border-radius: var(--radius-buttons);
+    padding: 8px 25px;
+    cursor: pointer;
+    min-width: 100px;
+    font-weight: 600;
+    font-size: 14px;
+    border: 1px solid var(--btn-border);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    background-color: var(--btn-bg);
+    color: var(--btn-color);
+}
+
+.btn:hover {
+    background-color: var(--btn-hover-bg);
+    border-color: var(--btn-hover-border);
+    color: var(--btn-hover-color);
+}
+
+.btn:disabled {
+    --btn-bg: var(--color-disabled);
+    --btn-border: var(--color-disabled);
+    cursor: not-allowed;
+}
+
+.btn.secondary {
+    --btn-bg: var(--color-background);
+    --btn-border: var(--color-primary);
+    --btn-color: var(--color-primary);
+    --btn-hover-bg: var(--color-primary);
+    --btn-hover-border: var(--color-primary);
+    --btn-hover-color: var(--color-white);
+}
+
+.btn.cancel {
+    --btn-bg: var(--color-background);
+    --btn-border: var(--color-background);
+    --btn-color: var(--color-text-default);
+    --btn-hover-bg: var(--color-background-hover);
+    --btn-hover-border: var(--color-background-hover);
+}
+
+.btn.destructive,
+.btn.error {
+    --btn-bg: var(--color-error);
+    --btn-border: var(--color-error);
+    --btn-hover-bg: var(--color-error-dark);
+    --btn-hover-border: var(--color-error-dark);
+}
+
+.btn.success {
+    --btn-bg: var(--color-success);
+    --btn-border: var(--color-success);
+    --btn-hover-bg: var(--color-success-dark);
+    --btn-hover-border: var(--color-success-dark);
+}
+
+.btn.question {
+    --btn-bg: var(--color-question);
+    --btn-border: var(--color-question);
+    --btn-hover-bg: var(--color-question-dark);
+    --btn-hover-border: var(--color-question-dark);
+}
+
+.btn.warning {
+    --btn-bg: var(--color-warning);
+    --btn-border: var(--color-warning);
+    --btn-hover-bg: var(--color-warning-dark);
+    --btn-hover-border: var(--color-warning-dark);
+}
+
+.dark-mode .btn:disabled {
+    --btn-bg: var(--color-dark-btn-disabled);
+    --btn-border: var(--color-dark-btn-disabled);
+}
+
+.dark-mode .btn.secondary {
+    --btn-bg: var(--color-dark-text);
+    --btn-border: var(--color-dark-surface-light);
+    --btn-color: var(--color-dark-bg);
+    --btn-hover-bg: var(--color-dark-surface-light);
+    --btn-hover-border: var(--color-dark-surface-light);
+    --btn-hover-color: var(--color-dark-text);
+}
+
+.dark-mode .btn.cancel {
+    --btn-bg: var(--color-dark-bg);
+    --btn-border: var(--color-dark-bg);
+    --btn-color: var(--color-dark-text);
+    --btn-hover-bg: var(--color-dark-surface-light);
+    --btn-hover-border: var(--color-dark-surface-light);
+}
+
+.dark-mode .btn.destructive,
+.dark-mode .btn.error {
+    --btn-bg: var(--color-dark-btn-error);
+    --btn-border: var(--color-dark-btn-error);
+    --btn-hover-bg: var(--color-dark-btn-error-hover);
+    --btn-hover-border: var(--color-dark-btn-error-hover);
+}
+
+.dark-mode .btn.success {
+    --btn-bg: var(--color-dark-btn-success);
+    --btn-border: var(--color-dark-btn-success);
+    --btn-hover-bg: var(--color-dark-btn-success-hover);
+    --btn-hover-border: var(--color-dark-btn-success-hover);
+}
+
+.dark-mode .btn.question {
+    --btn-bg: var(--color-dark-btn-question);
+    --btn-border: var(--color-dark-btn-question);
+    --btn-hover-bg: var(--color-dark-btn-question-hover);
+    --btn-hover-border: var(--color-dark-btn-question-hover);
+}
+
+.dark-mode .btn.warning {
+    --btn-bg: var(--color-dark-btn-warning);
+    --btn-border: var(--color-dark-btn-warning);
+    --btn-hover-bg: var(--color-dark-btn-warning-hover);
+    --btn-hover-border: var(--color-dark-btn-warning-hover);
+}
