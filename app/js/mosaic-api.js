@@ -824,7 +824,9 @@ mosaic.api = {
             });
 
             mosaic.con.log('mosaic.api.writer.html2pdf() | Conversion successful');
-            return response.data;
+            // retype blob as application/pdf — zrc returns it untyped, and the mobile
+            // app's WebView rejects untyped blob downloads with "unsupported file type"
+            return new Blob([response.data], { type: 'application/pdf' });
         },
     },
 
