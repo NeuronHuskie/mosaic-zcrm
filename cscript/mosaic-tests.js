@@ -1,10 +1,9 @@
+/**
+ * ──────────────────────────────────────────────────────────────────────────────────────────────────── 
+ * mosaic static resource tests
+ * ──────────────────────────────────────────────────────────────────────────────────────────────────── 
+ */
 function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
-    /**
-     * ──────────────────────────────────────────────────────────────────────────────────────────────────── 
-     * mosaic static resource tests
-     * version 1.26
-     * ──────────────────────────────────────────────────────────────────────────────────────────────────── 
-     */
 
     const pretty = obj => JSON.stringify(obj, null, 2);
 
@@ -576,8 +575,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         if (!run('HTML [5]', mosaic.html(sampleHtml,     { title: 'HTML [5/9] — View Only (no print button)', width: '80vw', height: '85vh', top: '0', buttons: ['Close'] }))) return;
         if (!run('HTML [6]', mosaic.html(sampleHtml,     { title: 'HTML [6/9] — Custom Buttons', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_Custom.pdf', buttons: ['Cancel', { display_value: 'Download PDF', style: 'success' }] }))) return;
         if (!run('HTML [7]', mosaic.html(sampleHtml,     { title: 'HTML [7/9] — Print + Download PDF', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_INV-2026-0042.pdf', connection: 'writer_connection', buttons: ['Close', 'Print', { label: 'Download PDF', style: 'primary' }] }))) return;
-        // if (!run('HTML [8]', mosaic.html2pdf(sampleHtml, { filename: 'Invoice_html2pdf_test.pdf', connection: 'writer_connection'}))) return;
-        if (!run('HTML [9]', mosaic.html(sampleHtml,     { filename: 'Invoice_DownloadMode.pdf', connection: 'writer_connection', mode: 'download'}))) return;
+        if (!run('HTML [8]', mosaic.html(sampleHtml,     { filename: 'Invoice_DownloadMode.pdf', connection: 'writer_connection', mode: 'download'}))) return;
         mosaic.message.success('HTML viewer tests complete!', { title: 'HTML — Done' });
     };
 
