@@ -26,6 +26,7 @@ if (mosaic.utils.isSuccess(result)) {
 1. **Install the Widget**
     - Upload the widget package (`dist/mosaic.zip` — a zip of the `/app` folder) to **Setup > Developer Hub > [Widgets](https://crm.zoho.com/crm/settings/widgets)**.
     - The widget API name must be exactly `mosaic`. If you name it something else, update the `WIDGET_API_NAME` constant at the top of the helper (`cscript/mosaic.js`) to match.
+    - Mosaic works in the Zoho CRM iOS/Android apps too - enable mobile support when importing the widget if you want popups to open on mobile.
 
 2. **Install the Client Script Helper**
     - Upload `mosaic.js` to **Setup > Developer Hub > Client Script > [Static Resources](https://crm.zoho.com/crm/settings/static-resource)**.
