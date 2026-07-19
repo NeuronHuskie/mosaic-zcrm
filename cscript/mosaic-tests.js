@@ -12,8 +12,8 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         const r = mosaic.form({
             height: '85vh', width: '60vw', top: '0', submit_on_enter: true, force_focus: false,
             fields: [
-                { name: 'copy_btn', type: 'button', label: 'Copy', style: 'secondary', action: "navigator.clipboard.writeText(document.querySelector('.field-description').innerText).then(() => mosaic.ui.host.splash.show('Copied to clipboard!', 'success'));" },
-                { type: 'description', name: 'description', value: `\`\`\`\n${prettifyJSON(resp)}\n\`\`\`` }
+                { name: 'copy_btn', type: 'button', label: 'Copy', style: 'secondary', action: "navigator.clipboard.writeText(document.querySelector('.field-description').innerText).then(() => mosaic.splash.success('Copied to clipboard!'));" },
+                { type: 'description', name: 'description', value: `\`\`\`\n${pretty(resp)}\n\`\`\`` }
             ],
             buttons: [{ label: 'Exit Script', style: 'destructive' }, 'OK']
         });
@@ -178,7 +178,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
             }
         };
         
-        runners[type] && runners[type]();
+        runners[type]?.();
     };
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -341,12 +341,12 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const splash_tests = () => {
-        const text = `Lorem Ipsum is simply dummy text of the printing and typesetting industry...`;
-        mosaic.loader.show('This is a test loader', { template: 'standard' });
-        mosaic.splash.info(text);
-        sleep(3000);
-        mosaic.splash.warning(text);
-        mosaic.loader.hide();
+        mosaic.splash('Default splash — no type given (renders as info)');
+        for (const type of ['info', 'success', 'warning', 'error']) {
+            const r = mosaic.confirmation(`Click **Next** to show the \`${type}\` splash.`, { title: 'Splash Test', enable_markdown: true, height: '400px', buttons: ['Exit', 'Next'] });
+            if (!mosaic.utils.wasButtonClicked(r, 'Next')) return;
+            mosaic.splash[type](`This is a ${type} splash`);
+        }
     };
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -420,20 +420,31 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const table_coql_data_tests = () => run('Table COQL', mosaic.table({
-        title: 'COQL Test', height: '95vh', width: '95vw', left: 'center', top: '0', right: '0',
-        allow_export: true, selectable: true, allow_multiple: true, required: true, show_buttons: true, close_on_escape: false, close_icon: false, per_page: 10,
-        sort_field: 'Statement_Date', sort_order: 'desc', buttons: ['Cancel', 'Select Contact'],
+        title: 'Review Renewal Deals', width: '40vw', height: '55vh',
+        show_search: true, allow_export: true, allow_multiple: false, per_page: 50, required: true,
+        sort_field: 'Closing_Date', sort_order: 'desc', buttons: ['Cancel', { label: 'Open Deal', style: 'primary' }],
         columns: [
-            { key: 'Name', header: 'zCommission', link: { module: 'CustomModule3', id_key: 'id' } },
-            { key: 'Company', header: 'Company' },
-            { key: 'Deal.Deal_Name', header: 'zDeal', link: { module: 'Deals', id_key: 'Deal.id' } },
-            { key: 'Client.Full_Name', header: 'zClient', link: { module: 'Contacts', id_key: 'Client.id' } },
-            { key: 'Agency', header: 'Agency' }, { key: 'Statement_Date', header: 'Statement Date' },
-            { key: 'Type', header: 'Type' }, { key: 'Override', header: 'Override ($)' }, { key: 'Commission', header: 'Commission ($)' }
+            { header: 'Deal', key: 'Deal_Name', link: { module: 'Deals', id_key: 'id' } },
+            { header: 'Client', key: 'Contact_Name.Full_Name', link: { module: 'Contacts', id_key: 'Contact_Name.id' } },
+            { header: 'Amount', key: 'Amount', format: { type: 'currency', currency: 'USD', decimals: 2 },
+                rules: [
+                    { operator: 'greater_than', value: 50000, target: 'row', style: { 'background-color': '#f0fffd', color: '#097969', 'border-left': '10px solid #097969', 'font-weight': '600' } },
+                    { operator: 'less_than', value: 0, style: { color: '#c1121f', 'font-weight': '600' } }
+                ]
+            },
+            { header: 'Closing Date', key: 'Closing_Date', format: { type: 'date', input_date_format: 'yyyy-MM-dd' },
+                rules: [{ operator: 'before', value: '2026-06-01', target: 'cell', style: { 'background-color': '#fff3f3', color: '#c1121f' } }]
+            },
+            { header: 'Stage', key: 'Stage',
+                rules: [
+                    { operator: 'equals', value: 'Closed Won', style: { color: '#097969', 'font-weight': '600' } },
+                    { operator: 'equals', value: 'At Risk', style: { color: '#c1121f', 'font-weight': '600' } }
+                ]
+            }
         ],
         source: {
             type:  'coql',
-            query: `select Name, Company, Deal, Deal.Deal_Name, Client, Client.Full_Name, Agency, Statement_Date, Type, Override, Commission from Commissions where Client.id = ${record.id}`
+            query: "select id, Deal_Name, Contact_Name.Full_Name, Contact_Name, Amount, Closing_Date, Stage from Deals where Stage != null limit 200"
         }
     }));
 
@@ -542,39 +553,40 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
     //  html viewer tests
     // ═══════════════════════════════════════════════════════════════════════════
 
-    const html_viewer_tests = () => {
-        const sampleHtml = `
-            <html><head><style>
-                body { font-family: Arial, sans-serif; padding: 40px; color: #333; }
-                h1 { color: #4e63e0; border-bottom: 2px solid #4e63e0; padding-bottom: 10px; }
-                table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-                th, td { border: 1px solid #ddd; padding: 10px 14px; text-align: left; }
-                th { background-color: #f1f3f5; font-weight: 600; }
-                tr:nth-child(even) { background-color: #f9f9f9; }
-                .total-row td { font-weight: 700; border-top: 2px solid #333; }
-                .footer { margin-top: 30px; font-size: 13px; color: #888; }
-            </style></head><body>
-                <h1>Invoice #INV-2026-0042</h1>
-                <p><strong>Bill To:</strong> Acme Corp<br><strong>Date:</strong> March 22, 2026<br><strong>Due:</strong> April 21, 2026</p>
-                <table>
-                    <tr><th>Item</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>
-                    <tr><td>Medicare Supplement Plan G — Annual Premium</td><td>1</td><td>$2,244.00</td><td>$2,244.00</td></tr>
-                    <tr><td>Dental + Vision Rider</td><td>1</td><td>$384.00</td><td>$384.00</td></tr>
-                    <tr><td>Policy Processing Fee</td><td>1</td><td>$25.00</td><td>$25.00</td></tr>
-                    <tr class="total-row"><td colspan="3">Total</td><td>$2,653.00</td></tr>
-                </table>
-                <p class="footer">Thank you for your business. Payment is due within 30 days.</p>
-            </body></html>`;
+    // shared sample document for the html + pdf viewer tests
+    const sampleHtml = `
+        <html><head><style>
+            body { font-family: Arial, sans-serif; padding: 40px; color: #333; }
+            h1 { color: #4e63e0; border-bottom: 2px solid #4e63e0; padding-bottom: 10px; }
+            table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+            th, td { border: 1px solid #ddd; padding: 10px 14px; text-align: left; }
+            th { background-color: #f1f3f5; font-weight: 600; }
+            tr:nth-child(even) { background-color: #f9f9f9; }
+            .total-row td { font-weight: 700; border-top: 2px solid #333; }
+            .footer { margin-top: 30px; font-size: 13px; color: #888; }
+        </style></head><body>
+            <h1>Invoice #INV-2026-0042</h1>
+            <p><strong>Bill To:</strong> Acme Corp<br><strong>Date:</strong> March 22, 2026<br><strong>Due:</strong> April 21, 2026</p>
+            <table>
+                <tr><th>Item</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>
+                <tr><td>Medicare Supplement Plan G — Annual Premium</td><td>1</td><td>$2,244.00</td><td>$2,244.00</td></tr>
+                <tr><td>Dental + Vision Rider</td><td>1</td><td>$384.00</td><td>$384.00</td></tr>
+                <tr><td>Policy Processing Fee</td><td>1</td><td>$25.00</td><td>$25.00</td></tr>
+                <tr class="total-row"><td colspan="3">Total</td><td>$2,653.00</td></tr>
+            </table>
+            <p class="footer">Thank you for your business. Payment is due within 30 days.</p>
+        </body></html>`;
 
+    const html_viewer_tests = () => {
         const encodedHtml = '<p>This was <strong>entity-encoded</strong> HTML &amp; decoded automatically.</p>';
         
-        if (!run('HTML [1]', mosaic.html(sampleHtml,     { title: 'HTML [1/9] — Preview (default mode)', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_INV-2026-0042.pdf', content_theme: 'content' }))) return;
-        if (!run('HTML [2]', mosaic.html(sampleHtml,     { title: 'HTML [2/9] — Auto Print', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_AutoPrint.pdf', mode: 'print' }))) return;
+        if (!run('HTML [1]', mosaic.html(sampleHtml,     { title: 'HTML [1/8] — Preview (default mode)', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_INV-2026-0042.pdf', content_theme: 'content' }))) return;
+        if (!run('HTML [2]', mosaic.html(sampleHtml,     { title: 'HTML [2/8] — Auto Print', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_AutoPrint.pdf', mode: 'print' }))) return;
         if (!run('HTML [3]', mosaic.html(sampleHtml,     { filename: 'Invoice_PrintAndClose.pdf', mode: 'print' }))) return;
-        if (!run('HTML [4]', mosaic.html(encodedHtml,    { title: 'HTML [4/9] — Entity-Encoded Content', width: '60vw', height: '400px' }))) return;
-        if (!run('HTML [5]', mosaic.html(sampleHtml,     { title: 'HTML [5/9] — View Only (no print button)', width: '80vw', height: '85vh', top: '0', buttons: ['Close'] }))) return;
-        if (!run('HTML [6]', mosaic.html(sampleHtml,     { title: 'HTML [6/9] — Custom Buttons', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_Custom.pdf', buttons: ['Cancel', { display_value: 'Download PDF', style: 'success' }] }))) return;
-        if (!run('HTML [7]', mosaic.html(sampleHtml,     { title: 'HTML [7/9] — Print + Download PDF', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_INV-2026-0042.pdf', connection: 'writer_connection', buttons: ['Close', 'Print', { label: 'Download PDF', style: 'primary' }] }))) return;
+        if (!run('HTML [4]', mosaic.html(encodedHtml,    { title: 'HTML [4/8] — Entity-Encoded Content', width: '60vw', height: '400px' }))) return;
+        if (!run('HTML [5]', mosaic.html(sampleHtml,     { title: 'HTML [5/8] — View Only (no print button)', width: '80vw', height: '85vh', top: '0', buttons: ['Close'] }))) return;
+        if (!run('HTML [6]', mosaic.html(sampleHtml,     { title: 'HTML [6/8] — Custom Buttons', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_Custom.pdf', buttons: ['Cancel', { display_value: 'Download PDF', style: 'success' }] }))) return;
+        if (!run('HTML [7]', mosaic.html(sampleHtml,     { title: 'HTML [7/8] — Print + Download PDF', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_INV-2026-0042.pdf', connection: 'writer_connection', buttons: ['Close', 'Print', { label: 'Download PDF', style: 'primary' }] }))) return;
         if (!run('HTML [8]', mosaic.html(sampleHtml,     { filename: 'Invoice_DownloadMode.pdf', connection: 'writer_connection', mode: 'download'}))) return;
         mosaic.message.success('HTML viewer tests complete!', { title: 'HTML — Done' });
     };
@@ -584,40 +596,16 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
     // ═══════════════════════════════════════════════════════════════════════
  
     const pdf_viewer_tests = () => {
-
-        const sampleHtml = `
-            <html><head><style>
-                body { font-family: Arial, sans-serif; padding: 40px; color: #333; }
-                h1 { color: #4e63e0; border-bottom: 2px solid #4e63e0; padding-bottom: 10px; }
-                table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-                th, td { border: 1px solid #ddd; padding: 10px 14px; text-align: left; }
-                th { background-color: #f1f3f5; font-weight: 600; }
-                tr:nth-child(even) { background-color: #f9f9f9; }
-                .total-row td { font-weight: 700; border-top: 2px solid #333; }
-                .footer { margin-top: 30px; font-size: 13px; color: #888; }
-            </style></head><body>
-                <h1>Invoice #INV-2026-0042</h1>
-                <p><strong>Bill To:</strong> Acme Corp<br><strong>Date:</strong> March 22, 2026<br><strong>Due:</strong> April 21, 2026</p>
-                <table>
-                    <tr><th>Item</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>
-                    <tr><td>Medicare Supplement Plan G — Annual Premium</td><td>1</td><td>$2,244.00</td><td>$2,244.00</td></tr>
-                    <tr><td>Dental + Vision Rider</td><td>1</td><td>$384.00</td><td>$384.00</td></tr>
-                    <tr><td>Policy Processing Fee</td><td>1</td><td>$25.00</td><td>$25.00</td></tr>
-                    <tr class="total-row"><td colspan="3">Total</td><td>$2,653.00</td></tr>
-                </table>
-                <p class="footer">Thank you for your business. Payment is due within 30 days.</p>
-            </body></html>`;
-            
         const id = mosaic.input.text('WorkDrive PDF Resource ID', { title: 'PDF Viewer Setup', placeholder: 'e.g. abcdef1234567890abcdef1234567890' });
         if (!mosaic.utils.isSuccess(id)) return;
         const wd = id.data;
         const shared = { workdrive_connection: 'workdrive_connection', width: '80vw', height: '85vh', top: '0' };
  
-        if (!run('PDF [1] WD preview default',     mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [1/5] — Default Buttons', filename: 'test_preview.pdf' }))) return;
-        if (!run('PDF [2] WD preview 3 buttons',   mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [2/5] — Close+Download+Print', filename: 'test.pdf', buttons: ['Close', 'Download', 'Print'] }))) return;
-        if (!run('PDF [3] WD view only',           mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [3/5] — View Only', buttons: ['Close'] }))) return;
+        if (!run('PDF [1] WD preview default',     mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [1/6] — Default Buttons', filename: 'test_preview.pdf' }))) return;
+        if (!run('PDF [2] WD preview 3 buttons',   mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [2/6] — Close+Download+Print', filename: 'test.pdf', buttons: ['Close', 'Download', 'Print'] }))) return;
+        if (!run('PDF [3] WD view only',           mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [3/6] — View Only', buttons: ['Close'] }))) return;
         if (!run('PDF [4] WD download mode',       mosaic.pdf({ type: 'workdrive', id: wd }, { mode: 'download', filename: 'test_dl.pdf', workdrive_connection: 'workdrive_connection' }))) return;
-        if (!run('PDF [5] URL preview',            mosaic.pdf({ type: 'url', url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' }, { ...shared, title: 'PDF [5/5] — Public URL', filename: 'dummy.pdf' }))) return;
+        if (!run('PDF [5] URL preview',            mosaic.pdf({ type: 'url', url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' }, { ...shared, title: 'PDF [5/6] — Public URL', filename: 'dummy.pdf' }))) return;
         if (!run('PDF [6] HTML2PDF',               mosaic.pdf({ type: 'html', content: sampleHtml}, { filename: 'Invoice_html2pdf_test.pdf', connection: 'writer_connection'}))) return;
  
         mosaic.message.success('PDF viewer tests complete!', { title: 'PDF Viewer — Done' });
@@ -663,8 +651,17 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
             { actual_value: 'c', display_value: 'Item C' }
         ], { title: 'No Status Colors — Normal Layout', show_description: true, height: '300px' }))) return;
 
-        mosaic.message.success('Launcher tests complete!', { title: 'mosaic.launcer()' });
+        mosaic.message.success('Launcher tests complete!', { title: 'mosaic.launcher()' });
     };
+
+    // ═══════════════════════════════════════════════════════════════════════
+    //  file upload tests
+    //
+    //  NOTE: these tests assume org-specific setup — adjust to your org:
+    //  field names (File_Upload_Field, Image_Upload_Field, Workdrive_Folder_ID),
+    //  connections (crm_connection, workdrive_connection), and they must run
+    //  from a record detail page ($Page.record).
+    // ═══════════════════════════════════════════════════════════════════════
 
     // ═══════════════════════════════════════════════════════════════════════
     //  file upload file field test
@@ -673,7 +670,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
     const file_upload_file_field_tests = () => {
         const o = { module: $Page.module, record_id: $Page.record.id, accept: '.pdf', width: '700px', destination: { type: 'field', field_type: 'file', field_name: 'File_Upload_Field', connection: 'crm_connection' } };
         if (!run('File Upload [1]', mosaic.input.file('Select File', { ...o, title: 'Upload File to Field (original)' }))) return;
-        if (!run('File Upload [2]', mosaic.input.file('Select File', { ...o, title: 'Upload File to Field (rename)', filename: `${record.id} - ${new Date().toISOString()}` }))) return;
+        if (!run('File Upload [2]', mosaic.input.file('Select File', { ...o, title: 'Upload File to Field (rename)', filename: `${$Page.record.id} - ${new Date().toISOString()}` }))) return;
     };
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -683,7 +680,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
     const file_upload_image_field_tests = () => {
         const o = { module: $Page.module, record_id: $Page.record.id, accept: 'image/*', height: '400px', width: '700px', destination: { type: 'field', field_type: 'image', field_name: 'Image_Upload_Field', connection: 'crm_connection' } };
         if (!run('Image Upload [1]', mosaic.input.file('Select Image', { ...o, title: 'Upload Image (original)' }))) return;
-        if (!run('Image Upload [2]', mosaic.input.file('Select Image', { ...o, title: 'Upload Image (rename)', filename: `${record.id} - ${new Date().toISOString()}` }))) return;
+        if (!run('Image Upload [2]', mosaic.input.file('Select Image', { ...o, title: 'Upload Image (rename)', filename: `${$Page.record.id} - ${new Date().toISOString()}` }))) return;
     };
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -691,9 +688,9 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
     // ═══════════════════════════════════════════════════════════════════════
 
     const file_upload_workdrive_tests = () => {
-        const o = { module: $Page.module, record_id: $Page.record.id, accept: '.pdf,.xlsx,.docx', height: '400px', width: '750px', destination: { type: 'workdrive', folder_id: record.Workdrive_Folder_ID, connection: 'workdrive_connection', override_existing: true } };
+        const o = { module: $Page.module, record_id: $Page.record.id, accept: '.pdf,.xlsx,.docx', height: '400px', width: '750px', destination: { type: 'workdrive', folder_id: $Page.record.Workdrive_Folder_ID, connection: 'workdrive_connection', override_existing: true } };
         if (!run('Workdrive [1]', mosaic.input.file('Select File', { ...o, title: 'Upload to WorkDrive (original)' }))) return;
-        if (!run('Workdrive [2]', mosaic.input.file('Select File', { ...o, title: 'Upload to WorkDrive (rename)', filename: `${record.id} - ${new Date().toISOString()}` }))) return;
+        if (!run('Workdrive [2]', mosaic.input.file('Select File', { ...o, title: 'Upload to WorkDrive (rename)', filename: `${$Page.record.id} - ${new Date().toISOString()}` }))) return;
     };
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -704,7 +701,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         const o = { module: $Page.module, record_id: $Page.record.id, height: '400px', width: '750px', destination: { type: 'attachment' } };
         if (!run('Attachments [1]', mosaic.input.file('Select File', { ...o, title: 'Upload to Attachments (original)' }))) return;
         $Client.refresh();
-        if (!run('Attachments [2]', mosaic.input.file('Select File', { ...o, title: 'Upload to Attachments (rename)', filename: `${record.id} - ${new Date().toISOString()}` }))) return;
+        if (!run('Attachments [2]', mosaic.input.file('Select File', { ...o, title: 'Upload to Attachments (rename)', filename: `${$Page.record.id} - ${new Date().toISOString()}` }))) return;
         $Client.refresh();
         if (!run('Attachments [3]', mosaic.input.file('Select File', { ...o, title: 'Upload to Attachments (multiple files)', multiple: true }))) return;
         $Client.refresh();
@@ -760,6 +757,6 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         utils:                  utility_functions_tests
     };
 
-    runTests[selectedTest] && runTests[selectedTest]();
+    runTests[selectedTest]?.();
     console.log('[MOSAIC.TESTS] Test completed:', selectedTest);
 }
