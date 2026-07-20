@@ -1,4 +1,4 @@
-# mosaic.loader
+# mosaic.loader()
 
 Shows or hides a page-level loading indicator using the native Zoho CRM `ZDK.Client.showLoader()` and `ZDK.Client.hideLoader()`. Use this to provide visual feedback during async operations, API calls, or any task where the UI should be blocked while work completes.
 
@@ -108,6 +108,6 @@ const processed = processRecords(contacts);
 mosaic.loader('Step 3 of 3: Saving results...');
 saveResults(processed);
 
-mosaic.loader.hide();
+mosaic.loader();
 mosaic.splash.success('All done. ' + processed.length + ' records updated.');
 ```

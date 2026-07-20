@@ -49,7 +49,7 @@ Mosaic is a modular widget framework for Zoho CRM.
   - [mosaic.confirmation()](docs/methods/confirmation.md) - Yes/no dialog with configurable buttons
   - [mosaic.message()](docs/methods/message.md) - Informational popup with icon and styled message
   - [mosaic.splash()](docs/methods/splash.md) - Non-blocking toast notification
-  - [mosaic.loader](docs/methods/loader.md) - Page-level loading indicator
+  - [mosaic.loader()](docs/methods/loader.md) - Page-level loading indicator
 
 - Reference
   - [Shared Popup / Flyout Options](docs/reference/popup-flyout-options.md)
