@@ -8,6 +8,11 @@ mosaic.pdf(source, options)
 
 ---
 
+<img src="../assets/screenshots/pdf/pdf-light.png" width="400" alt="PDF (light)">
+<img src="../assets/screenshots/pdf/pdf-dark.png" width="400" alt="PDF (dark)">
+
+---
+
 ## Parameters
 
 | Parameter | Type | Default | Required | Description |
@@ -115,10 +120,10 @@ Connections can be provided per-call or set once via `mosaic.DEFAULTS.connection
 
 ## Examples
 
-### Preview a WorkDrive PDF
+#### Example: Preview a WorkDrive PDF
 
 ```javascript
-var result = mosaic.pdf(
+const result = mosaic.pdf(
     { type: 'workdrive', id: 'ekj9tb3e7298a1e224752b5289c67ad5086bf' },
     {
         title: 'Contract Preview',
@@ -130,12 +135,10 @@ var result = mosaic.pdf(
 );
 ```
 
----
-
-### Preview a base64 PDF
+#### Example: Preview a base64 PDF
 
 ```javascript
-var result = mosaic.pdf(
+const result = mosaic.pdf(
     { type: 'base64', content: pdfBase64String },
     {
         filename: 'Report.pdf',
@@ -145,12 +148,10 @@ var result = mosaic.pdf(
 );
 ```
 
----
-
-### Preview HTML converted to PDF
+#### Example: Preview HTML converted to PDF
 
 ```javascript
-var result = mosaic.pdf(
+const result = mosaic.pdf(
     { type: 'html', content: invoiceHtml },
     {
         filename: 'Invoice_2026.pdf',
@@ -161,12 +162,10 @@ var result = mosaic.pdf(
 );
 ```
 
----
-
-### Preview with Download, Print, and Close
+#### Example: Preview with Download, Print, and Close
 
 ```javascript
-var result = mosaic.pdf(
+const result = mosaic.pdf(
     { type: 'workdrive', id: resourceId },
     {
         title: 'Invoice Preview',
@@ -179,9 +178,7 @@ var result = mosaic.pdf(
 );
 ```
 
----
-
-### Download directly (no preview)
+#### Example: Download directly (no preview)
 
 Downloads the PDF immediately and closes the widget.
 
@@ -198,9 +195,7 @@ mosaic.pdf(
 mosaic.splash.success('PDF downloaded.');
 ```
 
----
-
-### View only (no download or print)
+#### Example: View only (no download or print)
 
 ```javascript
 mosaic.pdf(
@@ -215,9 +210,7 @@ mosaic.pdf(
 );
 ```
 
----
-
-### Preview a public URL
+#### Example: Preview a public URL
 
 ```javascript
 mosaic.pdf(

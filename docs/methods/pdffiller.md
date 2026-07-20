@@ -35,7 +35,7 @@ See [Shared Popup / Flyout Options](../reference/popup-flyout-options.md) for po
 `response.data` contains `{ base64, downloaded, printed }` - see [`mosaic.pdf()` response](pdf.md#returns) for details.
 
 ```javascript
-var result = mosaic.pdffiller({ type: 'workdrive', id: resourceId }, fields, {
+const result = mosaic.pdffiller({ type: 'workdrive', id: resourceId }, fields, {
     filename: 'App.pdf'
 });
 
@@ -47,13 +47,13 @@ if (mosaic.utils.isSuccess(result)) {
 Use `skip_download: true` when you need the generated PDF base64 returned in `response.data.base64` without saving the file locally:
 
 ```javascript
-var result = mosaic.pdffiller({ type: 'workdrive', id: resourceId }, fields, {
+const result = mosaic.pdffiller({ type: 'workdrive', id: resourceId }, fields, {
     filename: 'App.pdf',
     skip_download: true
 });
 
 if (mosaic.utils.isSuccess(result)) {
-    var pdfBase64 = mosaic.utils.getData(result).base64;
+    const pdfBase64 = mosaic.utils.getData(result).base64;
 }
 ```
 
@@ -79,7 +79,7 @@ Requires a connection with `WorkDrive.files.READ` and `ZohoFiles.files.READ` sco
 Pass the base64-encoded PDF directly. Useful when the template is already in memory (e.g. fetched from another API, stored in a CRM field, or generated dynamically).
 
 ```javascript
-var templateBase64 = '...';  // base64 string of a fillable PDF
+const templateBase64 = '...';  // base64 string of a fillable PDF
 
 mosaic.pdffiller({ type: 'base64', content: templateBase64 }, fields, {
     filename: 'Application.pdf'
@@ -128,10 +128,10 @@ The WorkDrive connection can be provided per-call via `workdrive_connection`, or
 
 ## Examples
 
-### Basic usage
+#### Example: Basic usage
 
 ```javascript
-var fields = [
+const fields = [
     { field: 'Applicant_Name',  value: deal.Full_Name },
     { field: 'Date_of_Birth',   value: deal.Date_of_Birth },
     { field: 'Effective_Date',  value: deal.Effective_Date },
@@ -139,7 +139,7 @@ var fields = [
     { field: 'Tobacco_Use',     value: deal.Tobacco === 'Yes' }
 ];
 
-var result = mosaic.pdffiller({ type: 'workdrive', id: deal.Template_Resource_ID }, fields, {
+const result = mosaic.pdffiller({ type: 'workdrive', id: deal.Template_Resource_ID }, fields, {
     filename: deal.Deal_Name + '_Application.pdf',
     workdrive_connection: 'workdrive_connection'
 });
@@ -149,12 +149,12 @@ if (mosaic.utils.isSuccess(result)) {
 }
 ```
 
-### Collecting fields via form then filling PDF
+#### Example: Collecting fields via form then filling PDF
 
 Combine `mosaic.form()` to collect user input with `mosaic.pdffiller()` to generate the document:
 
 ```javascript
-var formResult = mosaic.form({
+const formResult = mosaic.form({
     title: 'Application Details',
     fields: [
         { name: 'name',    label: 'Full Name',       type: 'text',     required: true },
@@ -164,7 +164,7 @@ var formResult = mosaic.form({
 });
 
 if (mosaic.utils.isSuccess(formResult)) {
-    var data = mosaic.utils.getData(formResult);
+    const data = mosaic.utils.getData(formResult);
 
     mosaic.pdffiller({ type: 'workdrive', id: 'ekj9tb3e7298a1e224752b5289c67ad5086bf' }, [
         { field: 'Applicant_Name',  value: data.name },

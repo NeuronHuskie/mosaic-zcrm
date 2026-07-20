@@ -18,6 +18,11 @@ mosaic.message.question(message, options)
 
 ---
 
+<img src="../assets/screenshots/message/message-light.png" width="400" alt="Message (light)">
+<img src="../assets/screenshots/message/message-dark.png" width="400" alt="Message (dark)">
+
+---
+
 ## Parameters
 
 | Parameter | Type | Default | Required | Description |
@@ -45,17 +50,13 @@ See [Shared Popup / Flyout Options](../reference/popup-flyout-options.md) for po
 
 ## Examples
 
-### Example 1: Simple info message
+#### Example: Simple info message
 
 ```javascript
 mosaic.message('Your export is ready. Check your downloads folder.');
 ```
 
-<img src="../assets/screenshots/message/message-example1-light.png" width="400" alt="Simple info message (light)"> <img src="../assets/screenshots/message/message-example1-dark.png" width="400" alt="Simple info message (dark)">
-
----
-
-### Example 2: Success with title
+#### Example: Success with title
 
 ```javascript
 mosaic.message.success('The record was saved and the workflow was triggered.', {
@@ -63,11 +64,7 @@ mosaic.message.success('The record was saved and the workflow was triggered.', {
 });
 ```
 
-<img src="../assets/screenshots/message/message-example2-light.png" width="400" alt="Success with title (light)"> <img src="../assets/screenshots/message/message-example2-dark.png" width="400" alt="Success with title (dark)">
-
----
-
-### Example 3: Error with Markdown detail
+#### Example: Error with Markdown detail
 
 ```javascript
 mosaic.message.error(
@@ -80,16 +77,12 @@ mosaic.message.error(
 );
 ```
 
-<img src="../assets/screenshots/message/message-example3-light.png" width="400" alt="Error with Markdown detail (light)"> <img src="../assets/screenshots/message/message-example3-dark.png" width="400" alt="Error with Markdown detail (dark)">
-
----
-
-### Example 4: Warning with actionable buttons
+#### Example: Warning with actionable buttons
 
 When you want the user to choose a follow-up action, add custom buttons and check which was clicked.
 
 ```javascript
-var result = mosaic.message.warning('This account has 3 unpaid invoices totalling $4,200.', {
+const result = mosaic.message.warning('This account has 3 unpaid invoices totalling $4,200.', {
     title: 'Billing Warning',
     buttons: ['Dismiss', 'View Invoices'],
     width: '480px'
@@ -100,16 +93,12 @@ if (mosaic.utils.wasButtonClicked(result, 'View Invoices')) {
 }
 ```
 
-<img src="../assets/screenshots/message/message-example4-light.png" width="400" alt="Warning with actionable buttons (light)"> <img src="../assets/screenshots/message/message-example4-dark.png" width="400" alt="Warning with actionable buttons (dark)">
-
----
-
-### Example 5: Question type
+#### Example: Question type
 
 The `question` type renders a question mark icon and works well before branching workflows.
 
 ```javascript
-var result = mosaic.message.question('This contact has no associated account. Would you like to create one?', {
+const result = mosaic.message.question('This contact has no associated account. Would you like to create one?', {
     title: 'No Account Found',
     buttons: ['Skip', { label: 'Create Account', style: 'primary' }]
 });
@@ -119,11 +108,7 @@ if (mosaic.utils.wasButtonClicked(result, 'Create Account')) {
 }
 ```
 
-<img src="../assets/screenshots/message/message-example5-light.png" width="400" alt="Question type (light)"> <img src="../assets/screenshots/message/message-example5-dark.png" width="400" alt="Question type (dark)">
-
----
-
-### Example 6: Read-only notification with no buttons
+#### Example: Read-only notification with no buttons
 
 Use `show_buttons: false` for purely informational displays, or when you plan to close the popup programmatically.
 
@@ -134,11 +119,7 @@ mosaic.message('The sync is running in the background. You will receive an email
 });
 ```
 
-<img src="../assets/screenshots/message/message-example6-light.png" width="400" alt="Read-only notification with no buttons (light)"> <img src="../assets/screenshots/message/message-example6-dark.png" width="400" alt="Read-only notification with no buttons (dark)">
-
----
-
-### Example 7: Markdown-formatted summary
+#### Example: Markdown-formatted summary
 
 ```javascript
 mosaic.message.success(`> **Created**: 55\n> **Updated**: 27\n> **Skipped**: 3`, {
@@ -146,5 +127,3 @@ mosaic.message.success(`> **Created**: 55\n> **Updated**: 27\n> **Skipped**: 3`,
     close_icon: false
 });
 ```
-
-<img src="../assets/screenshots/message/message-example7-light.png" width="400" alt="Markdown-formatted summary (light)"> <img src="../assets/screenshots/message/message-example7-dark.png" width="400" alt="Markdown-formatted summary (dark)">

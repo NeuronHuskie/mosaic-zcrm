@@ -72,7 +72,7 @@ Connections can be provided per-call or set once via `mosaic.DEFAULTS.connection
 
 ## Examples
 
-### Merge two WorkDrive PDFs
+#### Example: Merge two WorkDrive PDFs
 
 ```javascript
 mosaic.pdfmerge([
@@ -86,9 +86,7 @@ mosaic.pdfmerge([
 mosaic.splash.success('Merged PDF downloaded.');
 ```
 
----
-
-### Merge with page selection
+#### Example: Merge with page selection
 
 Combine pages 1-3 of a contract with a specific appendix page.
 
@@ -102,9 +100,7 @@ mosaic.pdfmerge([
 });
 ```
 
----
-
-### Mixed source types
+#### Example: Mixed source types
 
 Combine a cover page (HTML), a main document (WorkDrive), and an appendix (base64).
 
@@ -120,9 +116,7 @@ mosaic.pdfmerge([
 });
 ```
 
----
-
-### Per-source connections
+#### Example: Per-source connections
 
 Override the default connection for a specific source.
 

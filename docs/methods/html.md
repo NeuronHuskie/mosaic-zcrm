@@ -8,6 +8,11 @@ mosaic.html(content, options)
 
 ---
 
+<img src="../assets/screenshots/html/html-light.png" width="400" alt="HTML (light)">
+<img src="../assets/screenshots/html/html-dark.png" width="400" alt="HTML (dark)">
+
+---
+
 ## Parameters
 
 | Parameter | Type | Default | Required | Description |
@@ -73,10 +78,10 @@ buttons: ['Close', 'Print', { label: 'Download PDF', value: 'download', style: '
 
 ## Examples
 
-### Preview with print
+#### Example: Preview with print
 
 ```javascript
-var result = mosaic.html(invoiceHtml, {
+const result = mosaic.html(invoiceHtml, {
     title: 'Invoice Preview',
     filename: 'Invoice_' + invoiceNumber + '.pdf',
     width: '80vw',
@@ -88,9 +93,7 @@ if (mosaic.utils.wasButtonClicked(result, 'Print')) {
 }
 ```
 
----
-
-### Print directly (no preview)
+#### Example: Print directly (no preview)
 
 Shows a brief loading state, opens the print dialog, and closes the widget.
 
@@ -103,14 +106,12 @@ mosaic.html(letterHtml, {
 mosaic.splash.info('Print dialog opened.');
 ```
 
----
-
-### Preview with Print and Download PDF buttons
+#### Example: Preview with Print and Download PDF buttons
 
 The viewer shows a full preview with three buttons. "Print" opens the browser print dialog; "Download PDF" converts via the Writer API and triggers a download.
 
 ```javascript
-var result = mosaic.html(invoiceHtml, {
+const result = mosaic.html(invoiceHtml, {
     title: 'Invoice Preview',
     filename: 'Invoice_' + invoiceNumber + '.pdf',
     writer_connection: 'writer_connection',
@@ -120,9 +121,7 @@ var result = mosaic.html(invoiceHtml, {
 });
 ```
 
----
-
-### Minimal preview (view only)
+#### Example: Minimal preview (view only)
 
 ```javascript
 mosaic.html(emailPreviewHtml, {
@@ -133,9 +132,7 @@ mosaic.html(emailPreviewHtml, {
 });
 ```
 
----
-
-### Inherit widget theme for plain HTML
+#### Example: Inherit widget theme for plain HTML
 
 By default (`content_theme: 'content'`), the HTML's own styles control the preview — matching what gets printed or downloaded as PDF. Use `content_theme: 'widget'` when the HTML is plain/unstyled and should pick up the widget's light/dark theme colors instead.
 
@@ -147,9 +144,7 @@ mosaic.html(plainHtml, {
 });
 ```
 
----
-
-### Content encoding
+#### Example: Content encoding
 
 The `content` parameter automatically handles several encoding formats. You don't need to decode before passing:
 
@@ -205,7 +200,7 @@ The Writer connection can be provided per-call via `writer_connection`, or set o
 
 ## Examples
 
-### Basic conversion and download
+#### Example: Basic conversion and download
 
 ```javascript
 mosaic.html2pdf(invoiceHtml, {

@@ -6,6 +6,8 @@ A convenience wrapper around `mosaic.form()` for collecting a single value. The 
 mosaic.input(label, options)
 ```
 
+---
+
 Type shorthand methods set `options.type` automatically:
 
 ```javascript
@@ -56,21 +58,21 @@ See [Shared Popup / Flyout Options](../reference/popup-flyout-options.md) for po
 
 ```javascript
 // Simple text input
-var result = mosaic.input('Enter a note');
+const result = mosaic.input('Enter a note');
 if (mosaic.utils.isSuccess(result)) {
-    var note = result.data; // raw string
+    const note = result.data; // raw string
 }
 
 // Picklist - result.data is the value object directly
-var result = mosaic.input.picklist('Select Stage', { options: ['Open', 'Won', 'Lost'] });
+const result = mosaic.input.picklist('Select Stage', { options: ['Open', 'Won', 'Lost'] });
 if (mosaic.utils.isSuccess(result)) {
-    var stage = result.data.actual_value; // not result.data.fieldName.actual_value
+    const stage = result.data.actual_value; // not result.data.fieldName.actual_value
 }
 
 // Multiselect - result.data is the array directly
-var result = mosaic.input.multiselect('Industries', { options: ['Technology', 'Finance'] });
+const result = mosaic.input.multiselect('Industries', { options: ['Technology', 'Finance'] });
 if (mosaic.utils.isSuccess(result)) {
-    var values = result.data.map(function(o) { return o.actual_value; });
+    const values = result.data.map(function(o) { return o.actual_value; });
 }
 ```
 

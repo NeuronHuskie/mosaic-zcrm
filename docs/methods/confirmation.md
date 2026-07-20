@@ -8,6 +8,11 @@ mosaic.confirmation(message, options)
 
 ---
 
+<img src="../assets/screenshots/confirmation/confirmation-light.png" width="400" alt="Confirmation (light)">
+<img src="../assets/screenshots/confirmation/confirmation-dark.png" width="400" alt="Confirmation (dark)">
+
+---
+
 ## Parameters
 
 | Parameter | Type | Default | Required | Description |
@@ -32,24 +37,20 @@ See [Shared Popup / Flyout Options](../reference/popup-flyout-options.md) for po
 
 ## Examples
 
-### Example 1: Basic confirmation
+#### Example: Basic confirmation
 
 ```javascript
-var result = mosaic.confirmation('Are you sure you want to proceed?');
+const result = mosaic.confirmation('Are you sure you want to proceed?');
 
 if (mosaic.utils.isSuccess(result)) {
     // user clicked OK
 }
 ```
 
-<img src="../assets/screenshots/confirmation/confirmation-example1-light.png" width="350" alt="Confirmation (light)"> <img src="../assets/screenshots/confirmation/confirmation-example1-dark.png" width="350" alt="Confirmation (dark)">
-
----
-
-### Example 2: With a title and destructive button
+#### Example: With a title and destructive button
 
 ```javascript
-var result = mosaic.confirmation('This will permanently delete the record and all related activity history.', {
+const result = mosaic.confirmation('This will permanently delete the record and all related activity history.', {
     title: 'Delete Record',
     buttons: ['Cancel', { label: 'Delete', style: 'destructive' }],
     width: '500px'
@@ -60,14 +61,10 @@ if (mosaic.utils.wasButtonClicked(result, 'Delete')) {
 }
 ```
 
-<img src="../assets/screenshots/confirmation/confirmation-example2-light.png" width="350" alt="Confirmation (light)"> <img src="../assets/screenshots/confirmation/confirmation-example2-dark.png" width="350" alt="Confirmation (dark)">
-
----
-
-### Example 3: Three-option dialog
+#### Example: Three-option dialog
 
 ```javascript
-var result = mosaic.confirmation('How would you like to save your changes?', {
+const result = mosaic.confirmation('How would you like to save your changes?', {
     title: 'Save Changes',
     buttons: [
         'Cancel',
@@ -83,14 +80,10 @@ if (mosaic.utils.wasButtonClicked(result, 'Publish Now')) {
 }
 ```
 
-<img src="../assets/screenshots/confirmation/confirmation-example3-light.png" width="350" alt="Confirmation (light)"> <img src="../assets/screenshots/confirmation/confirmation-example3-dark.png" width="350" alt="Confirmation (dark)">
-
----
-
-### Example 4: Markdown message body
+#### Example: Markdown message body
 
 ```javascript
-var result = mosaic.confirmation(
+const result = mosaic.confirmation(
     '### Please review the following items:\n' +
     '> This is a blockquote to draw attention.\n\n' +
     'You need to update the contact\'s primary address and verify their new phone number.\n\n' +
@@ -106,5 +99,3 @@ var result = mosaic.confirmation(
     }
 );
 ```
-
-<img src="../assets/screenshots/confirmation/confirmation-example4-light.png" width="500" alt="Confirmation (light)"> <img src="../assets/screenshots/confirmation/confirmation-example4-dark.png" width="500" alt="Confirmation (dark)">

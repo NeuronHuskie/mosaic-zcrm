@@ -23,7 +23,7 @@ Utility functions for handling `MosaicResponse` objects without inspecting prope
 Every popup/flyout interaction results in one of four outcomes. Note that the checks overlap: a dismissed widget (`null`) satisfies both `wasDismissed()` and `isCancelled()` — check `wasDismissed()` first if you need to treat dismissal differently from an explicit Cancel click:
 
 ```javascript
-var result = mosaic.confirmation('Send this email now?');
+const result = mosaic.confirmation('Send this email now?');
 
 if (mosaic.utils.wasDismissed(result)) {
     // result is null - user closed via X icon or Escape key
@@ -49,7 +49,7 @@ if (mosaic.utils.isSuccess(result)) {
 When a popup has more than two buttons, use `wasButtonClicked` or `wasButtonValue` to branch on the specific button:
 
 ```javascript
-var result = mosaic.confirmation('How would you like to save?', {
+const result = mosaic.confirmation('How would you like to save?', {
     buttons: [
         'Cancel',
         { label: 'Save Draft',  value: 'draft',   style: 'secondary' },
@@ -67,7 +67,7 @@ if (mosaic.utils.wasButtonValue(result, 'publish')) {
 ### Working with form data
 
 ```javascript
-var result = mosaic.form({
+const result = mosaic.form({
     fields: [
         { name: 'stage',  label: 'Stage',  type: 'picklist', options: ['Open', 'Won', 'Lost'] },
         { name: 'amount', label: 'Amount', type: 'number' },
@@ -79,14 +79,13 @@ var result = mosaic.form({
 });
 
 if (mosaic.utils.isSuccess(result)) {
-    var data = mosaic.utils.getData(result);
-
-    var stage  = data.stage.actual_value; // picklist returns { actual_value, display_value }
-    var amount = data.amount;             // number returns a number
-    var notes  = data.notes;              // text/textarea returns a string
-    var due    = data.due;                // date returns 'yyyy-MM-dd' (or date_format_return override)
-    var time   = data.time;              // time returns 'HH:mm' (or time_format_return override)
-    var appt   = data.appt;              // datetime-local returns 'yyyy-MM-ddTHH:mm'
+    const data   = mosaic.utils.getData(result);
+    const stage  = data.stage.actual_value;         // picklist returns { actual_value, display_value }
+    const amount = data.amount;                     // number returns a number
+    const notes  = data.notes;                      // text/textarea returns a string
+    const due    = data.due;                        // date returns 'yyyy-MM-dd' (or date_format_return override)
+    const time   = data.time;                       // time returns 'HH:mm' (or time_format_return override)
+    const appt   = data.appt;                       // datetime-local returns 'yyyy-MM-ddTHH:mm'
 }
 ```
 
@@ -95,11 +94,11 @@ if (mosaic.utils.isSuccess(result)) {
 `mosaic.input()` returns the value directly in `response.data` - not wrapped in a field name key:
 
 ```javascript
-var result = mosaic.input.picklist('Select Stage', {
+const result = mosaic.input.picklist('Select Stage', {
     options: ['Prospecting', 'Qualified', 'Closed Won']
 });
 
 if (mosaic.utils.isSuccess(result)) {
-    var stage = mosaic.utils.getData(result).actual_value; // getData() returns the value directly, not wrapped in a field name key
+    const stage = mosaic.utils.getData(result).actual_value; // getData() returns the value directly, not wrapped in a field name key
 }
 ```

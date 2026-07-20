@@ -1,12 +1,15 @@
 # mosaic.launcher() 
 
-<img src="launcher.png" width="400">
-
 Displays a searchable command palette for quick-action selection. Items are filtered as the user types, navigated with arrow keys, and selected with Enter or click. Returns the selected item.
 
 ```javascript
 mosaic.launcher(items, options)
 ```
+
+---
+
+<img src="../assets/screenshots/launcher/launcher-light.png" width="400" alt="Launcher (light)">
+<img src="../assets/screenshots/launcher/launcher-dark.png" width="400" alt="Launcher (dark)">
 
 ---
 
@@ -102,7 +105,7 @@ Use `status_color` when you want to add a small colored indicator to a launcher 
 - If any item in the launcher uses `status_color`, all rows reserve the same dot column so icons and text stay aligned while filtering
 
 ```javascript
-var result = mosaic.launcher([
+const result = mosaic.launcher([
     { actual_value: 'draft',    display_value: 'Draft Contract',    status_color: 'info',    icon: 'fa-file-lines' },
     { actual_value: 'approved', display_value: 'Approved Contract', status_color: 'success', icon: 'fa-check' },
     { actual_value: 'pending',  display_value: 'Pending Review',    status_color: 'warning', icon: 'fa-hourglass-half' },
@@ -143,10 +146,10 @@ All modes highlight matched characters in the item display value.
 
 ## Examples
 
-### Basic usage
+#### Example: Basic usage
 
 ```javascript
-var result = mosaic.launcher([
+const result = mosaic.launcher([
     { actual_value: 'new_deal',   display_value: 'New Deal',         description: 'Create a new deal record' },
     { actual_value: 'send_email', display_value: 'Send Email',       description: 'Email the primary contact' },
     { actual_value: 'run_report', display_value: 'Run Sales Report', description: 'Generate the weekly pipeline report' },
@@ -157,7 +160,7 @@ var result = mosaic.launcher([
 });
 
 if (mosaic.utils.isSuccess(result)) {
-    var selected = mosaic.utils.getData(result);
+    const selected = mosaic.utils.getData(result);
     switch (selected.actual_value) {
         case 'new_deal':   createDeal(); break;
         case 'send_email': openEmail(); break;
@@ -168,12 +171,10 @@ if (mosaic.utils.isSuccess(result)) {
 }
 ```
 
----
-
-### With explicit icons and exact matching
+#### Example: With explicit icons and exact matching
 
 ```javascript
-var result = mosaic.launcher([
+const result = mosaic.launcher([
     { actual_value: 'plan_f', display_value: 'Plan F', icon: 'fa-shield-halved' },
     { actual_value: 'plan_g', display_value: 'Plan G', icon: 'fa-shield-halved' },
     { actual_value: 'plan_n', display_value: 'Plan N', icon: 'fa-shield-halved' }
@@ -186,12 +187,10 @@ var result = mosaic.launcher([
 });
 ```
 
----
-
-### Static list (no search)
+#### Example: Static list (no search)
 
 ```javascript
-var result = mosaic.launcher([
+const result = mosaic.launcher([
     { actual_value: 'approve', display_value: 'Approve',          icon: 'fa-check' },
     { actual_value: 'reject',  display_value: 'Reject',           icon: 'fa-xmark' },
     { actual_value: 'defer',   display_value: 'Defer to Manager', icon: 'fa-clock' }
@@ -203,23 +202,21 @@ var result = mosaic.launcher([
 });
 ```
 
----
-
-### Using the index for array lookups
+#### Example: Using the index for array lookups
 
 The `index` property in the response corresponds to the item's position in the original `items` array, useful when you need to reference back to a parallel data structure:
 
 ```javascript
-var deals = [/* array of deal objects */];
+const deals = [/* array of deal objects */];
 
-var items = deals.map(function(deal, i) {
+const items = deals.map(function(deal, i) {
     return { actual_value: deal.id, display_value: deal.Deal_Name, description: deal.Stage };
 });
 
-var result = mosaic.launcher(items, { title: 'Select Deal' });
+const result = mosaic.launcher(items, { title: 'Select Deal' });
 
 if (mosaic.utils.isSuccess(result)) {
-    var selected = mosaic.utils.getData(result);
-    var deal = deals[selected.index];  // original deal object
+    const selected = mosaic.utils.getData(result);
+    const deal = deals[selected.index];  // original deal object
 }
 ```

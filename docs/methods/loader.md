@@ -51,7 +51,7 @@ try {
 
 ## Examples
 
-### Basic show and hide
+#### Example: Basic show and hide
 
 ```javascript
 mosaic.loader.show('Fetching records...');
@@ -61,9 +61,7 @@ const records = ZDK.Apps.CRM.Records.search({ ... });
 mosaic.loader.hide();
 ```
 
----
-
-### Wrapping a mosaic popup sequence
+#### Example: Wrapping a mosaic popup sequence
 
 Use the loader between popup calls when background work happens between user interactions.
 
@@ -96,9 +94,7 @@ try {
 }
 ```
 
----
-
-### Long-running operation with status updates
+#### Example: Long-running operation with status updates
 
 To update the message mid-operation, just call `.show()` again with the new text - no `.hide()` needed in between. Hide once when the work is done.
 

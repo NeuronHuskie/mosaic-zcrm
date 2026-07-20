@@ -8,6 +8,11 @@ mosaic.form(options)
 
 ---
 
+<img src="../assets/screenshots/form/form-light.png" width="400" alt="Form (light)">
+<img src="../assets/screenshots/form/form-dark.png" width="400" alt="Form (dark)">
+
+---
+
 ## Parameters
 
 | Parameter | Type | Default | Required | Description |
@@ -170,7 +175,7 @@ Add a `conditions` array to any field. Each condition references another field b
 }
 ```
 
-### Full example
+### Full conditional example
 
 This example uses groups, dividers, and conditions together. Each "Yes" radio reveals an outlined group with related detail fields. Dividers separate the top-level questions visually.
 
@@ -225,7 +230,7 @@ if (mosaic.utils.isSuccess(result)) {
 
 ## Examples
 
-### Example 1: Contact information form
+#### Example: Contact information form
 
 ```javascript
 const result = mosaic.form({
@@ -248,19 +253,7 @@ if (mosaic.utils.isSuccess(result)) {
 }
 ```
 
-<details>
-<summary>Example 1 Screenshot (light mode)</summary>
-    <img src="../assets/screenshots/form/form-example1-light.png" width="500" alt="Form (light)">
-</details>
-
-<details>
-<summary>Example 1 Screenshot (dark mode)</summary>
-    <img src="../assets/screenshots/form/form-example1-dark.png" width="500" alt="Form (dark)">
-</details>
-
----
-
-### Example 2: Deal close form with description block
+#### Example: Deal close form with description block
 
 ```javascript
 const result = mosaic.form({
@@ -284,19 +277,7 @@ const result = mosaic.form({
 });
 ```
 
-<details>
-<summary>Example 2 Screenshot (light mode)</summary>
-   <img src="../assets/screenshots/form/form-example2-light.png" width="500" alt="Form (light)"> 
-</details>
-
-<details>
-<summary>Example 2 Screenshot (dark mode)</summary>
-    <img src="../assets/screenshots/form/form-example2-dark.png" width="500" alt="Form (dark)">
-</details>
-
----
-
-### Example 3: Multi-button form with branching
+#### Example: Multi-button form with branching
 
 ```javascript
 const result = mosaic.form({
@@ -320,14 +301,3 @@ if (mosaic.utils.wasButtonClicked(result, 'Approve')) {
     rejectApplication(mosaic.utils.getData(result));
 }
 ```
-
-<details>
-<summary>Example 3 Screenshot (light mode)</summary>
-   <img src="../assets/screenshots/form/form-example3-light.png" width="500" alt="Form (light)">
-</details>
-
-<details>
-<summary>Example 3 Screenshot (dark mode)</summary>
-    <img src="../assets/screenshots/form/form-example3-dark.png" width="500" alt="Form (dark)">
-</details>
-

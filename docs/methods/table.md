@@ -8,6 +8,11 @@ mosaic.table(options)
 
 ---
 
+<img src="../assets/screenshots/table/table-light.png" width="400" alt="Table (light)">
+<img src="../assets/screenshots/table/table-dark.png" width="400" alt="Table (dark)">
+
+---
+
 ## Parameters
 
 | Parameter | Type | Default | Required | Description |
@@ -48,10 +53,10 @@ See [Shared Popup / Flyout Options](../reference/popup-flyout-options.md) for po
 `response.data` is an array of selected row objects when `allow_multiple` is `true`, or a single row object when `false`. See [Response & Utils](../reference/response.md) for full details.
 
 ```javascript
-var result = mosaic.table({ ... });
+const result = mosaic.table({ ... });
 
 if (mosaic.utils.isSuccess(result)) {
-    var rows = mosaic.utils.getData(result); // array or object depending on allow_multiple
+    const rows = mosaic.utils.getData(result); // array or object depending on allow_multiple
 }
 ```
 
@@ -196,7 +201,7 @@ Pass a pre-built array of objects directly. Good for small datasets or data you'
 | `source.data` | array | ✅ | Array of row objects |
 
 ```javascript
-var result = mosaic.table({
+const result = mosaic.table({
     title: 'Select a Product',
     columns: [
         { header: 'Product',  key: 'name' },
@@ -215,7 +220,7 @@ var result = mosaic.table({
 });
 
 if (mosaic.utils.isSuccess(result)) {
-    var product = mosaic.utils.getData(result);
+    const product = mosaic.utils.getData(result);
 }
 ```
 
@@ -231,7 +236,7 @@ Pass a COQL query string. The widget executes the query when the popup opens and
 | `source.query` | string | ✅ | COQL query string |
 
 ```javascript
-var result = mosaic.table({
+const result = mosaic.table({
     title: 'Open Deals',
     columns: [
         { header: 'Deal Name',  key: 'Deal_Name', link: { module: 'Deals', id_key: 'id' } },
@@ -252,7 +257,7 @@ var result = mosaic.table({
 });
 
 if (mosaic.utils.isSuccess(result)) {
-    var selected = mosaic.utils.getData(result);
+    const selected = mosaic.utils.getData(result);
 }
 ```
 
@@ -270,7 +275,7 @@ The table starts empty and performs a live API search each time the user submits
 | `source.fields` | array | | Field API names to match against. Only used when `search_type` is `'criteria'` |
 
 ```javascript
-var result = mosaic.table({
+const result = mosaic.table({
     title: 'Find a Contact',
     columns: [
         { header: 'Name',    key: 'Full_Name', link: { module: 'Contacts', id_key: 'id' } },
@@ -290,7 +295,7 @@ var result = mosaic.table({
 });
 
 if (mosaic.utils.isSuccess(result)) {
-    var contact = mosaic.utils.getData(result);
+    const contact = mosaic.utils.getData(result);
 }
 ```
 
@@ -298,10 +303,10 @@ if (mosaic.utils.isSuccess(result)) {
 
 ## Examples
 
-### Multi-select with a limit
+#### Example: Multi-select with a limit
 
 ```javascript
-var result = mosaic.table({
+const result = mosaic.table({
     title: 'Add Team Members',
     columns: [
         { header: 'Name',       key: 'full_name' },
@@ -321,16 +326,14 @@ var result = mosaic.table({
 });
 
 if (mosaic.utils.isSuccess(result)) {
-    var members = mosaic.utils.getData(result);
+    const members = mosaic.utils.getData(result);
     members.forEach(function(m) {
         addTeamMember(m.full_name, m.email);
     });
 }
 ```
 
----
-
-### Read-only COQL table with export
+#### Example: Read-only COQL table with export
 
 ```javascript
 mosaic.table({
@@ -356,12 +359,10 @@ mosaic.table({
 });
 ```
 
----
-
-### Phone number search
+#### Example: Phone number search
 
 ```javascript
-var result = mosaic.table({
+const result = mosaic.table({
     title: 'Find Contact by Phone',
     columns: [
         { header: 'Name',   key: 'Full_Name' },
@@ -378,12 +379,10 @@ var result = mosaic.table({
 });
 ```
 
----
-
-### Email search across Leads
+#### Example: Email search across Leads
 
 ```javascript
-var result = mosaic.table({
+const result = mosaic.table({
     title: 'Find Lead by Email',
     columns: [
         { header: 'Name',    key: 'Full_Name', link: { module: 'Leads', id_key: 'id' } },
@@ -401,7 +400,7 @@ var result = mosaic.table({
 });
 
 if (mosaic.utils.isSuccess(result)) {
-    var lead = mosaic.utils.getData(result);
+    const lead = mosaic.utils.getData(result);
     ZDK.Client.navigateTo('record_detail', { module: 'Leads', record_id: lead.id });
 }
 ```
