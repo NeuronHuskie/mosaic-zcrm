@@ -1,20 +1,14 @@
 /**
- * ────────────────────────────────────────────────────────────────────────────
- * mosaic static resource tests
- * ────────────────────────────────────────────────────────────────────────────
- */
-
-/**
  * Interactive test suite for the Mosaic client script helper (`mosaic.js`).
  *
  * Call this from a Zoho CRM client script (with `mosaic.js` loaded as a
- * required Static Resource) and pick a test group from the launcher menu —
+ * required Static Resource) and pick a test group from the launcher menu -
  * forms, quick inputs, tables, viewers, launchers, uploads, splash/loader,
  * and response utilities. Each step shows the raw `MosaicResponse` in a
  * result popup; **OK** advances, **Exit Script** stops the run.
  *
  * Most tests are org-agnostic. The file-upload tests (and the WorkDrive/
- * Writer-backed viewer tests) assume org-specific setup — see the notes in
+ * Writer-backed viewer tests) assume org-specific setup - see the notes in
  * their section headers and adjust field names and connections to your org.
  *
  * @example
@@ -42,7 +36,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
 
     const mosaic_tests_items = [
         { actual_value: 'quick_inputs', display_value: 'Quick Input Helpers' },
-        { actual_value: 'form_buttons', display_value: 'Form — Button Fields' },
+        { actual_value: 'form_buttons', display_value: 'Form - Button Fields' },
         { actual_value: 'form_conditions', display_value: 'Form - Conditional Fields' },
         { actual_value: 'confirmation', display_value: 'Confirmation Dialogs' },
         { actual_value: 'message', display_value: 'Message Popups' },
@@ -92,7 +86,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
 
     const quick_inputs_tests = () => {
         const inputMenu = mosaic.form({
-            title: 'Quick Inputs — Select Type', height: '650px', width: '750px', submit_on_enter: true,
+            title: 'Quick Inputs - Select Type', height: '650px', width: '750px', submit_on_enter: true,
             fields: [{ name: 'input_type', type: 'picklist', label: 'Input Type', required: true, visible_options: 15, searchable: true, options: [
                 { actual_value: 'date', display_value: 'Date' }, { actual_value: 'time', display_value: 'Time' }, { actual_value: 'datetime', display_value: 'DateTime Local' },
                 { actual_value: 'text', display_value: 'Text' }, { actual_value: 'textarea', display_value: 'Textarea' }, { actual_value: 'number', display_value: 'Number' },
@@ -114,20 +108,20 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
                 if (!run('Date [4]', mosaic.input.date('Start Date', { ...o, title: 'Date [4/6]', use_date_input: false, instructions: 'use_date_input: false | no default_value' }))) return;
                 if (!run('Date [5]', mosaic.input.date('Start Date', { ...o, title: 'Date [5/6]', use_date_input: false, default_value: 'today', instructions: 'date_format_display: yyyy-MM-dd | date_format_return: MM/dd/yyyy', overrides: { date_format_display: 'yyyy-MM-dd', date_format_return: 'MM/dd/yyyy' } }))) return;
                 if (!run('Date [6]', mosaic.input.date('Start Date', { ...o, title: 'Date [6/6]', use_date_input: false, default_value: '2025-06-15', instructions: 'default_value: 2025-06-15' }))) return;
-                mosaic.message.success('Date tests complete!', { title: 'Date — Done' });
+                mosaic.message.success('Date tests complete!', { title: 'Date - Done' });
             },
             time: () => {
                 if (!run('Time [1]', mosaic.input.time('Start Time', { ...o, title: 'Time [1/4]', instructions: 'no default | return: HH:mm' }))) return;
                 if (!run('Time [2]', mosaic.input.time('Start Time', { ...o, title: 'Time [2/4]', default_value: 'now', instructions: 'default_value: now' }))) return;
                 if (!run('Time [3]', mosaic.input.time('Start Time', { ...o, title: 'Time [3/4]', default_value: 'now', instructions: 'time_format_return: h:mm AM/PM', overrides: { time_format_return: 'h:mm AM/PM' } }))) return;
                 if (!run('Time [4]', mosaic.input.time('Start Time', { ...o, title: 'Time [4/4]', instructions: 'display: HH:mm | return: HH:mm', overrides: { time_format_display: 'HH:mm', time_format_return: 'HH:mm' } }))) return;
-                mosaic.message.success('Time tests complete!', { title: 'Time — Done' });
+                mosaic.message.success('Time tests complete!', { title: 'Time - Done' });
             },
             datetime: () => {
                 if (!run('DateTime [1]', mosaic.input.datetime('Appointment', { ...o, title: 'DateTime [1/3]', instructions: 'no default_value' }))) return;
                 if (!run('DateTime [2]', mosaic.input.datetime('Appointment', { ...o, title: 'DateTime [2/3]', default_value: 'now', instructions: 'default_value: now' }))) return;
                 if (!run('DateTime [3]', mosaic.input.datetime('Appointment', { ...o, title: 'DateTime [3/3]', default_value: 'now', instructions: 'date_format_display: dd/MM/yyyy', overrides: { date_format_display: 'dd/MM/yyyy' } }))) return;
-                mosaic.message.success('DateTime tests complete!', { title: 'DateTime — Done' });
+                mosaic.message.success('DateTime tests complete!', { title: 'DateTime - Done' });
             },
             text: () => {
                 if (!run('Text [1]', mosaic.input.text('Enter a value', { ...o, title: 'Text [1/5]', placeholder: 'Type anything...', instructions: 'no constraints' }))) return;
@@ -135,27 +129,27 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
                 if (!run('Text [3]', mosaic.input.text('Username', { ...o, title: 'Text [3/5]', required: true, minlength: 3, maxlength: 12, instructions: 'minlength: 3 | maxlength: 12' }))) return;
                 if (!run('Text [4]', mosaic.input.text('Product Code', { ...o, title: 'Text [4/5]', required: true, pattern: '^[A-Z]{3}-[0-9]{4}$', pattern_message: 'Format ABC-1234', instructions: "pattern: '^[A-Z]{3}-[0-9]{4}$'" }))) return;
                 if (!run('Text [5]', mosaic.input.text('Optional Note', { ...o, title: 'Text [5/5]', required: false, submit_on_enter: true, placeholder: 'Optional...', instructions: 'required: false | submit_on_enter: true' }))) return;
-                mosaic.message.success('Text tests complete!', { title: 'Text — Done' });
+                mosaic.message.success('Text tests complete!', { title: 'Text - Done' });
             },
             textarea: () => {
                 const ta = { width: '700px', height: '650px' };
                 if (!run('Textarea [1]', mosaic.input.textarea('Notes', { ...o, title: 'Textarea [1/3]', placeholder: 'Enter notes...', instructions: 'rows: 4 (default)' }))) return;
                 if (!run('Textarea [2]', mosaic.input.textarea('Description', { ...ta, title: 'Textarea [2/3]', rows: 8, maxlength: 500, instructions: 'rows: 8 | maxlength: 500' }))) return;
                 if (!run('Textarea [3]', mosaic.input.textarea('Template', { ...ta, title: 'Textarea [3/3]', rows: 6, default_value: 'Dear [Name],\n\nThank you for your inquiry.\n\nBest regards,', instructions: 'pre-populated default_value' }))) return;
-                mosaic.message.success('Textarea tests complete!', { title: 'Textarea — Done' });
+                mosaic.message.success('Textarea tests complete!', { title: 'Textarea - Done' });
             },
             number: () => {
                 if (!run('Number [1]', mosaic.input.number('Enter a number', { ...o, title: 'Number [1/4]', instructions: 'no min/max' }))) return;
                 if (!run('Number [2]', mosaic.input.number('Quantity', { ...o, title: 'Number [2/4]', min: 1, max: 100, instructions: 'min: 1 | max: 100' }))) return;
                 if (!run('Number [3]', mosaic.input.number('Score', { ...o, title: 'Number [3/4]', min: 0, max: 100, default_value: 50, instructions: 'default_value: 50' }))) return;
                 if (!run('Number [4]', mosaic.input.number('Optional Count', { ...o, title: 'Number [4/4]', required: false, instructions: 'required: false' }))) return;
-                mosaic.message.success('Number tests complete!', { title: 'Number — Done' });
+                mosaic.message.success('Number tests complete!', { title: 'Number - Done' });
             },
             email: () => {
                 if (!run('Email [1]', mosaic.input.email('Email Address', { ...o, title: 'Email [1/3]', placeholder: 'user@example.com', instructions: 'required: true' }))) return;
                 if (!run('Email [2]', mosaic.input.email('CC Email', { ...o, title: 'Email [2/3]', required: false, placeholder: 'optional@example.com', instructions: 'required: false' }))) return;
                 if (!run('Email [3]', mosaic.input.email('Email Address', { ...o, title: 'Email [3/3]', default_value: 'test@example.com', instructions: 'default_value: test@example.com' }))) return;
-                mosaic.message.success('Email tests complete!', { title: 'Email — Done' });
+                mosaic.message.success('Email tests complete!', { title: 'Email - Done' });
             },
             tel: () => {
                 if (!run('Tel [1]', mosaic.input.tel('Phone Number', { ...o, title: 'Tel [1/5]', instructions: 'no overrides' }))) return;
@@ -163,14 +157,14 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
                 if (!run('Tel [3]', mosaic.input.tel('Phone Number', { ...o, title: 'Tel [3/5]', instructions: 'return: national', overrides: { phone_format_return: 'national' } }))) return;
                 if (!run('Tel [4]', mosaic.input.tel('Phone Number', { ...o, title: 'Tel [4/5]', instructions: 'return: display', overrides: { phone_format_return: 'display' } }))) return;
                 if (!run('Tel [5]', mosaic.input.tel('Phone Number', { ...o, title: 'Tel [5/5]', instructions: 'return: E164', overrides: { phone_format_return: 'E164' } }))) return;
-                mosaic.message.success('Tel tests complete!', { title: 'Tel — Done' });
+                mosaic.message.success('Tel tests complete!', { title: 'Tel - Done' });
             },
             picklist: () => {
                 const opts = [{actual_value:'low',display_value:'Low Priority'}, {actual_value:'medium',display_value:'Medium Priority'}, {actual_value:'high',display_value:'High Priority'}, {actual_value:'critical',display_value:'Critical'}];
                 if (!run('Picklist [1]', mosaic.input.picklist('Select Priority', { ...o, title: 'Picklist [1/3]', options: opts, instructions: 'no default | required' }))) return;
                 if (!run('Picklist [2]', mosaic.input.picklist('Select Priority', { ...o, title: 'Picklist [2/3]', options: opts, default_value: 'medium', instructions: 'default: medium' }))) return;
                 if (!run('Picklist [3]', mosaic.input.picklist('Select Status', { ...o, title: 'Picklist [3/3]', options: ['Active', 'Inactive', 'Pending', 'Archived'], instructions: 'string options array' }))) return;
-                mosaic.message.success('Picklist tests complete!', { title: 'Picklist — Done' });
+                mosaic.message.success('Picklist tests complete!', { title: 'Picklist - Done' });
             },
             multiselect: () => {
                 const opts = [{actual_value:'red',display_value:'Red'}, {actual_value:'green',display_value:'Green'}, {actual_value:'blue',display_value:'Blue'}, {actual_value:'yellow',display_value:'Yellow'}, {actual_value:'purple',display_value:'Purple'}];
@@ -179,7 +173,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
                 if (!run('Multiselect [2]', mosaic.input.multiselect('Select Colors', { ...msO, title: 'Multiselect [2/4]', min: 2, max: 3, instructions: 'min: 2 | max: 3' }))) return;
                 if (!run('Multiselect [3]', mosaic.input.multiselect('Exact 2 Colors', { ...msO, title: 'Multiselect [3/4]', min: 2, max: 2, instructions: 'exact: 2' }))) return;
                 if (!run('Multiselect [4]', mosaic.input.multiselect('Select Colors', { ...msO, title: 'Multiselect [4/4]', default_value: ['red', 'blue'], instructions: 'default_value: [red, blue]' }))) return;
-                mosaic.message.success('Multiselect tests complete!', { title: 'Multiselect — Done' });
+                mosaic.message.success('Multiselect tests complete!', { title: 'Multiselect - Done' });
             },
             checkbox: () => {
                 const opts = [{actual_value:'dashboard',display_value:'Dashboard'}, {actual_value:'reports',display_value:'Reports'}, {actual_value:'api',display_value:'API Access'}, {actual_value:'export',display_value:'Data Export'}];
@@ -187,14 +181,14 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
                 if (!run('Checkbox [2]', mosaic.input.checkbox('Select Features', { ...o, title: 'Checkbox [2/4]', options: opts, min: 1, max: 2, instructions: 'min: 1 | max: 2' }))) return;
                 if (!run('Checkbox [3]', mosaic.input.checkbox('Select Features', { ...o, title: 'Checkbox [3/4]', options: opts, default_value: ['dashboard', 'reports'], instructions: 'default_value: [dashboard, reports]' }))) return;
                 if (!run('Checkbox [4]', mosaic.input.checkbox('I agree', { ...o, title: 'Checkbox [4/4]', required: true, instructions: 'single boolean checkbox' }))) return;
-                mosaic.message.success('Checkbox tests complete!', { title: 'Checkbox — Done' });
+                mosaic.message.success('Checkbox tests complete!', { title: 'Checkbox - Done' });
             },
             radio: () => {
                 const opts = [{actual_value:'xs',display_value:'Extra Small'}, {actual_value:'sm',display_value:'Small'}, {actual_value:'md',display_value:'Medium'}, {actual_value:'lg',display_value:'Large'}, {actual_value:'xl',display_value:'Extra Large'}];
                 if (!run('Radio [1]', mosaic.input.radio('Select Size', { ...o, title: 'Radio [1/3]', options: opts, instructions: 'no default' }))) return;
                 if (!run('Radio [2]', mosaic.input.radio('Select Size', { ...o, title: 'Radio [2/3]', options: opts, default_value: 'md', instructions: 'default: md' }))) return;
                 if (!run('Radio [3]', mosaic.input.radio('Decision', { ...o, title: 'Radio [3/3]', options: ['Approve', 'Reject', 'Hold'], required: true, instructions: 'string options | required' }))) return;
-                mosaic.message.success('Radio tests complete!', { title: 'Radio — Done' });
+                mosaic.message.success('Radio tests complete!', { title: 'Radio - Done' });
             }
         };
         
@@ -207,7 +201,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
 
     const form_buttons_test = () => {
         if (!run('Buttons [1]', mosaic.form({
-            title: 'Button Fields [1/3] — All Styles', height: '650px', width: '500px', buttons: ['Close'],
+            title: 'Button Fields [1/3] - All Styles', height: '650px', width: '500px', buttons: ['Close'],
             fields: [
                 { name: 'desc', type: 'description', value: 'Each row below is a `button` type field...' },
                 { name: 'btn_primary', type: 'button', label: 'Primary (default)', style: 'primary' },
@@ -221,7 +215,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         }))) return;
 
         if (!run('Buttons [2]', mosaic.form({
-            title: 'Button Fields [2/3] — Submit via Inline Button', height: '450px', width: '500px', buttons: ['Cancel'],
+            title: 'Button Fields [2/3] - Submit via Inline Button', height: '450px', width: '500px', buttons: ['Cancel'],
             fields: [
                 { name: 'desc', type: 'description', value: 'The button below calls `submitForm()` directly.' },
                 { name: 'name', type: 'text', label: 'Name', required: true },
@@ -230,7 +224,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         }))) return;
 
         if (!run('Buttons [3]', mosaic.form({
-            title: 'Button Fields [3/3] — Custom Action + Width', height: '750px', width: '750px', enable_markdown: true, buttons: ['Cancel', 'Submit'],
+            title: 'Button Fields [3/3] - Custom Action + Width', height: '750px', width: '750px', enable_markdown: true, buttons: ['Cancel', 'Submit'],
             fields: [
                 { name: 'desc', type: 'description', value: 'Buttons can have a custom `action`...' },
                 { name: 'account_id', type: 'text', label: 'Account ID', width: '75%' },
@@ -240,7 +234,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
             ]
         }))) return;
 
-        mosaic.message.success('Button field tests complete!', { title: 'Button Fields — Done' });
+        mosaic.message.success('Button field tests complete!', { title: 'Button Fields - Done' });
     };
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -361,7 +355,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const splash_tests = () => {
-        mosaic.splash('Default splash — no type given (renders as info)');
+        mosaic.splash('Default splash - no type given (renders as info)');
         for (const type of ['info', 'success', 'warning', 'error']) {
             const r = mosaic.confirmation(`Click **Next** to show the \`${type}\` splash.`, { title: 'Splash Test', enable_markdown: true, height: '400px', buttons: ['Exit', 'Next'] });
             if (!mosaic.utils.wasButtonClicked(r, 'Next')) return;
@@ -589,7 +583,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
             <p><strong>Bill To:</strong> Acme Corp<br><strong>Date:</strong> March 22, 2026<br><strong>Due:</strong> April 21, 2026</p>
             <table>
                 <tr><th>Item</th><th>Qty</th><th>Unit Price</th><th>Total</th></tr>
-                <tr><td>Medicare Supplement Plan G — Annual Premium</td><td>1</td><td>$2,244.00</td><td>$2,244.00</td></tr>
+                <tr><td>Medicare Supplement Plan G - Annual Premium</td><td>1</td><td>$2,244.00</td><td>$2,244.00</td></tr>
                 <tr><td>Dental + Vision Rider</td><td>1</td><td>$384.00</td><td>$384.00</td></tr>
                 <tr><td>Policy Processing Fee</td><td>1</td><td>$25.00</td><td>$25.00</td></tr>
                 <tr class="total-row"><td colspan="3">Total</td><td>$2,653.00</td></tr>
@@ -600,15 +594,15 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
     const html_viewer_tests = () => {
         const encodedHtml = '<p>This was <strong>entity-encoded</strong> HTML &amp; decoded automatically.</p>';
         
-        if (!run('HTML [1]', mosaic.html(sampleHtml,     { title: 'HTML [1/8] — Preview (default mode)', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_INV-2026-0042.pdf', content_theme: 'content' }))) return;
-        if (!run('HTML [2]', mosaic.html(sampleHtml,     { title: 'HTML [2/8] — Auto Print', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_AutoPrint.pdf', mode: 'print' }))) return;
+        if (!run('HTML [1]', mosaic.html(sampleHtml,     { title: 'HTML [1/8] - Preview (default mode)', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_INV-2026-0042.pdf', content_theme: 'content' }))) return;
+        if (!run('HTML [2]', mosaic.html(sampleHtml,     { title: 'HTML [2/8] - Auto Print', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_AutoPrint.pdf', mode: 'print' }))) return;
         if (!run('HTML [3]', mosaic.html(sampleHtml,     { filename: 'Invoice_PrintAndClose.pdf', mode: 'print' }))) return;
-        if (!run('HTML [4]', mosaic.html(encodedHtml,    { title: 'HTML [4/8] — Entity-Encoded Content', width: '60vw', height: '400px' }))) return;
-        if (!run('HTML [5]', mosaic.html(sampleHtml,     { title: 'HTML [5/8] — View Only (no print button)', width: '80vw', height: '85vh', top: '0', buttons: ['Close'] }))) return;
-        if (!run('HTML [6]', mosaic.html(sampleHtml,     { title: 'HTML [6/8] — Custom Buttons', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_Custom.pdf', buttons: ['Cancel', { display_value: 'Download PDF', style: 'success' }] }))) return;
-        if (!run('HTML [7]', mosaic.html(sampleHtml,     { title: 'HTML [7/8] — Print + Download PDF', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_INV-2026-0042.pdf', connection: 'writer_connection', buttons: ['Close', 'Print', { label: 'Download PDF', style: 'primary' }] }))) return;
+        if (!run('HTML [4]', mosaic.html(encodedHtml,    { title: 'HTML [4/8] - Entity-Encoded Content', width: '60vw', height: '400px' }))) return;
+        if (!run('HTML [5]', mosaic.html(sampleHtml,     { title: 'HTML [5/8] - View Only (no print button)', width: '80vw', height: '85vh', top: '0', buttons: ['Close'] }))) return;
+        if (!run('HTML [6]', mosaic.html(sampleHtml,     { title: 'HTML [6/8] - Custom Buttons', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_Custom.pdf', buttons: ['Cancel', { display_value: 'Download PDF', style: 'success' }] }))) return;
+        if (!run('HTML [7]', mosaic.html(sampleHtml,     { title: 'HTML [7/8] - Print + Download PDF', width: '80vw', height: '85vh', top: '0', filename: 'Invoice_INV-2026-0042.pdf', connection: 'writer_connection', buttons: ['Close', 'Print', { label: 'Download PDF', style: 'primary' }] }))) return;
         if (!run('HTML [8]', mosaic.html(sampleHtml,     { filename: 'Invoice_DownloadMode.pdf', connection: 'writer_connection', mode: 'download'}))) return;
-        mosaic.message.success('HTML viewer tests complete!', { title: 'HTML — Done' });
+        mosaic.message.success('HTML viewer tests complete!', { title: 'HTML - Done' });
     };
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -621,14 +615,14 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         const wd = id.data;
         const shared = { workdrive_connection: 'workdrive_connection', width: '80vw', height: '85vh', top: '0' };
  
-        if (!run('PDF [1] WD preview default',     mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [1/6] — Default Buttons', filename: 'test_preview.pdf' }))) return;
-        if (!run('PDF [2] WD preview 3 buttons',   mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [2/6] — Close+Download+Print', filename: 'test.pdf', buttons: ['Close', 'Download', 'Print'] }))) return;
-        if (!run('PDF [3] WD view only',           mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [3/6] — View Only', buttons: ['Close'] }))) return;
+        if (!run('PDF [1] WD preview default',     mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [1/6] - Default Buttons', filename: 'test_preview.pdf' }))) return;
+        if (!run('PDF [2] WD preview 3 buttons',   mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [2/6] - Close+Download+Print', filename: 'test.pdf', buttons: ['Close', 'Download', 'Print'] }))) return;
+        if (!run('PDF [3] WD view only',           mosaic.pdf({ type: 'workdrive', id: wd }, { ...shared, title: 'PDF [3/6] - View Only', buttons: ['Close'] }))) return;
         if (!run('PDF [4] WD download mode',       mosaic.pdf({ type: 'workdrive', id: wd }, { mode: 'download', filename: 'test_dl.pdf', workdrive_connection: 'workdrive_connection' }))) return;
-        if (!run('PDF [5] URL preview',            mosaic.pdf({ type: 'url', url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' }, { ...shared, title: 'PDF [5/6] — Public URL', filename: 'dummy.pdf' }))) return;
+        if (!run('PDF [5] URL preview',            mosaic.pdf({ type: 'url', url: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' }, { ...shared, title: 'PDF [5/6] - Public URL', filename: 'dummy.pdf' }))) return;
         if (!run('PDF [6] HTML2PDF',               mosaic.pdf({ type: 'html', content: sampleHtml}, { filename: 'Invoice_html2pdf_test.pdf', connection: 'writer_connection'}))) return;
  
-        mosaic.message.success('PDF viewer tests complete!', { title: 'PDF Viewer — Done' });
+        mosaic.message.success('PDF viewer tests complete!', { title: 'PDF Viewer - Done' });
     };
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -648,7 +642,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
 
         if (!run('Launcher [1] Example Data', mosaic.launcher(example_launcher_options, { show_search: true, match_mode: 'fuzzy', placeholder: 'Type to search...', show_description: true, show_icons: true, close_icon: false, close_on_escape: true, width: '500px', height: '500px', force_focus: true }))) return;
 
-        if (!run('Launcher [2] Status Dots — Named + Hex', mosaic.launcher([
+        if (!run('Launcher [2] Status Dots - Named + Hex', mosaic.launcher([
             { actual_value: 'send_email', display_value: 'Send Email',    description: 'Named: success',       icon: 'fa-envelope',    status_color: 'success'  },
             { actual_value: 'run_report', display_value: 'Run Report',    description: 'Named: warning',       icon: 'fa-chart-bar',   status_color: 'warning'  },
             { actual_value: 'delete',     display_value: 'Delete Record', description: 'Named: error',         icon: 'fa-trash',       status_color: 'error'    },
@@ -656,20 +650,20 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
             { actual_value: 'ask',        display_value: 'Ask Question',  description: 'Named: question',      icon: 'fa-question',    status_color: 'question' },
             { actual_value: 'custom',     display_value: 'Custom Hex',    description: 'Hex: 03989E (no #)',   icon: 'fa-star',        status_color: '03989E'   },
             { actual_value: 'custom2',    display_value: 'Custom Hex #',  description: 'Hex: #E91E63 (with #)',icon: 'fa-heart',       status_color: '#E91E63'  },
-            { actual_value: 'no_dot',     display_value: 'No Status',     description: 'No status_color — empty gutter', icon: 'fa-gear' }
-        ], { title: 'Status Dots — Named + Hex', show_description: true, width: '750px', height: '750px' }))) return;
+            { actual_value: 'no_dot',     display_value: 'No Status',     description: 'No status_color - empty gutter', icon: 'fa-gear' }
+        ], { title: 'Status Dots - Named + Hex', show_description: true, width: '750px', height: '750px' }))) return;
 
-        if (!run('Launcher [3] Status Dots — No Icons', mosaic.launcher([
+        if (!run('Launcher [3] Status Dots - No Icons', mosaic.launcher([
             { actual_value: 'a', display_value: 'Item A', description: 'success dot, icons off', status_color: 'success' },
             { actual_value: 'b', display_value: 'Item B', description: 'no dot' },
             { actual_value: 'c', display_value: 'Item C', description: 'error dot, icons off',   status_color: 'error'   }
-        ], { title: 'Status Dots — show_icons: false', show_icons: false, show_description: true }))) return;
+        ], { title: 'Status Dots - show_icons: false', show_icons: false, show_description: true }))) return;
 
-        if (!run('Launcher [4] No Status Colors — Normal Layout', mosaic.launcher([
+        if (!run('Launcher [4] No Status Colors - Normal Layout', mosaic.launcher([
             { actual_value: 'a', display_value: 'Item A', description: 'No dots in this list' },
             { actual_value: 'b', display_value: 'Item B', description: 'Layout should be identical to default' },
             { actual_value: 'c', display_value: 'Item C' }
-        ], { title: 'No Status Colors — Normal Layout', show_description: true, height: '300px' }))) return;
+        ], { title: 'No Status Colors - Normal Layout', show_description: true, height: '300px' }))) return;
 
         mosaic.message.success('Launcher tests complete!', { title: 'mosaic.launcher()' });
     };
@@ -677,7 +671,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
     // ═══════════════════════════════════════════════════════════════════════
     //  file upload tests
     //
-    //  NOTE: these tests assume org-specific setup — adjust to your org:
+    //  NOTE: these tests assume org-specific setup - adjust to your org:
     //  field names (File_Upload_Field, Image_Upload_Field, Workdrive_Folder_ID),
     //  connections (crm_connection, workdrive_connection), and they must run
     //  from a record detail page ($Page.record).

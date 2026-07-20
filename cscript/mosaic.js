@@ -1,36 +1,29 @@
 /**
- * ════════════════════════════════════════════════════════════════════════════
- * MOSAIC CLIENT - Zoho CRM Client Script Static Resource
- * Version: 1.0.0
- * ════════════════════════════════════════════════════════════════════════════
- */
-
-/**
- * Mosaic — popup & flyout UI framework for Zoho CRM client scripts.
+ * Mosaic - popup & flyout UI framework for Zoho CRM client scripts.
  *
  * Load this file as a required Static Resource on a client script and the
  * global `mosaic` object becomes available. Every dialog method opens the
  * Mosaic widget as a popup (or flyout with `flyout: true`), **blocks** until
  * the user responds, and returns a `MosaicResponse` object (`null` if
- * dismissed). Do not `await` these calls — they are synchronous.
+ * dismissed). Do not `await` these calls - they are synchronous.
  *
  * **Dialogs**
- * - `mosaic.form(options)` — multi-field form (15+ field types, validation, conditions, file uploads)
- * - `mosaic.input(label, options)` — single-field prompt (+ `.text` `.date` `.picklist` `.file` … shorthands)
- * - `mosaic.table(options)` — data table from static / COQL / search sources, with export
- * - `mosaic.launcher(items, options)` — searchable command palette
- * - `mosaic.confirmation(msg, options)` / `mosaic.message(msg, options)` — dialogs (+ `.info` `.success` … shorthands)
- * - `mosaic.html(content, options)` / `mosaic.pdf(source, options)` — HTML / PDF viewers (preview, print, download)
- * - `mosaic.html2pdf(content, options)` / `mosaic.pdffiller(source, fields, options)` / `mosaic.pdfmerge(sources, options)` — headless PDF tools
+ * - `mosaic.form(options)` - multi-field form (15+ field types, validation, conditions, file uploads)
+ * - `mosaic.input(label, options)` - single-field prompt (+ `.text` `.date` `.picklist` `.file` … shorthands)
+ * - `mosaic.table(options)` - data table from static / COQL / search sources, with export
+ * - `mosaic.launcher(items, options)` - searchable command palette
+ * - `mosaic.confirmation(msg, options)` / `mosaic.message(msg, options)` - dialogs (+ `.info` `.success` … shorthands)
+ * - `mosaic.html(content, options)` / `mosaic.pdf(source, options)` - HTML / PDF viewers (preview, print, download)
+ * - `mosaic.html2pdf(content, options)` / `mosaic.pdffiller(source, fields, options)` / `mosaic.pdfmerge(sources, options)` - headless PDF tools
  *
  * **Host UI (no popup)**
- * - `mosaic.splash(msg, { type })` — toast (+ `.info` `.success` `.warning` `.error`)
- * - `mosaic.loader(message)` — page loader; call with no arguments to hide (also `.show()` / `.hide()`)
+ * - `mosaic.splash(msg, { type })` - toast (+ `.info` `.success` `.warning` `.error`)
+ * - `mosaic.loader(message)` - page loader; call with no arguments to hide (also `.show()` / `.hide()`)
  *
  * **Helpers**
- * - `mosaic.utils` — response inspection (`isSuccess`, `getData`, `wasButtonClicked`, …)
- * - `mosaic.DEFAULTS` — mutable per-session defaults (connections, sizes, buttons)
- * - `mosaic.OVERRIDES` — org-level format overrides derived from `$Crm`
+ * - `mosaic.utils` - response inspection (`isSuccess`, `getData`, `wasButtonClicked`, …)
+ * - `mosaic.DEFAULTS` - mutable per-session defaults (connections, sizes, buttons)
+ * - `mosaic.OVERRIDES` - org-level format overrides derived from `$Crm`
  *
  * @example
  * const r = mosaic.form({
@@ -254,7 +247,7 @@ const mosaic = (function() {
      * @property {MosaicTableFormatConfig} [format]     - Optional display formatter
      * @property {MosaicTableStyleRule[]} [rules]       - Optional conditional cell/row styles evaluated against the raw value
      * @property {boolean} [sortable=true]              - Set to false to remove the sort button from this column's header
-     * @property {boolean} [raw_html=false]             - Set to true to render the cell value as raw HTML instead of escaped text. Only use with values constructed from controlled data sources — never with user-supplied field values
+     * @property {boolean} [raw_html=false]             - Set to true to render the cell value as raw HTML instead of escaped text. Only use with values constructed from controlled data sources - never with user-supplied field values
      */
 
     /**
@@ -264,7 +257,7 @@ const mosaic = (function() {
      * @property {string} [url]        - Public URL to a PDF file (url type)
      * @property {string} [content]    - Base64 string or HTML string (base64/html types)
      * @property {string} [connection] - Per-source connection override (workdrive/html types; overrides options.workdrive_connection / options.writer_connection)
-     * @property {string} [pages]      - Page selection for merge mode (e.g. '1-3', '2,5-8') — merge sources only
+     * @property {string} [pages]      - Page selection for merge mode (e.g. '1-3', '2,5-8') - merge sources only
      */
 
     /**
@@ -363,7 +356,7 @@ const mosaic = (function() {
     /**
      * Clamp flyout width/height to safe viewport-relative ceilings before ZDK receives them.
      * Zoho silently clips values exceeding its hard caps (50vw width, 80vh height) with no error.
-     * Supports 'px', 'vw', and 'vh' units — other units pass through unchanged.
+     * Supports 'px', 'vw', and 'vh' units - other units pass through unchanged.
      * @private
      * @param {Object} cfg - Flyout config object (mutated in place)
      * @returns {Object} cfg
@@ -500,7 +493,7 @@ const mosaic = (function() {
     /**
      * Execute the flyout and return response.
      * Zoho's client script engine treats notify({ wait: true }) as a synchronous blocking
-     * call — it pauses execution until the widget calls ZDK.Client.sendResponse(). Using
+     * call - it pauses execution until the widget calls ZDK.Client.sendResponse(). Using
      * async/await here breaks that behaviour by yielding to the event loop, which causes
      * Zoho to attempt NotifyAndWait delivery before the widget has loaded its listener.
      * @private
@@ -740,7 +733,7 @@ const mosaic = (function() {
      * if (mosaic.utils.isSuccess(result)) { ... }
      *
      * @example
-     * // Back navigation in a multi-page form — skip validation, return current data
+     * // Back navigation in a multi-page form - skip validation, return current data
      * const result = mosaic.form({
      *     fields: page2Fields,
      *     default_values: state.page2 ?? {},
@@ -981,7 +974,7 @@ const mosaic = (function() {
      * @param {'content'|'widget'} [options.content_theme='content'] - Content area theme isolation.
      *   'content' (default): the HTML's own <style> tags fully control appearance, and the preview matches
      *   what the user gets when they Print or Download as PDF.
-     *   'widget': content area inherits the widget's light/dark theme — useful for plain unstyled HTML
+     *   'widget': content area inherits the widget's light/dark theme - useful for plain unstyled HTML
      *   snippets that should match the widget chrome.
      *
      * ── popup / position ─────────────────────────────────────────────────────
@@ -1033,7 +1026,7 @@ const mosaic = (function() {
      * Display a PDF viewer popup with preview, download, and merge support.
      *
      * @param {MosaicPdfSource|null} source - PDF source configuration. Must be a typed source object
-     *   ({ type: 'workdrive', id: '...' }, { type: 'base64', content: '...' }, etc.) — never a plain string.
+     *   ({ type: 'workdrive', id: '...' }, { type: 'base64', content: '...' }, etc.) - never a plain string.
      *   Pass null for merge mode.
      * @param {Object} [options={}]
      *
@@ -1257,11 +1250,11 @@ const mosaic = (function() {
     // ── pdffiller ─────────────────────────────────────────────────────────────
 
     /**
-     * Fill a PDF form and download. Headless — shows a loader, no interactive UI.
+     * Fill a PDF form and download. Headless - shows a loader, no interactive UI.
      * Convenience wrapper around `mosaic.pdf()` with `mode: 'fill'`.
      *
      * @param {MosaicPdfSource} source - PDF source. Must be a typed source object
-     *   (e.g. { type: 'workdrive', id: '...' }, { type: 'base64', content: '...' }) — never a plain string.
+     *   (e.g. { type: 'workdrive', id: '...' }, { type: 'base64', content: '...' }) - never a plain string.
      * @param {Array<{field:string, value:string|boolean}>} fields - PDF form fields to fill
      * @param {Object} [options={}]
      * @param {string} options.filename - Downloaded filename (`.pdf` appended if missing)
@@ -1282,7 +1275,7 @@ const mosaic = (function() {
      * );
      *
      * @example
-     * // Silent fill — get base64 without downloading
+     * // Silent fill - get base64 without downloading
      * const result = mosaic.pdffiller(
      *     { type: 'workdrive', id: 'abc123workdriveid' },
      *     [{ field: 'Full_Name', value: 'John Smith' }],
@@ -1305,7 +1298,7 @@ const mosaic = (function() {
     // ── pdfmerge ──────────────────────────────────────────────────────────────
 
     /**
-     * Merge multiple PDF sources and download. Headless — shows a loader, no interactive UI.
+     * Merge multiple PDF sources and download. Headless - shows a loader, no interactive UI.
      * Convenience wrapper around `mosaic.pdf()` with `mode: 'merge'`.
      *
      * @param {MosaicPdfSource[]} sources - Array of source objects to merge
@@ -1327,7 +1320,7 @@ const mosaic = (function() {
      * ], { filename: 'Full_Contract.pdf' });
      *
      * @example
-     * // Silent merge — get base64 without downloading
+     * // Silent merge - get base64 without downloading
      * const result = mosaic.pdfmerge([
      *     { type: 'workdrive', id: 'abc123' },
      *     { type: 'base64', content: appendixBase64 }
