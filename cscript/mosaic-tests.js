@@ -1,7 +1,27 @@
 /**
- * ──────────────────────────────────────────────────────────────────────────────────────────────────── 
+ * ────────────────────────────────────────────────────────────────────────────
  * mosaic static resource tests
- * ──────────────────────────────────────────────────────────────────────────────────────────────────── 
+ * ────────────────────────────────────────────────────────────────────────────
+ */
+
+/**
+ * Interactive test suite for the Mosaic client script helper (`mosaic.js`).
+ *
+ * Call this from a Zoho CRM client script (with `mosaic.js` loaded as a
+ * required Static Resource) and pick a test group from the launcher menu —
+ * forms, quick inputs, tables, viewers, launchers, uploads, splash/loader,
+ * and response utilities. Each step shows the raw `MosaicResponse` in a
+ * result popup; **OK** advances, **Exit Script** stops the run.
+ *
+ * Most tests are org-agnostic. The file-upload tests (and the WorkDrive/
+ * Writer-backed viewer tests) assume org-specific setup — see the notes in
+ * their section headers and adjust field names and connections to your org.
+ *
+ * @example
+ * // client script, e.g. on a record detail page button:
+ * RUN_MOSAIC_STATIC_RESOURCE_TESTS();
+ *
+ * @see https://github.com/NeuronHuskie/mosaic-zcrm
  */
 function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
 

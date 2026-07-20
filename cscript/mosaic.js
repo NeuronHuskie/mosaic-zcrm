@@ -2,13 +2,54 @@
  * ════════════════════════════════════════════════════════════════════════════
  * MOSAIC CLIENT - Zoho CRM Client Script Static Resource
  * Version: 1.0.0
- *
- * A helper library for opening the Mosaic widget popup from Zoho CRM
- * client scripts. Provides convenient methods for confirmation dialogs,
- * messages, forms, tables, etc.
  * ════════════════════════════════════════════════════════════════════════════
  */
 
+/**
+ * Mosaic — popup & flyout UI framework for Zoho CRM client scripts.
+ *
+ * Load this file as a required Static Resource on a client script and the
+ * global `mosaic` object becomes available. Every dialog method opens the
+ * Mosaic widget as a popup (or flyout with `flyout: true`), **blocks** until
+ * the user responds, and returns a `MosaicResponse` object (`null` if
+ * dismissed). Do not `await` these calls — they are synchronous.
+ *
+ * **Dialogs**
+ * - `mosaic.form(options)` — multi-field form (15+ field types, validation, conditions, file uploads)
+ * - `mosaic.input(label, options)` — single-field prompt (+ `.text` `.date` `.picklist` `.file` … shorthands)
+ * - `mosaic.table(options)` — data table from static / COQL / search sources, with export
+ * - `mosaic.launcher(items, options)` — searchable command palette
+ * - `mosaic.confirmation(msg, options)` / `mosaic.message(msg, options)` — dialogs (+ `.info` `.success` … shorthands)
+ * - `mosaic.html(content, options)` / `mosaic.pdf(source, options)` — HTML / PDF viewers (preview, print, download)
+ * - `mosaic.html2pdf(content, options)` / `mosaic.pdffiller(source, fields, options)` / `mosaic.pdfmerge(sources, options)` — headless PDF tools
+ *
+ * **Host UI (no popup)**
+ * - `mosaic.splash(msg, { type })` — toast (+ `.info` `.success` `.warning` `.error`)
+ * - `mosaic.loader(message)` — page loader; call with no arguments to hide (also `.show()` / `.hide()`)
+ *
+ * **Helpers**
+ * - `mosaic.utils` — response inspection (`isSuccess`, `getData`, `wasButtonClicked`, …)
+ * - `mosaic.DEFAULTS` — mutable per-session defaults (connections, sizes, buttons)
+ * - `mosaic.OVERRIDES` — org-level format overrides derived from `$Crm`
+ *
+ * @example
+ * const r = mosaic.form({
+ *     title: 'New Deal',
+ *     fields: [
+ *         { name: 'deal_name', label: 'Deal Name', type: 'text', required: true },
+ *         { name: 'closing',   label: 'Closing Date', type: 'date' }
+ *     ]
+ * });
+ * if (mosaic.utils.isSuccess(r)) {
+ *     const data = mosaic.utils.getData(r);
+ *     mosaic.splash.success(`Saved ${data.deal_name}!`);
+ * }
+ *
+ * @version 1.0.0
+ * @author NeuronHuskie
+ * @license MIT
+ * @see https://github.com/NeuronHuskie/mosaic-zcrm
+ */
 const mosaic = (function() {
     'use strict';
 
