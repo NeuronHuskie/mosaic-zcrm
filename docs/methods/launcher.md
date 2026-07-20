@@ -8,8 +8,7 @@ mosaic.launcher(items, options)
 
 ---
 
-<img src="../assets/screenshots/launcher/launcher-light.png" width="400" alt="Launcher (light)">
-<img src="../assets/screenshots/launcher/launcher-dark.png" width="400" alt="Launcher (dark)">
+<img src="../assets/screenshots/launcher/launcher-light.png" width="400" alt="Launcher (light)"> <img src="../assets/screenshots/launcher/launcher-dark.png" width="400" alt="Launcher (dark)">
 
 ---
 

@@ -8,8 +8,7 @@ mosaic.table(options)
 
 ---
 
-<img src="../assets/screenshots/table/table-light.png" width="400" alt="Table (light)">
-<img src="../assets/screenshots/table/table-dark.png" width="400" alt="Table (dark)">
+<img src="../assets/screenshots/table/table-light.png" width="400" alt="Table (light)"> <img src="../assets/screenshots/table/table-dark.png" width="400" alt="Table (dark)">
 
 ---
 

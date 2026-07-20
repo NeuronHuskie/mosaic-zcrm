@@ -8,8 +8,7 @@ mosaic.pdf(source, options)
 
 ---
 
-<img src="../assets/screenshots/pdf/pdf-light.png" width="400" alt="PDF (light)">
-<img src="../assets/screenshots/pdf/pdf-dark.png" width="400" alt="PDF (dark)">
+<img src="../assets/screenshots/pdf/pdf-light.png" width="400" alt="PDF (light)"> <img src="../assets/screenshots/pdf/pdf-dark.png" width="400" alt="PDF (dark)">
 
 ---
 

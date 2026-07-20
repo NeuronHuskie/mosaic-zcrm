@@ -8,8 +8,7 @@ mosaic.form(options)
 
 ---
 
-<img src="../assets/screenshots/form/form-light.png" width="400" alt="Form (light)">
-<img src="../assets/screenshots/form/form-dark.png" width="400" alt="Form (dark)">
+<img src="../assets/screenshots/form/form-light.png" width="400" alt="Form (light)"> <img src="../assets/screenshots/form/form-dark.png" width="400" alt="Form (dark)">
 
 ---
 

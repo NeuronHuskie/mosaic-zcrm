@@ -8,8 +8,7 @@ mosaic.confirmation(message, options)
 
 ---
 
-<img src="../assets/screenshots/confirmation/confirmation-light.png" width="400" alt="Confirmation (light)">
-<img src="../assets/screenshots/confirmation/confirmation-dark.png" width="400" alt="Confirmation (dark)">
+<img src="../assets/screenshots/confirmation/confirmation-light.png" width="400" alt="Confirmation (light)"> <img src="../assets/screenshots/confirmation/confirmation-dark.png" width="400" alt="Confirmation (dark)">
 
 ---
 

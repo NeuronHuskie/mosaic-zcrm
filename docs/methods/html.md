@@ -8,8 +8,7 @@ mosaic.html(content, options)
 
 ---
 
-<img src="../assets/screenshots/html/html-light.png" width="400" alt="HTML (light)">
-<img src="../assets/screenshots/html/html-dark.png" width="400" alt="HTML (dark)">
+<img src="../assets/screenshots/html/html-light.png" width="400" alt="HTML (light)"> <img src="../assets/screenshots/html/html-dark.png" width="400" alt="HTML (dark)">
 
 ---
 

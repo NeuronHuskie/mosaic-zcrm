@@ -18,8 +18,7 @@ mosaic.message.question(message, options)
 
 ---
 
-<img src="../assets/screenshots/message/message-light.png" width="400" alt="Message (light)">
-<img src="../assets/screenshots/message/message-dark.png" width="400" alt="Message (dark)">
+<img src="../assets/screenshots/message/message-light.png" width="400" alt="Message (light)"> <img src="../assets/screenshots/message/message-dark.png" width="400" alt="Message (dark)">
 
 ---
 
