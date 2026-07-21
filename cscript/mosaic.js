@@ -38,7 +38,7 @@
  *     mosaic.splash.success(`Saved ${data.deal_name}!`);
  * }
  *
- * @version 1.0.0
+ * @version 1.0.1
  * @author NeuronHuskie
  * @license MIT
  * @see https://github.com/NeuronHuskie/mosaic-zcrm
@@ -46,7 +46,7 @@
 const mosaic = (function() {
     'use strict';
 
-    const VERSION = '1.0.0';
+    const VERSION = '1.0.1';
     const WIDGET_API_NAME = 'mosaic';
 
     // ╭──────────────────────────────────────────────────╮
@@ -112,7 +112,7 @@ const mosaic = (function() {
 
     /**
      * @typedef {Object} MosaicPopupOptions
-     * @property {string}  [header]                - Popup header text (in title bar)
+     * @property {string}  [header]                - Popup header text (in title bar). Truncated to 50 characters (Zoho's hard limit).
      * @property {string}  [height]                - Popup height (e.g. '350px', '70vh')
      * @property {string}  [width]                 - Popup width (e.g. '420px')
      * @property {string}  [top='20px']            - Popup position from top
@@ -127,7 +127,7 @@ const mosaic = (function() {
 
     /**
      * @typedef {Object} MosaicFlyoutOptions
-     * @property {string}  [header='☰']           - Flyout header text (in title bar)
+     * @property {string}  [header='☰']           - Flyout header text (in title bar). Truncated to 50 characters (Zoho's hard limit).
      * @property {string}  [height]                - Flyout height (e.g. '80vh'; max ~80vh)
      * @property {string}  [width]                 - Flyout width (e.g. '50vw'; max ~50vw)
      * @property {string}  [top='20px']            - Flyout offset from top; use 'center' to vertically center
@@ -405,13 +405,31 @@ const mosaic = (function() {
     };
 
     /**
+     * Truncate a popup/flyout header to Zoho's hard limit before ZDK receives it.
+     * ZDK.Client throws "header must be atmost 50 characters" for longer values, which
+     * would otherwise fail the whole dialog silently. Over-length strings are cut to
+     * MAX_HEADER_LENGTH (last character reserved for an ellipsis) and a warning is logged.
+     * Non-string headers (e.g. undefined) pass through unchanged.
+     * @private
+     * @param {*} header - Raw header value
+     * @returns {*} Header truncated to MAX_HEADER_LENGTH, or the original value
+     */
+    const MAX_HEADER_LENGTH = 50;
+    const truncateHeader = (header) => {
+        if (typeof header !== 'string' || header.length <= MAX_HEADER_LENGTH) return header;
+        const truncated = header.slice(0, MAX_HEADER_LENGTH - 1) + '…';
+        con.warn(`truncateHeader | header exceeded ${MAX_HEADER_LENGTH} chars, truncated: '${header}' → '${truncated}'`);
+        return truncated;
+    };
+
+    /**
      * Build popup configuration object for ZDK.Client.openPopup
      * @private
      */
     const buildPopupConfig = (options = {}, type_defaults = {}) => ({
         api_name:        WIDGET_API_NAME,
         type:            'widget',
-        header:          options.header,
+        header:          truncateHeader(options.header),
         close_icon:      options.close_icon ?? type_defaults.close_icon,
         close_on_escape: options.close_on_escape ?? type_defaults.close_on_escape,
         animation_type:  options.animation_type ?? DEFAULTS.popup.animation_type,
@@ -434,7 +452,7 @@ const mosaic = (function() {
     const buildFlyoutConfig = (options = {}, type_defaults = {}) => clampFlyoutDimensions({
         api_name:        WIDGET_API_NAME,
         type:            'widget',
-        header:          options.header ?? DEFAULTS.flyout.header,
+        header:          truncateHeader(options.header ?? DEFAULTS.flyout.header),
         animation_type:  options.animation_type ?? DEFAULTS.flyout.animation_type,
         close_on_escape: options.close_on_escape ?? type_defaults.close_on_escape,
         close_icon:      options.close_icon ?? type_defaults.close_icon,

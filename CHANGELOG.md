@@ -2,6 +2,21 @@
 
 ---
 
+> ## Client Script v1.0.1
+
+### Changes
+
+- Popup/flyout headers longer than 50 characters are now truncated (last character replaced with an ellipsis) instead of failing the whole dialog. Previously ZDK.Client threw `header must be atmost 50 characters` and the dialog silently never opened (e.g. `[mosaic.cscript] HTML (flyout) error: ... header must be atmost 50 characters`). A warning is logged when truncation occurs (with `debug: true`). Applies to every method, both popup and flyout paths, via a shared `truncateHeader` helper in the two config builders.
+
+### Files Changed
+
+| File | Change |
+|---|---|
+| `cscript/mosaic.js` | Add `truncateHeader` helper; apply in `buildPopupConfig`/`buildFlyoutConfig`; JSDoc note on `header`; version bump to 1.0.1 |
+| `cscript/mosaic-tests.js` | Add over-length header truncation test |
+
+---
+
 > ## v1.0.1
 
 ### Changes

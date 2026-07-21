@@ -55,7 +55,8 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         { actual_value: 'image_upload', display_value: 'Upload to Image Field' },
         { actual_value: 'upload_to_workdrive', display_value: 'Upload to Workdrive' },
         { actual_value: 'upload_to_attachments', display_value: 'Upload to Attachments' },
-        { actual_value: 'utils', display_value: 'Utility Functions' }
+        { actual_value: 'utils', display_value: 'Utility Functions' },
+        { actual_value: 'header_truncation', display_value: 'Header Truncation (50-char limit)' }
     ];
 
     const testMenu = mosaic.launcher(mosaic_tests_items, {
@@ -743,6 +744,28 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         mosaic.message(msg, { title: 'Utility Function Results', show_icon: false, height: '85vh', width: '60vw', enable_markdown: true });
     };
 
+    // ═══════════════════════════════════════════════════════════════════════
+    //  header truncation tests
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // The ZDK popup/flyout `header` (title-bar text) has a hard 50-char limit;
+    // longer values used to throw "header must be atmost 50 characters" and the
+    // dialog silently never opened. mosaic.js now truncates them to 50 chars
+    // (…) and logs a warning. Enable mosaic.DEFAULTS.debug to see the warning.
+    const header_truncation_tests = () => {
+        const longHeader = 'This header is intentionally far longer than the fifty character limit imposed by Zoho';
+
+        if (!run('Header [1] popup - long header truncated',
+            mosaic.message('Popup opened even though its header exceeds 50 characters (truncated to 50).',
+                { header: longHeader, title: 'Header Truncation [1/2]', width: '520px', height: '360px' }))) return;
+
+        if (!run('Header [2] flyout - long header truncated',
+            mosaic.message('Flyout opened even though its header exceeds 50 characters (truncated to 50).',
+                { header: longHeader, flyout: true, title: 'Header Truncation [2/2]', width: '420px', height: '360px' }))) return;
+
+        mosaic.message.success('Header truncation tests complete!', { title: 'Header Truncation - Done' });
+    };
+
     // ═══════════════════════════════════════════════════════════════════════════
     //  test execution router
     // ═══════════════════════════════════════════════════════════════════════════
@@ -768,7 +791,8 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         image_upload:           file_upload_image_field_tests,
         upload_to_workdrive:    file_upload_workdrive_tests,
         upload_to_attachments:  file_upload_attachments_tests,
-        utils:                  utility_functions_tests
+        utils:                  utility_functions_tests,
+        header_truncation:      header_truncation_tests
     };
 
     runTests[selectedTest]?.();
