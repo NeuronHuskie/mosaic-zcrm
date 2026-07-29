@@ -38,7 +38,7 @@
  *     mosaic.splash.success(`Saved ${data.deal_name}!`);
  * }
  *
- * @version 1.0.1
+ * @version 1.0.2
  * @author NeuronHuskie
  * @license MIT
  * @see https://github.com/NeuronHuskie/mosaic-zcrm
@@ -46,7 +46,7 @@
 const mosaic = (function() {
     'use strict';
 
-    const VERSION = '1.0.1';
+    const VERSION = '1.0.2';
     const WIDGET_API_NAME = 'mosaic';
 
     // ╭──────────────────────────────────────────────────╮
@@ -67,7 +67,7 @@ const mosaic = (function() {
         confirmation:           { height: '350px', width: '420px',  buttons: ['Cancel', 'OK'],      close_icon: true, close_on_escape: false, submit_on_enter: false, enable_markdown: true },
         message:                { height: '350px', width: '420px',  buttons: ['OK'],                close_icon: true, close_on_escape: true,  submit_on_enter: true,  enable_markdown: true, show_buttons: true, show_icon: true, message_type: 'info' },
         form:                   { height: '70vh',  width: '600px',  buttons: ['Cancel', 'Submit'],  close_icon: true, close_on_escape: false, submit_on_enter: true, enable_markdown: true, force_focus: true,   fields: [] },
-        table:                  { height: '70vh',  width: '800px',  buttons: ['Cancel', 'Submit'],  close_icon: true, close_on_escape: false, force_focus: true, show_buttons: true, show_search: false, selectable: true, required: false, allow_multiple: true, selection_limit: 0, allow_export: false, sort_order: 'desc', per_page: 10, columns: [] },
+        table:                  { height: '70vh',  width: '800px',  buttons: ['Cancel', 'Submit'],  close_icon: true, close_on_escape: false, force_focus: true, show_buttons: true, show_search: false, selectable: true, required: false, allow_multiple: true, selection_limit: 0, allow_export: false, show_overflow_toggle: true, sort_order: 'desc', per_page: 10, columns: [] },
         launcher:               { height: '500px', width: '500px',  buttons: [],                    close_icon: true, close_on_escape: true,  force_focus: true, show_buttons: false, show_search: true, placeholder: 'Type to search...', match_mode: 'fuzzy', show_icons: true, show_description: true, items: [] },
         html:                   { height: '80vh',  width: '50vw',   buttons: ['Close', 'Print'],    close_icon: true, close_on_escape: true, mode: 'preview' },
         pdf:                    { height: '80vh',  width: '50vw',   buttons: ['Close', 'Download'], close_icon: true, close_on_escape: true, mode: 'preview' },
@@ -803,6 +803,7 @@ const mosaic = (function() {
      * @param {string}         [options.search_placeholder] - Placeholder text for search/filter input
      * @param {number}         [options.per_page=10] - Number of records per page
      * @param {'wrap'|'clip'}  [options.overflow_mode='wrap'] - Initial text-overflow mode. 'wrap' wraps long cell values; 'clip' truncates with ellipsis and shows full value on hover
+     * @param {boolean}        [options.show_overflow_toggle=true] - Show the wrap/clip toggle button above the table. Set false to lock the table to `overflow_mode`
      *
      * ── sorting ──────────────────────────────────────────────────────────────
      * @param {string}           [options.sort_field] - Field name to sort by on load; header sort controls apply to the current page only
@@ -896,7 +897,8 @@ const mosaic = (function() {
             overrides: options.overrides || {},
             ...resolveConfig(options, d, [
                 'columns', 'required', 'selectable', 'allow_multiple', 'selection_limit',
-                'show_buttons', 'per_page', 'show_search', 'allow_export', 'force_focus'
+                'show_buttons', 'per_page', 'show_search', 'allow_export', 'force_focus',
+                'show_overflow_toggle'
             ]),
             ...pickDefined(options, ['source', 'search_placeholder', 'overflow_mode', 'module', 'record_id']),
         };

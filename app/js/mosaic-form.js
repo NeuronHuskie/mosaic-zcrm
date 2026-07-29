@@ -39,10 +39,15 @@ mosaic.form = {
             mosaic.form.setup.picklist.init();
             mosaic.form.setup.multiselect.init();
             mosaic.form.setup.radio.init();
-            mosaic.validators.groups.form.setupLiveClearing(document.getElementById('mosaicForm'), flatFields);
+
+            // one readiness promise shared by live clearing and focus - both wait on the
+            // same deferred field setup, and building it twice would refetch user formats
+            const ready = mosaic.ui.readiness.buildPromise();
+
+            mosaic.validators.groups.form.setupLiveClearing(document.getElementById('mosaicForm'), flatFields, ready);
             mosaic.conditions.setup.init(document.getElementById('mosaicForm'), flatFields);
 
-            if (mosaic.config.force_focus !== false) mosaic.ui.focus.force(mosaic.ui.readiness.buildPromise());
+            if (mosaic.config.force_focus !== false) mosaic.ui.focus.force(ready);
         },
 
         flattenFields(fields) {

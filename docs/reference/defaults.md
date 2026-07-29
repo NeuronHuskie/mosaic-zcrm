@@ -97,6 +97,7 @@ Applied to all popup and flyout calls unless overridden per-call.
 | `per_page` | `10` |
 | `show_search` | `false` |
 | `allow_export` | `false` |
+| `show_overflow_toggle` | `true` |
 | `required` | `false` |
 | `selection_limit` | `0` |
 | `force_focus` | `true` |

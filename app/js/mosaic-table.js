@@ -260,7 +260,7 @@ mosaic.table = {
             tbody.innerHTML = rowsHtml;
             if (perPage) mosaic.table.render.pagination();
 
-            if (document.getElementById('tableOverflowToggle')) {
+            if (document.querySelector('.table-overflow-toggle-wrapper')) {
                 if (document.querySelector('.dynamic-table.text-clip')) {
                     mosaic.table.setup.applyTitleAttributes();
                 }
@@ -807,7 +807,9 @@ mosaic.table = {
         },
 
         overflowToggle() {
-            if (document.getElementById('tableOverflowToggle')) return;
+            // guard on the wrapper, not the toggle - the toggle is optional but the
+            // wrapper is always what gets inserted (it also holds the export button)
+            if (document.querySelector('.table-overflow-toggle-wrapper')) return;
 
             const tableWrapper = document.querySelector('.table-wrapper');
             if (!tableWrapper) return;
@@ -831,7 +833,9 @@ mosaic.table = {
             const isClip = mosaic.config.overflow_mode === 'clip';
             table.classList.add(isClip ? 'text-clip' : 'text-wrap');
 
-            const toggleHtml = mosaic.table.render.overflowToggle(isClip);
+            const toggleHtml = mosaic.config.show_overflow_toggle === false
+                ? ''
+                : mosaic.table.render.overflowToggle(isClip);
             const exportHtml = mosaic.config.allow_export === true && typeof mosaic.export !== 'undefined'
                 ? mosaic.export.controls.buildButton()
                 : '';

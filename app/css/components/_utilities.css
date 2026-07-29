@@ -14,16 +14,40 @@
 
 /* ── required indicator ──────────────────────────────────────────────── */
 .required-indicator {
-    color: var(--color-error);
+    color: var(--field-invalid-color);
     font-weight: bold;
     padding-left: 2px;
 }
 
+.required-indicator,
 .field-error,
 .invalid-group,
 .invalid-date,
-.invalid-field {
+.invalid-field,
+.required-empty {
     --field-invalid-color: var(--color-error);
+}
+
+/* every red field surface reads --field-invalid-color, so one dark-mode
+   declaration retints all of them - borders, bars, labels and the asterisk */
+.dark-mode .required-indicator,
+.dark-mode .field-error,
+.dark-mode .invalid-group,
+.dark-mode .invalid-date,
+.dark-mode .invalid-field,
+.dark-mode .required-empty {
+    --field-invalid-color: var(--color-dark-error);
+}
+
+/* ── unfilled required field ─────────────────────────────────────────────
+   label only - no border, bar or padding, so every field type reads the
+   same and marking a field at render time never shifts the layout.
+   scoped to direct children so grouped radio/checkbox option labels are
+   left alone. cleared by mosaic.validators setupLiveClearing(). */
+.field-group.required-empty > label,
+.field-group.required-empty > .field-label,
+.field-group.required-empty > .checkbox-item.single-checkbox > .checkbox-label {
+    color: var(--field-invalid-color);
 }
 
 /* ── field error state ───────────────────────────────────────────────── */

@@ -24,7 +24,8 @@ mosaic.table(options)
 | `options.search_placeholder` | string | | | Placeholder text for the search/filter input |
 | `options.allow_export` | boolean | `false` | | Show an export button (CSV, XLSX, PDF, JSON) |
 | `options.per_page` | number | `10` | | Number of rows per page |
-| `options.overflow_mode` | string | `'wrap'` | | Initial text-overflow mode: `'wrap'` (default) wraps long cell text; `'clip'` truncates with ellipsis and shows the full value on hover. The clip/wrap toggle button is always shown so users can switch modes |
+| `options.overflow_mode` | string | `'wrap'` | | Initial text-overflow mode: `'wrap'` (default) wraps long cell text; `'clip'` truncates with ellipsis and shows the full value on hover |
+| `options.show_overflow_toggle` | boolean | `true` | | Show the clip/wrap toggle button above the table. Set to `false` to lock the table to `overflow_mode` |
 | `options.sort_field` | string | | | Column key to sort by on load. Column headers are also clickable to sort the loaded data client-side |
 | `options.sort_order` | string | `'desc'` | | Initial sort direction: `'asc'` or `'desc'` |
 | `options.buttons` | array | `['Cancel', 'Submit']` | | Button labels or `{ label, style, value }` objects - see [Buttons](../reference/buttons.md) |

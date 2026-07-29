@@ -419,6 +419,82 @@ async function test(name, fn) {
         assert(!picklistDisplay.classList.contains('invalid-field'));
     });
 
+    await test('live clearing marks empty required fields and clears them once filled', async () => {
+        const { mosaic } = loadMosaic();
+
+        const fieldGroup = { classList: createClassList(), querySelector: () => null, querySelectorAll: () => [] };
+        const listeners = {};
+        const input = {
+            value: '',
+            classList: createClassList(),
+            closest: () => fieldGroup,
+            addEventListener: (event, handler) => { listeners[event] = handler; }
+        };
+        const form = {
+            querySelector: selector => (selector === '[name="Company"]' ? input : null),
+            querySelectorAll: () => []
+        };
+
+        await mosaic.validators.groups.form.setupLiveClearing(form, [
+            { name: 'Company', label: 'Company', type: 'text', required: true }
+        ]);
+
+        // seeded at setup - empty required field starts highlighted
+        assert(fieldGroup.classList.contains('required-empty'));
+
+        input.value = 'Acme';
+        listeners.input();
+        assert(!fieldGroup.classList.contains('required-empty'));
+
+        // emptied again - highlight returns
+        input.value = '';
+        listeners.input();
+        assert(fieldGroup.classList.contains('required-empty'));
+    });
+
+    await test('live clearing leaves optional fields unmarked', async () => {
+        const { mosaic } = loadMosaic();
+
+        const fieldGroup = { classList: createClassList(), querySelector: () => null, querySelectorAll: () => [] };
+        const input = { value: '', classList: createClassList(), closest: () => fieldGroup, addEventListener: () => {} };
+        const form = {
+            querySelector: selector => (selector === '[name="Notes"]' ? input : null),
+            querySelectorAll: () => []
+        };
+
+        await mosaic.validators.groups.form.setupLiveClearing(form, [
+            { name: 'Notes', label: 'Notes', type: 'text' }
+        ]);
+
+        assert(!fieldGroup.classList.contains('required-empty'));
+    });
+
+    await test('live clearing defers seeding until deferred field setup has run', async () => {
+        const { mosaic } = loadMosaic();
+
+        const fieldGroup = { classList: createClassList(), querySelector: () => null, querySelectorAll: () => [] };
+        // smart date fields render with no value attribute - the default is written in
+        // later by the datepicker, so seeding early would wrongly mark them unfilled
+        const input = { value: '', classList: createClassList(), closest: () => fieldGroup, addEventListener: () => {} };
+        const form = {
+            querySelector: selector => (selector === '[name="Close_Date"]' ? input : null),
+            querySelectorAll: () => []
+        };
+
+        const ready = new Promise(resolve => setTimeout(resolve, 5));
+        const seeded = mosaic.validators.groups.form.setupLiveClearing(
+            form,
+            [{ name: 'Close_Date', label: 'Close Date', type: 'date', required: true }],
+            ready
+        );
+
+        // datepicker writes the default in while the readiness promise is still pending
+        input.value = '07/29/2026';
+
+        await seeded;
+        assert(!fieldGroup.classList.contains('required-empty'));
+    });
+
     await test('field helpers read raw and processed radio values', () => {
         const { mosaic } = loadMosaic();
         const checked = { value: 'A', nextElementSibling: { textContent: 'Alpha' } };

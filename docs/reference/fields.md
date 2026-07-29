@@ -37,7 +37,7 @@ All field types share these base properties:
 | `name` | string | - | ✅ | Key used in `response.data` - `form` only, ignored by `input` |
 | `label` | string | - |  | Displayed above the field |
 | `type` | string | `'text'` |  | Field type identifier |
-| `required` | boolean | `true` / `false` |  | Fail validation on submit if empty. Defaults to `true` via `mosaic.input()`, `false` via `mosaic.form()` |
+| `required` | boolean | `true` / `false` |  | Fail validation on submit if empty. While empty the field's label is shown in red, returning to the normal label color as soon as it is filled. Defaults to `true` via `mosaic.input()`, `false` via `mosaic.form()` |
 | `placeholder` | string | - |  | Input placeholder text |
 | `default_value` | any | - |  | Pre-filled value |
 | `instructions` | string | - |  | Italic help text rendered below the field |

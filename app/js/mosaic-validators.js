@@ -720,15 +720,20 @@ mosaic.validators = {
                 };
             },
 
-            setupLiveClearing(form, fieldConfigs) {
+            setupLiveClearing(form, fieldConfigs, readyPromise = Promise.resolve()) {
+                const seeds = [];
+
                 fieldConfigs.forEach(field => {
                     if (field.type === 'description' || field.type === 'button' || field.type === 'group' || field.type === 'divider') return;
 
                     const ns = mosaic.util.fields.nameSelector(field.name);
 
-                    const clearInvalid = (element) => {
+                    // syncs both states: clears invalid-group once filled, and toggles
+                    // required-empty so unfilled required fields carry a red border
+                    const syncFieldState = (element) => {
                         const fieldGroup = element?.closest('.field-group');
-                        if (!fieldGroup?.classList.contains('invalid-group')) return;
+                        if (!fieldGroup) return;
+                        if (!field.required && !fieldGroup.classList.contains('invalid-group')) return;
 
                         let hasValue = false;
 
@@ -768,7 +773,10 @@ mosaic.validators = {
                         }
 
                         if (hasValue) {
+                            fieldGroup.classList.remove('required-empty');
                             mosaic.util.fields.clearFieldInvalidState(form, field.name, element);
+                        } else if (field.required) {
+                            fieldGroup.classList.add('required-empty');
                         }
                     };
 
@@ -776,24 +784,24 @@ mosaic.validators = {
                         case 'checkbox':
                         case 'radio': {
                             form.querySelectorAll(`input${ns}`)
-                                .forEach(el => el.addEventListener('change', () => clearInvalid(el)));
+                                .forEach(el => el.addEventListener('change', () => syncFieldState(el)));
                             break;
                         }
                         case 'file': {
                             const fileEl = form.querySelector(`input${ns}`);
-                            if (fileEl) fileEl.addEventListener('change', () => clearInvalid(fileEl));
+                            if (fileEl) fileEl.addEventListener('change', () => syncFieldState(fileEl));
                             break;
                         }
                         case 'multiselect': {
                             const selectEl = form.querySelector(`select${ns}`);
-                            if (selectEl) selectEl.addEventListener('change', () => clearInvalid(selectEl));
+                            if (selectEl) selectEl.addEventListener('change', () => syncFieldState(selectEl));
                             break;
                         }
                         case 'date': {
                             const dateEl = form.querySelector(`input${ns}`);
                             if (dateEl) {
-                                dateEl.addEventListener('input',  () => clearInvalid(dateEl));
-                                dateEl.addEventListener('change', () => clearInvalid(dateEl));
+                                dateEl.addEventListener('input',  () => syncFieldState(dateEl));
+                                dateEl.addEventListener('change', () => syncFieldState(dateEl));
                             }
                             break;
                         }
@@ -803,31 +811,38 @@ mosaic.validators = {
 
                             // native picker (use_date_input: true) - single input holds the value
                             if (!displayEl) {
-                                if (hiddenEl) hiddenEl.addEventListener('change', () => clearInvalid(hiddenEl));
+                                if (hiddenEl) hiddenEl.addEventListener('change', () => syncFieldState(hiddenEl));
                                 break;
                             }
 
-                            const clearIfComplete = () => {
-                                const fieldGroup = hiddenEl?.closest('.field-group');
-                                if (!fieldGroup?.classList.contains('invalid-group')) return;
-                                if (hiddenEl?.value) mosaic.util.fields.clearFieldInvalidState(form, field.name, hiddenEl);
-                            };
-
-                            displayEl.addEventListener('blur', clearIfComplete);
-                            displayEl.addEventListener('dateSelected', clearIfComplete);
+                            const syncFromHidden = () => syncFieldState(hiddenEl);
+                            displayEl.addEventListener('blur', syncFromHidden);
+                            displayEl.addEventListener('dateSelected', syncFromHidden);
                             break;
                         }
                         case 'picklist': {
                             const el = form.querySelector(ns);
-                            if (el) el.addEventListener('change', () => clearInvalid(el));
+                            if (el) el.addEventListener('change', () => syncFieldState(el));
                             break;
                         }
                         default: {
                             const el = form.querySelector(ns);
-                            if (el) el.addEventListener('input', () => clearInvalid(el));
+                            if (el) el.addEventListener('input', () => syncFieldState(el));
                         }
                     }
+
+                    // seed initial state so unfilled required fields start marked
+                    if (field.required) seeds.push(() => syncFieldState(form.querySelector(ns)));
                 });
+
+                // date / datetime / time / tel fields are rendered empty and have their
+                // default written in by deferred setup (setTimeout in the field builders),
+                // so seeding synchronously would mark a defaulted date as unfilled. wait on
+                // the same readiness signal the focus handler uses - it resolves immediately
+                // when the form has no such fields.
+                return Promise.resolve(readyPromise)
+                    .catch(() => {})
+                    .then(() => seeds.forEach(seed => seed()));
             },
 
             getFieldValue(form, field) {

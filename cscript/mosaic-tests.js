@@ -48,6 +48,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         { actual_value: 'table_search', display_value: 'Table - Search' },
         { actual_value: 'table_url_link', display_value: 'Table - URL Links' },
         { actual_value: 'table_format_rules', display_value: 'Table - Format & Rules' },
+        { actual_value: 'table_no_toggle', display_value: 'Table - Overflow Toggle Hidden' },
         { actual_value: 'html_viewer', display_value: 'HTML Viewer' },
         { actual_value: 'pdf_viewer', display_value: 'PDF Viewer' },
         { actual_value: 'launcher_tests', display_value: 'Launcher Tests' },
@@ -431,6 +432,33 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
     }));
 
     // ═══════════════════════════════════════════════════════════════════════════
+    //  table overflow toggle hidden test
+    //  locked to clip mode - export button should still render (shares the
+    //  wrapper), and paging must not stack duplicate wrappers
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    const table_no_toggle_tests = () => run('Table No Toggle', mosaic.table({
+        title: 'Locked to Clip Mode', width: '50vw', height: '60vh',
+        overflow_mode: 'clip', show_overflow_toggle: false, allow_export: true, per_page: 5,
+        columns: [
+            { key: 'name', header: 'Product Name', width: '40%' },
+            { key: 'notes', header: 'Notes', width: '60%' }
+        ],
+        source: {
+            type: 'static',
+            data: [
+                { id:1, name:'Widget Pro',      notes:'A deliberately long note that should clip with an ellipsis and reveal the full text on hover instead of wrapping.' },
+                { id:2, name:'Gadget Plus',     notes:'Short note.' },
+                { id:3, name:'Super Tool',      notes:'Another long note used to confirm that clip mode stays applied with no toggle button rendered above the table.' },
+                { id:4, name:'Mega Device',     notes:'Short.' },
+                { id:5, name:'Basic Item',      notes:'Page one ends here.' },
+                { id:6, name:'Premium Package', notes:'Page two - check that only one export button is present after paging.' },
+                { id:7, name:'Starter Kit',     notes:'Short note.' }
+            ]
+        }
+    }));
+
+    // ═══════════════════════════════════════════════════════════════════════════
     //  table coql data test
     // ═══════════════════════════════════════════════════════════════════════════
 
@@ -784,6 +812,7 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         table_search:           table_search_data_tests,
         table_url_link:         table_url_link_tests,
         table_format_rules:     table_format_rules_tests,
+        table_no_toggle:        table_no_toggle_tests,
         html_viewer:            html_viewer_tests,
         pdf_viewer:             pdf_viewer_tests,
         launcher_tests:         launcher_tests,
