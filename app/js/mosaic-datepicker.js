@@ -337,15 +337,23 @@ mosaic.datepicker = {
             const firstDay = new Date(state.currentYear, state.currentMonth, 1).getDay();
             const daysInMonth = new Date(state.currentYear, state.currentMonth + 1, 0).getDate();
 
-            for (let i = 0; i < firstDay; i++) {
-                const blank = document.createElement('div');
-                blank.className = 'mcp-day mcp-day--empty';
-                grid.appendChild(blank);
-            }
+            const daysInPrev = new Date(state.currentYear, state.currentMonth, 0).getDate();
+
+            // adjacent-month filler days (offset -1 / +1), muted but selectable
+            const filler = (day, offset) => {
+                const cell = mosaic.datepicker.render.dayCell(context, day, today, offset);
+                cell.classList.add('mcp-day--outside');
+                grid.appendChild(cell);
+            };
+
+            for (let i = firstDay - 1; i >= 0; i--) filler(daysInPrev - i, -1);
 
             for (let day = 1; day <= daysInMonth; day++) {
                 grid.appendChild(mosaic.datepicker.render.dayCell(context, day, today));
             }
+
+            const trailing = (7 - (firstDay + daysInMonth) % 7) % 7;
+            for (let day = 1; day <= trailing; day++) filler(day, 1);
         },
 
         months(context, grid) {
@@ -399,13 +407,13 @@ mosaic.datepicker = {
             }
         },
 
-        dayCell(context, day, today) {
+        dayCell(context, day, today, monthOffset = 0) {
             const { disablePastDates, state } = context;
             const cell = document.createElement('div');
             cell.className = 'mcp-day';
             cell.textContent = day;
 
-            const date = new Date(state.currentYear, state.currentMonth, day);
+            const date = new Date(state.currentYear, state.currentMonth + monthOffset, day);
 
             if (date.getTime() === today.getTime()) {
                 cell.classList.add('mcp-day--today');
@@ -423,7 +431,7 @@ mosaic.datepicker = {
             if (disablePastDates && date < today) {
                 cell.classList.add('mcp-day--disabled');
             } else {
-                cell.addEventListener('click', () => mosaic.datepicker.actions.selectDay(context, day));
+                cell.addEventListener('click', () => mosaic.datepicker.actions.selectDay(context, day, monthOffset));
             }
 
             return cell;
@@ -431,9 +439,9 @@ mosaic.datepicker = {
     },
 
     actions: {
-        selectDay(context, day) {
+        selectDay(context, day, monthOffset = 0) {
             const { dateInput, userFormat, state } = context;
-            state.selectedDate = new Date(state.currentYear, state.currentMonth, day);
+            state.selectedDate = new Date(state.currentYear, state.currentMonth + monthOffset, day);
 
             // datetime mode: picking the date returns to the summary cards
             if (context.withTime) {

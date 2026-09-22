@@ -2,11 +2,28 @@
 
 ---
 
+> ## v1.0.3
+
+### Changes
+
+- The date picker's day grid now fills the first and last weeks with the trailing days of the previous month and the leading days of the next month (e.g. September 2026 opens with Aug 30 to 31 and closes with Oct 1 to 3) instead of leaving blank cells. These days render at reduced opacity so the focused month stays prominent, and they are fully selectable: clicking one picks that exact date in the adjacent month. They go through the same `dayCell` path as in-month days, so `disable_past_dates`, today and selected highlighting all apply to them unchanged. Only the final week is completed; no extra row is added, so the calendar height is unchanged.
+
+### Files Changed
+
+| File | Change |
+|---|---|
+| `app/js/mosaic-datepicker.js` | `render.days` renders adjacent-month filler days via `dayCell` in place of empty cells; `dayCell` and `actions.selectDay` take an optional `monthOffset` (default `0`) |
+| `app/css/components/_datepicker.css` | Add `.mcp-day--outside` (muted opacity) |
+| `app/js/mosaic-core.js` | Version bump to 1.0.3 |
+| `docs/getting-started.md` | Version Compatibility: widget and helper are versioned independently; matching major.minor means compatible |
+
+---
+
 > ## Client Script v1.0.2
 
 ### Changes
 
-- Added `show_overflow_toggle` (default `true`) to `mosaic.table()`. Set to `false` to hide the clip/wrap toggle button and lock the table to whatever `overflow_mode` specifies. The export button is unaffected — it shares the same wrapper and still renders.
+- Added `show_overflow_toggle` (default `true`) to `mosaic.table()`. Set to `false` to hide the clip/wrap toggle button and lock the table to whatever `overflow_mode` specifies. The export button is unaffected; it shares the same wrapper and still renders.
 
 ### Files Changed
 
@@ -23,9 +40,9 @@
 
 ### Changes
 
-- Required fields now show their label in red while empty, returning to the normal label color as soon as they are filled. Makes unfilled fields obvious on long forms without waiting for a submit. Applies to every field type, needs no configuration, and re-applies if a field is cleared again. Field borders are deliberately left untouched — the label is the one element every field type has exactly one of, so the marker looks identical for text, picklist, radio, checkbox, multiselect, file and date fields.
-- Required-field marking now waits for deferred field setup before it runs. Smart date fields (`type: 'date'` without `use_date_input`) and `datetime-local` fields render with no `value` attribute — their `default_value` is parked in `data-default-iso` and written in by a `setTimeout` in the field builder — so seeding synchronously marked a date that *had* a default as unfilled, and the red label only cleared once the value was retyped by hand. Seeding is now deferred behind `mosaic.ui.readiness.buildPromise()`, the same signal `force_focus` already waited on. Forms without date/datetime/time/tel fields still seed immediately.
-- Fixed the invalid-field colour in dark mode. `--field-invalid-color` was declared only as the light-mode `--color-error` (`#f44336`) with no dark override, so every red field surface — error borders, the `.invalid-group` accent bar, error labels and the required `*` — used the light red against dark inputs. Now resolves to `--color-dark-error` (`#ef5350`) under `.dark-mode`. Single declaration; all seven consumers read the variable.
+- Required fields now show their label in red while empty, returning to the normal label color as soon as they are filled. Makes unfilled fields obvious on long forms without waiting for a submit. Applies to every field type, needs no configuration, and re-applies if a field is cleared again. Field borders are deliberately left untouched: the label is the one element every field type has exactly one of, so the marker looks identical for text, picklist, radio, checkbox, multiselect, file and date fields.
+- Required-field marking now waits for deferred field setup before it runs. Smart date fields (`type: 'date'` without `use_date_input`) and `datetime-local` fields render with no `value` attribute (their `default_value` is parked in `data-default-iso` and written in by a `setTimeout` in the field builder), so seeding synchronously marked a date that *had* a default as unfilled, and the red label only cleared once the value was retyped by hand. Seeding is now deferred behind `mosaic.ui.readiness.buildPromise()`, the same signal `force_focus` already waited on. Forms without date/datetime/time/tel fields still seed immediately.
+- Fixed the invalid-field colour in dark mode. `--field-invalid-color` was declared only as the light-mode `--color-error` (`#f44336`) with no dark override, so every red field surface (error borders, the `.invalid-group` accent bar, error labels and the required `*`) used the light red against dark inputs. Now resolves to `--color-dark-error` (`#ef5350`) under `.dark-mode`. Single declaration; all seven consumers read the variable.
 - Fixed the overflow-toggle setup guard, which tested for `#tableOverflowToggle` when what actually gets inserted is `.table-overflow-toggle-wrapper`. Harmless while the toggle was unconditional, but with `show_overflow_toggle: false` the guard never tripped and every re-render (paging, search, sort) appended another wrapper, stacking duplicate export buttons.
 
 ### Files Changed

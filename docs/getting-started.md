@@ -24,7 +24,7 @@ if (mosaic.utils.isSuccess(result)) {
 ## Installation
 
 1. **Install the Widget**
-    - Upload the widget package (`dist/mosaic.zip` — a zip of the `/app` folder) to **Setup > Developer Hub > [Widgets](https://crm.zoho.com/crm/settings/widgets)**.
+    - Upload the widget package (`dist/mosaic.zip`, a zip of the `/app` folder) to **Setup > Developer Hub > [Widgets](https://crm.zoho.com/crm/settings/widgets)**.
     - The widget API name must be exactly `mosaic`. If you name it something else, update the `WIDGET_API_NAME` constant at the top of the helper (`cscript/mosaic.js`) to match.
     - Mosaic works in the Zoho CRM iOS/Android apps too - enable mobile support when importing the widget if you want popups to open on mobile.
 
@@ -86,6 +86,6 @@ See [Defaults](reference/defaults.md) for a complete list of all available keys 
 
 ## Version Compatibility
 
-The client script helper (`mosaic.js`) and the widget must be kept in sync. When you update the widget, also update the static resource. Mismatched versions may cause unexpected behavior or missing features.
+The widget and the client script helper (`mosaic.js`) are versioned independently. Any widget and helper that share the same **major.minor** version (e.g. widget 1.0.3 with helper 1.0.2) are compatible; patch releases fix or refine one side only and don't require updating the other. When the minor or major version changes, update both together.
 
-The current version is shown in the [README](../README.md). See the [Changelog](../CHANGELOG.md) for a history of changes.
+The current versions are shown in the [README](../README.md). See the [Changelog](../CHANGELOG.md) for which side each release affects.

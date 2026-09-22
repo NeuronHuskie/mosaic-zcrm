@@ -6,7 +6,7 @@
 
 const mosaic = {
 
-    version: '1.0.2',
+    version: '1.0.3',
 
     // ── mosaic namespaces ─────────────────────────────────────────────────
     theme: {},

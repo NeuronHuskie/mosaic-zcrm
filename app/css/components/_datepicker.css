@@ -152,6 +152,11 @@
     cursor: default;
 }
 
+/* prev/next month filler days */
+.mcp-day--outside {
+    opacity: 0.4;
+}
+
 .mcp-day--today {
     font-weight: 600;
     box-shadow: inset 0 0 0 1.5px var(--color-primary);
