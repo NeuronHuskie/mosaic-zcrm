@@ -72,7 +72,13 @@ function loadMosaic() {
     const context = {
         console,
         document,
-        window: { innerWidth: 800, innerHeight: 600 },
+        window: {
+            innerWidth: 800,
+            innerHeight: 600,
+            parent: {},
+            listeners: {},
+            addEventListener(type, fn) { (this.listeners[type] ||= []).push(fn); }
+        },
         ZOHO: {
             CRM: {
                 CONFIG: {
@@ -1645,6 +1651,115 @@ async function test(name, fn) {
 
         assert.strictEqual(mosaic.flyout.requests._preInitRequest, null);
         assert.strictEqual(mosaic.runtime.flyout.requestId, null);
+    });
+
+    // flyout harness: stubs $Client / sendResponse and marks the widget as an initialized flyout
+    const loadFlyout = ({ requestId = null } = {}) => {
+        const context = loadMosaic();
+        const sent = [];
+        const closes = [];
+        context.ZDK.Client.sendResponse = (id, response) => sent.push({ id, response });
+        context.$Client = { close: (...args) => closes.push(args) };
+        context.mosaic.context = { ...context.mosaic.context, isFlyout: true };
+        context.mosaic.runtime.flyout = { enabled: true, requestId, responded: false };
+        return { context, mosaic: context.mosaic, window: context.window, sent, closes };
+    };
+
+    const notifyAndWait = (window, id, source = window.parent) => window.listeners.message.forEach(fn => fn({
+        source,
+        data: JSON.stringify({ type: 'FRAMEWORK.EVENT', eventName: 'NotifyAndWait', data: { id } })
+    }));
+
+    await test('widget.html loads mosaic-core.js and mosaic-flyout.js in <head> straight after the sdk', () => {
+        const html = fs.readFileSync(path.join(root, 'app/widget.html'), 'utf8');
+        const head = html.slice(0, html.indexOf('</head>'));
+        const scripts = [...head.matchAll(/<script src="([^"]+)"/g)].map(m => m[1]);
+
+        assert.deepStrictEqual(scripts, [
+            'https://live.zwidgets.com/js-sdk/1.5/ZohoEmbededAppSDK.min.js',
+            './js/mosaic-core.js',
+            './js/mosaic-flyout.js'
+        ]);
+        assert.strictEqual((html.match(/mosaic-core\.js"/g) || []).length, 1);
+        assert.strictEqual((html.match(/mosaic-flyout\.js"/g) || []).length, 1);
+    });
+
+    await test('NotifyAndWait captured off the wire before init is consumed by flyout.lifecycle.init()', () => {
+        const { mosaic, window } = loadMosaic();
+
+        assert.strictEqual(window.listeners.message.length, 1);
+        notifyAndWait(window, 'wire-id');
+        assert.deepStrictEqual({ ...mosaic.flyout.requests._preInitRequest }, { requestId: 'wire-id' });
+
+        mosaic.flyout.lifecycle.init({}, { flyout: true });
+        assert.strictEqual(mosaic.runtime.flyout.requestId, 'wire-id');
+        assert.strictEqual(mosaic.flyout.requests._preInitRequest, null);
+    });
+
+    await test('flyout capture ignores other windows, other events and malformed messages', () => {
+        const { mosaic, window } = loadMosaic();
+        const capture = window.listeners.message[0];
+
+        notifyAndWait(window, 'not-parent', {});
+        capture({ source: window.parent, data: { type: 'FRAMEWORK.EVENT', eventName: 'PageLoad', data: { id: 'page-load' } } });
+        capture({ source: window.parent, data: '{not json' });
+        capture({ source: window.parent, data: null });
+
+        assert.strictEqual(mosaic.flyout.requests._preInitRequest, null);
+    });
+
+    await test('flyout requests without an id do not clear a stored request id', () => {
+        const { mosaic } = loadFlyout({ requestId: 'kept' });
+
+        mosaic.flyout.requests.setRequest({});
+        mosaic.flyout.requests.setRequest();
+
+        assert.strictEqual(mosaic.runtime.flyout.requestId, 'kept');
+    });
+
+    await test('flyout send() answers via sendResponse and never closes the frame itself', () => {
+        const { mosaic, sent, closes } = loadFlyout({ requestId: 'req-1' });
+
+        mosaic.respond({ success: true, data: { a: 1 } });
+        mosaic.respond({ success: true, data: { a: 2 } });
+
+        assert.strictEqual(sent.length, 1);
+        assert.strictEqual(sent[0].id, 'req-1');
+        assert.strictEqual(sent[0].response.data.a, 1);
+        assert.strictEqual(closes.length, 0);
+        assert.strictEqual(mosaic.runtime.flyout.responded, true);
+    });
+
+    await test('flyout send() waits for a late request id, then answers once', () => {
+        const { mosaic, sent, closes, window } = loadFlyout();
+
+        mosaic.respond({ success: true, data: { a: 1 } });
+        mosaic.respond({ success: true, data: { a: 2 } });
+        assert.strictEqual(sent.length, 0);
+
+        notifyAndWait(window, 'late-id');
+        mosaic.flyout.requests.setRequest({ id: 'late-id' });  // the sdk handler can deliver the same event too
+
+        assert.strictEqual(sent.length, 1);
+        assert.strictEqual(sent[0].id, 'late-id');
+        assert.strictEqual(sent[0].response.data.a, 1);
+        assert.strictEqual(closes.length, 0);
+    });
+
+    await test('flyout send() closes without a payload when the request id never arrives', () => {
+        const { context, mosaic, sent, closes } = loadFlyout();
+        const timers = [];
+        context.setTimeout = (fn) => { timers.push(fn); return timers.length; };
+        context.clearTimeout = () => {};
+
+        mosaic.respond({ success: true, data: { a: 1 } });
+        mosaic.respond({ success: true, data: { a: 2 } });
+        timers.forEach(fn => fn());
+        mosaic.flyout.requests.setRequest({ id: 'too-late' });
+
+        assert.strictEqual(sent.length, 0);
+        assert.deepStrictEqual(closes, [[]]);
+        assert.strictEqual(mosaic.flyout.requests._waiters.length, 0);
     });
 
     await test('core widget version matches README widget version', () => {

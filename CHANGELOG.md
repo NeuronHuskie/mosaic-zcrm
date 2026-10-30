@@ -2,6 +2,27 @@
 
 ---
 
+> ## v1.0.4
+
+### Changes
+
+- Fixed flyouts intermittently failing to answer the client script. A flyout answers with `ZDK.Client.sendResponse(requestId, response)`, and the request id comes from a `NotifyAndWait` event sent when the helper calls `flyout.notify({}, { wait: true })`. The helper calls `notify()` the moment `open()` returns, so the event races the widget's own load, and the Zoho SDK drops every message that lands before `ZOHO.embeddedApp.init()` (which runs only after the last script has loaded). When the event won, the widget had no id, logged `Missing flyout request id`, and closed with `$Client.close(response)`, which in a flyout carries no data: the client script got `null` as if the user had dismissed it. Heavier pages (e.g. a large `mosaic.html()` document) lost the race far more often. The widget now also reads `NotifyAndWait` straight off `window` `message` events (`mosaic.flyout.requests.capture`), attached as soon as `mosaic-flyout.js` loads; `mosaic-core.js` and `mosaic-flyout.js` move into `<head>` straight after the SDK so the listener exists before the event can arrive. Both routes feed the same `setRequest()`, so the id is still kept in one place, and the SDK handler stays as before.
+- `mosaic.respond()` in a flyout now waits for the request id if it hasn't arrived yet (up to 3 s) instead of closing straight away, so a response sent early in the widget's life is still delivered. If the id never arrives it logs `No flyout request id - response not delivered` and closes without a payload, rather than suggesting the data went through.
+- The widget no longer calls `$Client.close()` after `sendResponse`. The helper already closes the flyout (`flyout.close()`) as soon as `notify()` returns, and a close sent from the old flyout frame could land after the client script's next popup had opened (e.g. a `mosaic.confirmation()` straight after a flyout form) and close that popup instead, which the helper reported as a dismissal (`null`).
+- A `NotifyAndWait` without an id is now ignored rather than clearing an id that has already arrived, and `setRequest()` writes the pre-init buffer through `mosaic.flyout.requests` rather than `this`, matching the rest of the module.
+
+### Files Changed
+
+| File | Change |
+|---|---|
+| `app/widget.html` | Load `mosaic-core.js` and `mosaic-flyout.js` in `<head>` straight after the SDK |
+| `app/js/mosaic-flyout.js` | Add `requests.capture` (attached to `window` `message` at file load), `requests.whenReady` and `requests.flushWaiters`; `setRequest` ignores missing ids and releases waiting responses |
+| `app/js/mosaic-core.js` | `response.send` waits for the flyout request id via `whenReady` and no longer closes the flyout itself after `sendResponse`; version bump to 1.0.4 |
+| `tests/mosaic-regression-tests.js` | `window` stub records listeners; tests for the `<head>` script order, wire capture before init, ignored messages, missing ids, no self-close after `sendResponse`, late ids and the timeout path |
+| `cscript/mosaic-tests.js` | Add "Flyout Responses" test (large `mosaic.html()` flyout, form, dismiss, and 5 flyout → popup rounds with a delivered / stayed-open tally) |
+
+---
+
 > ## v1.0.3
 
 ### Changes

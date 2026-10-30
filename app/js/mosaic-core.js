@@ -6,7 +6,7 @@
 
 const mosaic = {
 
-    version: '1.0.3',
+    version: '1.0.4',
 
     // ── mosaic namespaces ─────────────────────────────────────────────────
     theme: {},
@@ -203,16 +203,22 @@ const mosaic = {
 
                 if (mosaic.runtime.flyout.responded) return;
 
-                const requestId = mosaic.runtime.flyout.requestId;
-                if (!requestId) {
-                    mosaic.con.err('mosaic.core.response.send() | Missing flyout request id', response);
-                    $Client.close(response);
-                    return;
-                }
+                mosaic.flyout.requests.whenReady(requestId => {
+                    if (mosaic.runtime.flyout.responded) return;
 
-                mosaic.runtime.flyout.responded = true;
-                ZDK.Client.sendResponse(requestId, response);
-                try { $Client.close(); } catch (_) {}
+                    if (!requestId) {
+                        // the client script is still blocked in notify() - closing is what releases it
+                        mosaic.con.err('mosaic.core.response.send() | No flyout request id - response not delivered', response);
+                        mosaic.runtime.flyout.responded = true;
+                        try { $Client.close(); } catch (_) {}
+                        return;
+                    }
+
+                    // no $Client.close() here - the client script closes the flyout once notify() returns,
+                    // and a close from this frame can land after its next popup has opened and close that
+                    mosaic.runtime.flyout.responded = true;
+                    ZDK.Client.sendResponse(requestId, response);
+                });
             }
         },
 

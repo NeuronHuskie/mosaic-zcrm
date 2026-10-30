@@ -57,7 +57,8 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         { actual_value: 'upload_to_workdrive', display_value: 'Upload to Workdrive' },
         { actual_value: 'upload_to_attachments', display_value: 'Upload to Attachments' },
         { actual_value: 'utils', display_value: 'Utility Functions' },
-        { actual_value: 'header_truncation', display_value: 'Header Truncation (50-char limit)' }
+        { actual_value: 'header_truncation', display_value: 'Header Truncation (50-char limit)' },
+        { actual_value: 'flyout_responses', display_value: 'Flyout Responses (request id + follow-up popup)' }
     ];
 
     const testMenu = mosaic.launcher(mosaic_tests_items, {
@@ -794,6 +795,44 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         mosaic.message.success('Header truncation tests complete!', { title: 'Header Truncation - Done' });
     };
 
+    // ═══════════════════════════════════════════════════════════════════════
+    //  flyout response tests
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // A flyout answers through ZDK.Client.sendResponse() with the request id from
+    // NotifyAndWait, which races the widget's load. A null result after clicking a
+    // button means the response was lost. The popup opened straight after each
+    // flyout (run() / the follow-up confirmation) checks that the closing flyout
+    // doesn't close it too. Enable mosaic.DEFAULTS.debug to see the request id in
+    // the widget iframe's console.
+    const flyout_response_tests = () => {
+        // ~160 KB of padding slows the widget's load and widens the NotifyAndWait race
+        const largeHtml = sampleHtml.replace('</body>', `<p class="footer">${'Padding to slow the widget load. '.repeat(5000)}</p></body>`);
+
+        if (!run('Flyout [1] html - click Select',
+            mosaic.html(largeHtml, { flyout: true, title: 'Flyout [1/4] - Large HTML (click Select)', buttons: ['Cancel', { label: 'Select', style: 'primary' }] }))) return;
+
+        if (!run('Flyout [2] form - submit',
+            mosaic.form({ flyout: true, title: 'Flyout [2/4] - Form (click Submit)', fields: [{ name: 'note', type: 'text', label: 'Note', default_value: 'Returned from a flyout' }] }))) return;
+
+        if (!run('Flyout [3] message - dismiss (expect null)',
+            mosaic.message('Close this flyout with the X or Escape. The result should be null.', { flyout: true, title: 'Flyout [3/4] - Dismiss', width: '420px', height: '300px' }))) return;
+
+        const rounds = 5;
+        let delivered = 0;
+        let stayedOpen = 0;
+        for (let i = 1; i <= rounds; i++) {
+            const r = mosaic.message(`Round ${i} of ${rounds} - click OK.`, { flyout: true, title: `Flyout [4/4] - Round ${i}/${rounds}`, width: '420px', height: '300px' });
+            if (mosaic.utils.isSuccess(r)) delivered++;
+            const c = mosaic.confirmation('This popup opened straight after the flyout closed. Click OK.', { title: `Follow-up popup ${i}/${rounds}` });
+            if (c !== null) stayedOpen++;
+        }
+
+        const summary = `Flyout responses delivered: ${delivered}/${rounds}\n\nFollow-up popups that stayed open: ${stayedOpen}/${rounds}`;
+        console.log('[MOSAIC.TESTS] Flyout [4] summary:', { delivered, stayedOpen, rounds });
+        (delivered === rounds && stayedOpen === rounds ? mosaic.message.success : mosaic.message.error)(summary, { title: 'Flyout Responses - Done' });
+    };
+
     // ═══════════════════════════════════════════════════════════════════════════
     //  test execution router
     // ═══════════════════════════════════════════════════════════════════════════
@@ -821,7 +860,8 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         upload_to_workdrive:    file_upload_workdrive_tests,
         upload_to_attachments:  file_upload_attachments_tests,
         utils:                  utility_functions_tests,
-        header_truncation:      header_truncation_tests
+        header_truncation:      header_truncation_tests,
+        flyout_responses:       flyout_response_tests
     };
 
     runTests[selectedTest]?.();

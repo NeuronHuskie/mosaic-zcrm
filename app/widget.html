@@ -9,6 +9,9 @@
         <!-- │              external dependencies               │ -->
         <!-- ╰──────────────────────────────────────────────────╯ -->
         <script src="https://live.zwidgets.com/js-sdk/1.5/ZohoEmbededAppSDK.min.js"></script>
+        <!-- ── core + flyout load before the rest to catch NotifyAndWait ─────── -->
+        <script src="./js/mosaic-core.js"></script>
+        <script src="./js/mosaic-flyout.js"></script>
         <!-- ╭──────────────────────────────────────────────────╮ -->
         <!-- │                   stylesheets                    │ -->
         <!-- ╰──────────────────────────────────────────────────╯ -->
@@ -51,9 +54,7 @@
         <!-- ╭──────────────────────────────────────────────────╮ -->
         <!-- │                widget js scripts                 │ -->
         <!-- ╰──────────────────────────────────────────────────╯ -->
-        <!-- ── load mosaic-core.js first ─────────────────────────────────────── -->
-        <script src="./js/mosaic-core.js"></script>
-        <script src="./js/mosaic-flyout.js"></script>
+        <!-- ── mosaic-core.js + mosaic-flyout.js load in <head> ──────────────── -->
         <script src="./js/mosaic-relatedlist.js"></script>
         <!-- ──────────────────────────────────────────────────────────────────── -->
         <script src="./js/mosaic-storage.js"></script>  

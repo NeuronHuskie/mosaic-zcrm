@@ -28,20 +28,62 @@ mosaic.flyout = {
 
     requests: {
         _preInitRequest: null,
+        _waiters: [],
 
-        // called by ZOHO.embeddedApp.on("NotifyAndWait")
+        // called by ZOHO.embeddedApp.on("NotifyAndWait") and requests.capture() - either may fire, or both
         setRequest(data = {}) {
             const requestId = data.id || null;
+            if (!requestId) return;
             if (!mosaic.runtime.flyout.enabled) {
                 // widget not yet initialized as a flyout - buffer for lifecycle.init()
-                this._preInitRequest = { requestId };
+                mosaic.flyout.requests._preInitRequest = { requestId };
                 mosaic.con.groupCollapsed('mosaic.flyout.requests.setRequest() | Flyout request buffered (pre-init)', { requestId, data });
             } else if (mosaic.runtime.flyout.responded) {
                 mosaic.con.warn('mosaic.flyout.requests.setRequest() | Request received after response was sent - ignoring', { requestId });
             } else {
                 mosaic.runtime.flyout.requestId = requestId;
                 mosaic.con.groupCollapsed('mosaic.flyout.requests.setRequest() | Flyout request received', { requestId, data });
+                mosaic.flyout.requests.flushWaiters(requestId);
             }
+        },
+
+        // NotifyAndWait read straight off the wire - the client script calls notify() as soon as
+        // open() returns, so it races the widget's load, and the sdk drops every message that lands
+        // before ZOHO.embeddedApp.init(). attached when this file loads (in <head>, after the sdk)
+        capture(event) {
+            if (event.source !== window.parent) return;
+            let message = event.data;
+            if (typeof message === 'string') {
+                try { message = JSON.parse(message); } catch (_) { return; }
+            }
+            if (message?.type !== 'FRAMEWORK.EVENT' || message.eventName !== 'NotifyAndWait') return;
+            mosaic.flyout.requests.setRequest(message.data);
+        },
+
+        // calls fn(requestId) once the flyout can answer - straight away if the id is here, fn(null) on timeout
+        whenReady(fn, timeoutMs = 3000) {
+            const requestId = mosaic.runtime.flyout.requestId;
+            if (requestId) {
+                fn(requestId);
+                return;
+            }
+
+            mosaic.con.log('mosaic.flyout.requests.whenReady() | Waiting for flyout request id', { timeoutMs });
+            const waiter = (id) => {
+                clearTimeout(timer);
+                fn(id);
+            };
+            const timer = setTimeout(() => {
+                mosaic.flyout.requests._waiters = mosaic.flyout.requests._waiters.filter(w => w !== waiter);
+                fn(null);
+            }, timeoutMs);
+            mosaic.flyout.requests._waiters.push(waiter);
+        },
+
+        flushWaiters(requestId) {
+            const waiters = mosaic.flyout.requests._waiters;
+            mosaic.flyout.requests._waiters = [];
+            waiters.forEach(waiter => waiter(requestId));
         }
     },
 
@@ -74,3 +116,5 @@ mosaic.flyout = {
     },
 
 };
+
+window.addEventListener('message', mosaic.flyout.requests.capture);
