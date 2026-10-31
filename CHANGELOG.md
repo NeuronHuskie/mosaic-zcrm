@@ -2,6 +2,27 @@
 
 ---
 
+> ## Client Script v1.0.3
+
+### Changes
+
+- Flyout `px` sizes are no longer "clamped". Zoho caps flyouts at `50vw` × `80vh` and clips anything larger without an error. `clampFlyoutDimensions` tried to clamp `px` values against `window.innerWidth` / `innerHeight`, but a client script has no `window`, so that branch never ran and `px` values always reached Zoho unchanged. The dead branch is gone and the docs now say what actually happens: `vw` widths clamp to `flyout_max_width_vw` (`45`), `vh` heights clamp to `flyout_max_height_vh` (`72`), and `px` and other units pass through. Use `vw` / `vh` for flyout sizes.
+- Defaults are unchanged. The `table` default width of `800px` is wider than Zoho's `50vw` cap on any window under 1600px wide, so the Flyout Mode docs now suggest passing a `vw` width (e.g. `width: '45vw'`) when opening a table as a flyout.
+- `MosaicFlyoutOptions` JSDoc no longer gives "max ~80vh" / "max ~50vw" as the limits. It now names Mosaic's ceilings and recommends `vw` / `vh`.
+
+### Files Changed
+
+| File | Change |
+|---|---|
+| `cscript/mosaic.js` | `clampFlyoutDimensions` handles `vw` / `vh` only (`window` branch removed); JSDoc fixes; version bump to 1.0.3 |
+| `cscript/mosaic-tests.js` | Add "Flyout Sizing" test (oversized `vw` / `vh` clamp, in-range `vw` / `vh`, `px` pass-through) |
+| `tests/mosaic-regression-tests.js` | Add `loadHelper()` (helper with a recording ZDK stub and no `window`); tests for the `vw` / `vh` clamp and `px` pass-through, unchanged popup sizes, and that the clamp doesn't read `window` |
+| `docs/reference/popup-flyout-options.md` | Flyout Mode: describe the `vw` / `vh` clamp and `px` pass-through; tip to pass a `vw` width for table flyouts |
+| `docs/reference/defaults.md` | Clarify the `flyout_max_*` ceilings |
+| `README.md` | Client Script version 1.0.3 |
+
+---
+
 > ## v1.0.4
 
 ### Changes

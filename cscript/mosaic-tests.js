@@ -58,7 +58,8 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         { actual_value: 'upload_to_attachments', display_value: 'Upload to Attachments' },
         { actual_value: 'utils', display_value: 'Utility Functions' },
         { actual_value: 'header_truncation', display_value: 'Header Truncation (50-char limit)' },
-        { actual_value: 'flyout_responses', display_value: 'Flyout Responses (request id + follow-up popup)' }
+        { actual_value: 'flyout_responses', display_value: 'Flyout Responses (request id + follow-up popup)' },
+        { actual_value: 'flyout_sizing', display_value: 'Flyout Sizing (vw/vh clamp + px pass-through)' }
     ];
 
     const testMenu = mosaic.launcher(mosaic_tests_items, {
@@ -833,6 +834,31 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         (delivered === rounds && stayedOpen === rounds ? mosaic.message.success : mosaic.message.error)(summary, { title: 'Flyout Responses - Done' });
     };
 
+    // ═══════════════════════════════════════════════════════════════════════
+    //  flyout sizing tests
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // Zoho caps flyouts at 50vw × 80vh and clips past that silently. A client
+    // script has no window, so mosaic.js only clamps vw/vh (to 45vw × 72vh) and
+    // sends px values unchanged. Compare each flyout's size against the browser
+    // window. Enable mosaic.DEFAULTS.debug to see the clamp warning on step 1.
+    const flyout_sizing_tests = () => {
+        if (!run('Flyout Sizing [1] message - oversized vw/vh (expect clamped to 45vw × 72vh)',
+            mosaic.message('Requested 70vw × 95vh. This flyout should open at 45vw × 72vh.', { flyout: true, title: 'Flyout Sizing [1/3] - Clamped', width: '70vw', height: '95vh' }))) return;
+
+        if (!run('Flyout Sizing [2] table - in-range vw/vh (expect 40vw × 60vh, unclamped)',
+            mosaic.table({
+                flyout: true, title: 'Flyout Sizing [2/3] - Table at 40vw × 60vh', width: '40vw', height: '60vh',
+                columns: [{ key: 'name', header: 'Name' }, { key: 'notes', header: 'Notes' }],
+                source: { type: 'static', data: [{ id: 1, name: 'Widget Pro', notes: 'Check the width against the window.' }, { id: 2, name: 'Gadget Plus', notes: 'Short note.' }] }
+            }))) return;
+
+        if (!run('Flyout Sizing [3] form - px size (expect 500px × 400px, passed through)',
+            mosaic.form({ flyout: true, title: 'Flyout Sizing [3/3] - Form at 500px × 400px', width: '500px', height: '400px', fields: [{ name: 'note', type: 'text', label: 'Note' }] }))) return;
+
+        mosaic.message.success('Flyout sizing tests complete!', { title: 'Flyout Sizing - Done' });
+    };
+
     // ═══════════════════════════════════════════════════════════════════════════
     //  test execution router
     // ═══════════════════════════════════════════════════════════════════════════
@@ -861,7 +887,8 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         upload_to_attachments:  file_upload_attachments_tests,
         utils:                  utility_functions_tests,
         header_truncation:      header_truncation_tests,
-        flyout_responses:       flyout_response_tests
+        flyout_responses:       flyout_response_tests,
+        flyout_sizing:          flyout_sizing_tests
     };
 
     runTests[selectedTest]?.();

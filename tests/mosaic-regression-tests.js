@@ -107,6 +107,28 @@ function loadMosaic() {
     return context;
 }
 
+// client script helper with a recording ZDK stub - no window, matching a real client script
+function loadHelper() {
+    const flyouts = [];
+    const popups = [];
+    const context = {
+        console,
+        ZDK: {
+            Client: {
+                openPopup(config) { popups.push(config); return null; },
+                createFlyout(id, config) { flyouts.push(config); },
+                getFlyout() { return { open() {}, notify() { return null; }, close() {} }; }
+            }
+        }
+    };
+
+    vm.createContext(context);
+    const helper = fs.readFileSync(path.join(root, 'cscript/mosaic.js'), 'utf8');
+    vm.runInContext(`${helper}\nglobalThis.mosaic = mosaic;`, context);
+
+    return { mosaic: context.mosaic, flyouts, popups };
+}
+
 async function test(name, fn) {
     try {
         await fn();
@@ -1789,5 +1811,44 @@ async function test(name, fn) {
         assert(!/\bmax_decimals\b/.test(launcher));
         assert(!/(^|[^\w])date_format:\s*['"]/.test(launcher));
         assert(!/\bdefault_filename\b/.test(launcher));
+    });
+
+    await test('flyout and popup form/table defaults are the shared method sizes', () => {
+        const { mosaic, flyouts, popups } = loadHelper();
+
+        mosaic.form({ flyout: true });
+        mosaic.table({ flyout: true });
+        mosaic.form();
+        mosaic.table({ width: '90vw', height: '95vh' });
+
+        assert.deepStrictEqual(flyouts.map(c => [c.width, c.height]), [['600px', '70vh'], ['800px', '70vh']]);
+        assert.deepStrictEqual(popups.map(c => [c.width, c.height]), [['600px', '70vh'], ['90vw', '95vh']]);
+    });
+
+    await test('flyout clamp caps vw/vh at the ceilings and passes px and other units through', () => {
+        const { mosaic, flyouts } = loadHelper();
+
+        mosaic.message('x', { flyout: true, width: '70vw', height: '95vh' });
+        mosaic.message('x', { flyout: true, width: '1400px', height: '1200px' });
+        mosaic.message('x', { flyout: true, width: '30vw', height: '40vh' });
+        mosaic.message('x', { flyout: true, width: '90%', height: '90vw' });
+        mosaic.DEFAULTS.flyout_max_width_vw = 40;
+        mosaic.message('x', { flyout: true, width: '45vw' });
+
+        assert.deepStrictEqual(flyouts.map(c => [c.width, c.height]), [
+            ['45vw', '72vh'],
+            ['1400px', '1200px'],
+            ['30vw', '40vh'],
+            ['90%', '90vw'],
+            ['40vw', '350px']
+        ]);
+    });
+
+    await test('client helper flyout clamp does not read window', () => {
+        const helper = fs.readFileSync(path.join(root, 'cscript/mosaic.js'), 'utf8');
+        const clamp = helper.slice(helper.indexOf('const clampFlyoutDimensions'), helper.indexOf('const MAX_HEADER_LENGTH'));
+
+        assert(clamp.length > 0, 'clampFlyoutDimensions or MAX_HEADER_LENGTH marker not found in cscript/mosaic.js');
+        assert(!/\bwindow\b/.test(clamp));
     });
 })();

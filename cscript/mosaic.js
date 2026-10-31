@@ -38,7 +38,7 @@
  *     mosaic.splash.success(`Saved ${data.deal_name}!`);
  * }
  *
- * @version 1.0.2
+ * @version 1.0.3
  * @author NeuronHuskie
  * @license MIT
  * @see https://github.com/NeuronHuskie/mosaic-zcrm
@@ -46,7 +46,7 @@
 const mosaic = (function() {
     'use strict';
 
-    const VERSION = '1.0.2';
+    const VERSION = '1.0.3';
     const WIDGET_API_NAME = 'mosaic';
 
     // ╭──────────────────────────────────────────────────╮
@@ -128,8 +128,8 @@ const mosaic = (function() {
     /**
      * @typedef {Object} MosaicFlyoutOptions
      * @property {string}  [header='☰']           - Flyout header text (in title bar). Truncated to 50 characters (Zoho's hard limit).
-     * @property {string}  [height]                - Flyout height (e.g. '80vh'; max ~80vh)
-     * @property {string}  [width]                 - Flyout width (e.g. '50vw'; max ~50vw)
+     * @property {string}  [height]                - Flyout height (e.g. '70vh'). vh values clamp to DEFAULTS.flyout_max_height_vh (72); px can't be checked against Zoho's 80vh cap
+     * @property {string}  [width]                 - Flyout width (e.g. '45vw'). vw values clamp to DEFAULTS.flyout_max_width_vw (45); px can't be checked against Zoho's 50vw cap
      * @property {string}  [top='20px']            - Flyout offset from top; use 'center' to vertically center
      * @property {string}  [left='center']         - Flyout offset from left; use 'center' to horizontally center
      * @property {string}  [bottom]                - Flyout offset from bottom (overrides top)
@@ -356,26 +356,17 @@ const mosaic = (function() {
     /**
      * Clamp flyout width/height to safe viewport-relative ceilings before ZDK receives them.
      * Zoho silently clips values exceeding its hard caps (50vw width, 80vh height) with no error.
-     * Supports 'px', 'vw', and 'vh' units - other units pass through unchanged.
+     * Only 'vw' widths and 'vh' heights are clamped - a client script has no `window`, so a 'px'
+     * value can't be measured against the viewport and passes through unchanged, as do other units.
      * @private
      * @param {Object} cfg - Flyout config object (mutated in place)
      * @returns {Object} cfg
      */
     const clampFlyoutDimensions = (cfg = {}) => {
-        const DIM_RE = /^(\d+(?:\.\d+)?)(px|vw|vh)$/i;
+        const DIM_RE = /^(\d+(?:\.\d+)?)(vw|vh)$/i;
         const AXES = {
             width:  { relUnit: 'vw', maxRel: DEFAULTS.flyout_max_width_vw },
             height: { relUnit: 'vh', maxRel: DEFAULTS.flyout_max_height_vh },
-        };
-
-        const viewportPx = (axis) => {
-            if (typeof window === 'undefined') return null;
-            return axis === 'width' ? window.innerWidth : window.innerHeight;
-        };
-
-        const warnAndReturn = (axis, value, clamped) => {
-            con.warn(`clampFlyoutDimensions | ${axis} clamped: '${value}' → '${clamped}'`);
-            return clamped;
         };
 
         const clamp = (value, axis) => {
@@ -386,17 +377,11 @@ const mosaic = (function() {
             const unit = m[2].toLowerCase();
             const { relUnit, maxRel } = AXES[axis];
 
-            if (unit === relUnit && num > maxRel) return warnAndReturn(axis, value, `${maxRel}${relUnit}`);
+            if (unit !== relUnit || num <= maxRel) return value;
 
-            if (unit === 'px') {
-                const vp = viewportPx(axis);
-                if (!vp) return value;
-
-                const maxPx = Math.floor(vp * maxRel / 100);
-                if (num > maxPx) return warnAndReturn(axis, value, `${maxPx}px`);
-            }
-
-            return value;
+            const clamped = `${maxRel}${relUnit}`;
+            con.warn(`clampFlyoutDimensions | ${axis} clamped: '${value}' → '${clamped}'`);
+            return clamped;
         };
 
         cfg.width = clamp(cfg.width, 'width');

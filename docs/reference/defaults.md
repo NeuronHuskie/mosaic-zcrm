@@ -19,8 +19,8 @@ mosaic.DEFAULTS.table.per_page = 25;
 | `connections.workdrive` | `undefined` | WorkDrive connection used by `pdf`, `pdffiller`, `pdfmerge`, and `file` fields with WorkDrive destination |
 | `connections.writer` | `undefined` | Zoho Writer connection used by `html`, `html2pdf`, and `pdf` with HTML sources |
 | `debug` | `false` | Log debug output to the console |
-| `flyout_max_width_vw` | `45` | Ceiling used when clamping flyout `width` values (Zoho silently clips oversized flyouts) |
-| `flyout_max_height_vh` | `72` | Ceiling used when clamping flyout `height` values |
+| `flyout_max_width_vw` | `45` | Ceiling used when clamping flyout `vw` widths (Zoho silently clips flyouts wider than `50vw`). `px` widths are not clamped |
+| `flyout_max_height_vh` | `72` | Ceiling used when clamping flyout `vh` heights (Zoho silently clips flyouts taller than `80vh`). `px` heights are not clamped |
 
 ---
 

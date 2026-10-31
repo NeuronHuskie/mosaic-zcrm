@@ -51,7 +51,16 @@ const result = mosaic.form({
 
 The return shape is the same as popup mode. Closing the flyout with Escape or the X icon resolves to `null`, matching popup dismissal behavior.
 
-Flyouts use the same `height` and `width` options, but Zoho enforces maximum flyout dimensions. Mosaic clamps oversized `px`, `vw`, and `vh` values before sending them to Zoho so the final size is predictable.
+Flyouts use the same `height` and `width` options, but Zoho caps flyouts at `50vw` × `80vh` and silently clips anything larger, with no error. Mosaic clamps `vw` widths to `flyout_max_width_vw` (`45`) and `vh` heights to `flyout_max_height_vh` (`72`) before sending them to Zoho - see [Defaults](defaults.md#global).
+
+`px` values are sent to Zoho unchanged: a client script has no access to the browser viewport, so Mosaic can't tell whether a `px` size fits under the cap. **Use `vw` / `vh` for flyout sizes.**
+
+> [!TIP]
+> Some methods default to a `px` width that can be wider than `50vw` on smaller screens - the `table` default of `800px` is clipped on any window under 1600px wide. Pass a `vw` width when opening these as flyouts:
+>
+> ```javascript
+> mosaic.table({ flyout: true, width: '45vw', columns: [...], source: {...} });
+> ```
 
 > [!NOTE]
 > In flyout mode, Zoho's shell-level X button is disabled and Mosaic renders its own X button when `close_icon: true`. This keeps flyout dismissal on the normal Mosaic response path.
