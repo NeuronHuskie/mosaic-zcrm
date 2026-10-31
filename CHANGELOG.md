@@ -2,6 +2,24 @@
 
 ---
 
+> ## v1.0.5
+
+### Changes
+
+- When a form or input opens, the field Mosaic focuses for you (`force_focus`) now has its caret placed after its `default_value` instead of before it, so typing straight away adds to the default rather than in front of it. Programmatic `focus()` leaves the caret at the start; `mosaic.ui.focus.caretToEnd()` moves it with `setSelectionRange` right after `focus.force()` focuses the field. This covers `mosaic.form()` and `mosaic.input()` (which renders a single-field form). It applies to `text`, `search`, `url`, `tel`, `password` and `textarea` fields. Browsers don't allow setting the caret in `email`, `number` or `date` inputs, so those are left as before. Clicking into a field and tabbing between fields are unchanged, and the refocus after an unexpected blur keeps wherever the user had put the caret.
+
+### Files Changed
+
+| File | Change |
+|---|---|
+| `app/js/mosaic-ui.js` | Add `focus.caretToEnd()`; `focus.force()` calls it after focusing the first field |
+| `app/js/mosaic-core.js` | Version bump to 1.0.5 |
+| `tests/mosaic-regression-tests.js` | Tests for `caretToEnd` on text-entry fields, skipping `email` / `number` / `date` without throwing, and `focus.force()` placing the caret at the end |
+| `cscript/mosaic-tests.js` | Add "Caret at End of Default Value" test (`input.text`, a form with text + textarea defaults, and the `email` limit) |
+| `README.md` | Widget version 1.0.5 |
+
+---
+
 > ## Client Script v1.0.3
 
 ### Changes

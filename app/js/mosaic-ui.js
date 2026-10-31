@@ -392,6 +392,7 @@ mosaic.ui = {
 
                     if (firstInput) {
                         firstInput.focus();
+                        mosaic.ui.focus.caretToEnd(firstInput);
                         mosaic.con.log(`mosaic.ui.focus.force() | Focused: ${firstInput.name || firstInput.id || firstInput.type}`);
                         firstInput.addEventListener('blur', (e) => {
                             if (e.relatedTarget === null) setTimeout(() => firstInput.focus(), 50);
@@ -405,6 +406,14 @@ mosaic.ui = {
 
                 setTimeout(attempt, 50);
             });
+        },
+
+        // place the caret after any default value - programmatic focus() leaves it at the start.
+        // setSelectionRange throws on email/number/date inputs, so only text-entry types qualify
+        caretToEnd(el) {
+            if (!['text', 'search', 'url', 'tel', 'password', 'textarea'].includes(el.type)) return;
+            const end = el.value.length;
+            el.setSelectionRange(end, end);
         },
 
         restore() {

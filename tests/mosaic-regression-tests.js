@@ -979,9 +979,59 @@ async function test(name, fn) {
         assert.strictEqual(typeof mosaic.ui.readiness.wait, 'function');
         assert.strictEqual(typeof mosaic.ui.focus.force, 'function');
         assert.strictEqual(typeof mosaic.ui.focus.restore, 'function');
+        assert.strictEqual(typeof mosaic.ui.focus.caretToEnd, 'function');
         assert.strictEqual(typeof mosaic.ui.viewport.getDimensions, 'function');
         assert.strictEqual(typeof mosaic.ui.viewport.resize, 'function');
         assert.strictEqual(typeof mosaic.ui.viewport.fitToContent, 'function');
+    });
+
+    await test('focus.caretToEnd moves the caret past the value on text-entry fields only', () => {
+        const { mosaic } = loadMosaic();
+        const field = (type, value) => ({
+            type, value, selection: null,
+            setSelectionRange(start, end) {
+                // mirrors the browser - these types throw InvalidStateError
+                if (['email', 'number', 'date'].includes(type)) throw new Error('InvalidStateError');
+                this.selection = [start, end];
+            }
+        });
+
+        const text = field('text', 'Default name');
+        const textarea = field('textarea', 'Line one\nLine two');
+        const tel = field('tel', '(555) 123-4567');
+        const empty = field('text', '');
+        [text, textarea, tel, empty].forEach(el => mosaic.ui.focus.caretToEnd(el));
+
+        assert.deepStrictEqual(text.selection, [12, 12]);
+        assert.deepStrictEqual(textarea.selection, [17, 17]);
+        assert.deepStrictEqual(tel.selection, [14, 14]);
+        assert.deepStrictEqual(empty.selection, [0, 0]);
+
+        for (const type of ['email', 'number', 'date', 'checkbox']) {
+            const el = field(type, 'x@y.com');
+            assert.doesNotThrow(() => mosaic.ui.focus.caretToEnd(el));
+            assert.strictEqual(el.selection, null);
+        }
+    });
+
+    await test('focus.force places the caret at the end of the first field\'s default value', async () => {
+        const context = loadMosaic();
+        const { mosaic } = context;
+        const input = {
+            type: 'text', value: 'Prefilled', name: 'deal_name', offsetParent: {}, disabled: false,
+            focused: false, selection: null,
+            focus() { this.focused = true; },
+            setSelectionRange(start, end) { this.selection = [start, end]; },
+            addEventListener() {}
+        };
+        context.document.querySelectorAll = () => [input];
+        context.getComputedStyle = () => ({ display: 'block', visibility: 'visible' });
+
+        mosaic.ui.focus.force();
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        assert.strictEqual(input.focused, true);
+        assert.deepStrictEqual(input.selection, [9, 9]);
     });
 
     await test('condition helpers expose grouped aliases', () => {

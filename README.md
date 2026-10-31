@@ -78,7 +78,7 @@ Mosaic is a modular widget framework for Zoho CRM.
 
 > **Version**
 >
-> - Widget: **1.0.4**
+> - Widget: **1.0.5**
 > - Client Script: **1.0.3**
 > 
 > View [Changelog](CHANGELOG.md)

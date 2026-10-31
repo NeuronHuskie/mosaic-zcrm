@@ -59,7 +59,8 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         { actual_value: 'utils', display_value: 'Utility Functions' },
         { actual_value: 'header_truncation', display_value: 'Header Truncation (50-char limit)' },
         { actual_value: 'flyout_responses', display_value: 'Flyout Responses (request id + follow-up popup)' },
-        { actual_value: 'flyout_sizing', display_value: 'Flyout Sizing (vw/vh clamp + px pass-through)' }
+        { actual_value: 'flyout_sizing', display_value: 'Flyout Sizing (vw/vh clamp + px pass-through)' },
+        { actual_value: 'caret_at_end', display_value: 'Caret at End of Default Value' }
     ];
 
     const testMenu = mosaic.launcher(mosaic_tests_items, {
@@ -859,6 +860,33 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         mosaic.message.success('Flyout sizing tests complete!', { title: 'Flyout Sizing - Done' });
     };
 
+    // ═══════════════════════════════════════════════════════════════════════
+    //  caret at end tests
+    // ═══════════════════════════════════════════════════════════════════════
+
+    // The widget focuses the first field itself (force_focus), and now moves the
+    // caret past any default value. Start typing straight away on each step: the
+    // text should land after the default, not before it. Email and number fields
+    // don't allow setting the caret, so step 3 is expected to start at the front.
+    const caret_at_end_tests = () => {
+        if (!run('Caret [1] input.text - type straight away (expect text after the default)',
+            mosaic.input.text('Deal Name', { title: 'Caret [1/3] - input.text', default_value: 'Acme Corp - ', instructions: 'Type without clicking - the caret should be after "Acme Corp - "' }))) return;
+
+        if (!run('Caret [2] form - first field text, textarea below (expect text after the default)',
+            mosaic.form({
+                title: 'Caret [2/3] - Form default values',
+                fields: [
+                    { name: 'subject', type: 'text', label: 'Subject', default_value: 'Follow up: ' },
+                    { name: 'notes', type: 'textarea', label: 'Notes', rows: 3, default_value: 'Only the first field is focused on open.' }
+                ]
+            }))) return;
+
+        if (!run('Caret [3] input email - known limit (expect caret at the start)',
+            mosaic.input('Email', { type: 'email', title: 'Caret [3/3] - Email (caret stays at start)', default_value: 'name@example.com', instructions: 'Browsers do not allow setting the caret in email fields' }))) return;
+
+        mosaic.message.success('Caret tests complete!', { title: 'Caret at End - Done' });
+    };
+
     // ═══════════════════════════════════════════════════════════════════════════
     //  test execution router
     // ═══════════════════════════════════════════════════════════════════════════
@@ -888,7 +916,8 @@ function RUN_MOSAIC_STATIC_RESOURCE_TESTS() {
         utils:                  utility_functions_tests,
         header_truncation:      header_truncation_tests,
         flyout_responses:       flyout_response_tests,
-        flyout_sizing:          flyout_sizing_tests
+        flyout_sizing:          flyout_sizing_tests,
+        caret_at_end:           caret_at_end_tests
     };
 
     runTests[selectedTest]?.();
